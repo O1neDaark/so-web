@@ -1,0 +1,11 @@
+node_modules/
+dist/
+
+*.log
+*.err.log
+
+mobile-check.png
+mobile-headings-check*.png
+
+.DS_Store
+Thumbs.db
