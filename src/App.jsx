@@ -1,6 +1,7 @@
 import React, { useEffect, useMemo, useState } from "react";
 import logoMark from "./assets/co-logo-mark.png";
 import heroPortrait from "./assets/sergey-hero.webp";
+import heroPortraitPrimary from "./assets/sergey-hero-primary.jpeg";
 import igmsCover from "./assets/igms-cover.png";
 import igmsImage01 from "./assets/igms-01.png";
 import igmsImage02 from "./assets/igms-02.png";
@@ -1352,7 +1353,8 @@ function Hero({ t }) {
           </div>
           <div className="hero-side">
             <div className="hero-portrait" aria-label="Portrait of Sergey Ostaev">
-              <img src={heroPortrait} alt="" aria-hidden="true" />
+              <img className="hero-portrait-image hero-portrait-image-secondary" src={heroPortrait} alt="" aria-hidden="true" />
+              <img className="hero-portrait-image hero-portrait-image-primary" src={heroPortraitPrimary} alt="" aria-hidden="true" />
               <div className="hero-portrait-card">
                 <span>AI Product Designer</span>
                 <strong>B2B / Enterprise / RAG</strong>
