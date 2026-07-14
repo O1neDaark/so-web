@@ -26,7 +26,7 @@ const navIcons = ["pi-user", "pi-briefcase", "pi-sparkles", "pi-sitemap", "pi-se
 const heroMetricIcons = ["pi-briefcase", "pi-search-plus", "pi-wave-pulse", "pi-trophy"];
 const aboutIcons = ["pi-search", "pi-sitemap", "pi-desktop"];
 const caseHighlightIcons = ["pi-compass", "pi-lightbulb", "pi-chart-line"];
-const serviceIcons = ["pi-palette", "pi-desktop", "pi-images", "pi-microchip-ai"];
+const serviceIcons = ["pi-desktop", "pi-microchip-ai", "pi-palette", "pi-search"];
 const processIcons = ["pi-search", "pi-sitemap", "pi-pencil", "pi-check-circle"];
 const caseIcons = {
   igms: "pi-comments",
@@ -41,6 +41,10 @@ function PrimeIcon({ name, className = "" }) {
   return <i className={`pi ${name} ${className}`.trim()} aria-hidden="true" />;
 }
 
+function buildTelegramUrl(message) {
+  return `${telegramUrl}?text=${encodeURIComponent(message)}`;
+}
+
 const copy = {
   ru: {
     nav: ["Профиль", "Кейсы", "Экспертиза", "Процесс", "Контакты"],
@@ -50,7 +54,7 @@ const copy = {
     heroKicker: "Сергей Остаев / AI Product Designer",
     heroLines: ["Проектирую B2B и AI-интерфейсы", "которые ускоряют работу команд"],
     heroText:
-      "Руководитель направления автоматизации с опытом более 7 лет. Соединяю UX/UI, системную аналитику и AI-first подход, чтобы сложные enterprise-сценарии становились понятными, быстрыми и готовыми к продакшну.",
+      "7+ лет превращаю сложные процессы в работающие продукты. Соединяю UX/UI, системную аналитику и AI-first подход — от исследования до внедрения вместе с командой.",
     heroCta: "Обсудить проект",
     heroCases: "Смотреть кейсы",
     metrics: [
@@ -100,7 +104,7 @@ const copy = {
     heroKicker: "Sergey Ostaev / AI Product Designer",
     heroLines: ["I design B2B and AI interfaces", "that make teams faster"],
     heroText:
-      "Automation design lead with 7+ years of experience. I combine UX/UI, systems analysis, and AI-first thinking to turn complex enterprise workflows into clear, fast, production-ready products.",
+      "For 7+ years I have turned complex workflows into shipped products. I combine UX/UI, systems thinking, and an AI-first approach — from discovery to implementation with the team.",
     heroCta: "Discuss project",
     heroCases: "View cases",
     metrics: [
@@ -142,6 +146,138 @@ const copy = {
     contactCta: "Message on Telegram",
     footer: "AI Product Design / B2B / Enterprise",
   },
+};
+
+const conversionCopy = {
+  ru: {
+    availability: "Открыт к фриланс-проектам и сильным продуктовым командам",
+    proofLine: "7+ лет в автоматизации / 9 запущенных продуктов / B2B, Enterprise, AI",
+    aiLabel: "Нейросети в работе",
+    aiTitle: "Использую AI не ради эффекта, а чтобы быстрее исследовать, проектировать и доводить решения до запуска.",
+    aiText:
+      "Собираю AI-сценарии для продуктов и использую нейросети как рабочий инструмент: от исследования и прототипа до кода, визуалов и автоматизации повторяющихся задач.",
+    aiTabsLabel: "Выберите направление AI-работы",
+    aiResultLabel: "Что получает проект",
+    serviceCta: "Обсудить задачу",
+    briefLabel: "С чего начнем",
+    briefTitle: "Выберите задачу — я подготовлю сообщение, с которого удобно начать разговор.",
+    briefOptions: ["Спроектировать продукт", "Добавить AI-сценарии", "Собрать дизайн-систему", "Нанять в команду"],
+    briefMessages: [
+      "Сергей, хочу обсудить проектирование продукта. Расскажу о задаче и текущем состоянии проекта.",
+      "Сергей, хочу обсудить AI-сценарии для продукта: помощник, RAG, автоматизация или доверие к ответам.",
+      "Сергей, хочу обсудить дизайн-систему и передачу интерфейса в разработку.",
+      "Сергей, хочу обсудить возможную роль в продуктовой команде.",
+    ],
+    caseFooterEyebrow: "Есть похожая задача?",
+    caseFooterTitle: "Разберу продукт, найду точки ускорения и предложу понятный следующий шаг.",
+    caseFooterText: "Можно прийти с идеей, сырым процессом, сложной B2B-логикой или уже работающим продуктом.",
+    caseFooterCta: "Обсудить проект в Telegram",
+    modalClose: "Закрыть",
+    dockLabels: ["Профиль", "Кейсы", "AI", "Связаться"],
+  },
+  en: {
+    availability: "Open to freelance projects and strong product teams",
+    proofLine: "7+ years in automation / 9 shipped products / B2B, Enterprise, AI",
+    aiLabel: "AI in my workflow",
+    aiTitle: "I use AI to research, design, and ship faster — not as decoration.",
+    aiText:
+      "I design AI product scenarios and use neural tools throughout the workflow: research, prototyping, code, visuals, and automation of repetitive work.",
+    aiTabsLabel: "Choose an AI capability",
+    aiResultLabel: "What the project gets",
+    serviceCta: "Discuss this task",
+    briefLabel: "Start here",
+    briefTitle: "Choose a task and I will prepare a useful first Telegram message.",
+    briefOptions: ["Design a product", "Add AI workflows", "Build a design system", "Hire for the team"],
+    briefMessages: [
+      "Sergey, I would like to discuss product design. I can share the task and current product state.",
+      "Sergey, I would like to discuss AI workflows: an assistant, RAG, automation, or trust in AI answers.",
+      "Sergey, I would like to discuss a design system and engineering handoff.",
+      "Sergey, I would like to discuss a possible role on the product team.",
+    ],
+    caseFooterEyebrow: "Working on something similar?",
+    caseFooterTitle: "I will unpack the product, find leverage points, and propose a clear next step.",
+    caseFooterText: "Bring an idea, a rough workflow, complex B2B logic, or an existing product that needs improvement.",
+    caseFooterCta: "Discuss the project on Telegram",
+    modalClose: "Close",
+    dockLabels: ["Profile", "Cases", "AI", "Contact"],
+  },
+};
+
+const aiToolkit = {
+  ru: [
+    {
+      icon: "pi-compass",
+      title: "Исследование и стратегия",
+      text: "Ускоряю разбор рынка, интервью, сценариев и гипотез, сохраняя проверку фактов и продуктовую логику за человеком.",
+      tools: ["ChatGPT", "Claude", "Perplexity", "Deep Research"],
+      result: "Быстрее перейти от размытой идеи к карте рисков, ролей и проверяемых гипотез.",
+    },
+    {
+      icon: "pi-microchip-ai",
+      title: "AI UX и RAG",
+      text: "Проектирую промпт-сценарии, уточнение контекста, работу с источниками, состояния доверия, ошибки и передачу диалога человеку.",
+      tools: ["RAG", "Prompt design", "Embeddings", "AI agents"],
+      result: "AI-функция, которой можно доверять и которую команда понимает, как развивать.",
+    },
+    {
+      icon: "pi-code",
+      title: "Прототипы и код",
+      text: "Собираю интерактивные прототипы и рабочие фронтенд-концепты, чтобы проверять сценарий до дорогой разработки.",
+      tools: ["Figma AI", "Codex", "Cursor", "React"],
+      result: "Не статичный макет, а понятный сценарий, который можно показать бизнесу и разработке.",
+    },
+    {
+      icon: "pi-images",
+      title: "Контент и визуалы",
+      text: "Создаю и арт-дирекчу AI-визуалы, презентации, видео-концепты и материалы для защиты продукта.",
+      tools: ["Midjourney", "Krea", "Runway", "Kling"],
+      result: "Быстрая и цельная упаковка продукта без потери качества и смысла.",
+    },
+    {
+      icon: "pi-bolt",
+      title: "Автоматизация",
+      text: "Связываю AI с рабочими процессами: классификация, маршрутизация, генерация черновиков, обработка знаний и контроль человеком.",
+      tools: ["n8n", "Make", "API", "Human-in-the-loop"],
+      result: "Меньше ручной рутины и прозрачный процесс, который можно измерять и улучшать.",
+    },
+  ],
+  en: [
+    {
+      icon: "pi-compass",
+      title: "Research and strategy",
+      text: "I accelerate market analysis, interviews, scenarios, and hypotheses while keeping fact-checking and product judgment human-led.",
+      tools: ["ChatGPT", "Claude", "Perplexity", "Deep Research"],
+      result: "Move faster from a fuzzy idea to a map of risks, roles, and testable hypotheses.",
+    },
+    {
+      icon: "pi-microchip-ai",
+      title: "AI UX and RAG",
+      text: "I design prompt workflows, context clarification, sources, trust states, errors, and smooth handoff to a human.",
+      tools: ["RAG", "Prompt design", "Embeddings", "AI agents"],
+      result: "An AI feature people can trust and the team can confidently evolve.",
+    },
+    {
+      icon: "pi-code",
+      title: "Prototypes and code",
+      text: "I build interactive prototypes and working frontend concepts to validate workflows before expensive development.",
+      tools: ["Figma AI", "Codex", "Cursor", "React"],
+      result: "A tangible scenario that business and engineering can evaluate, not a static mockup.",
+    },
+    {
+      icon: "pi-images",
+      title: "Content and visuals",
+      text: "I create and art-direct AI visuals, presentations, video concepts, and materials for product pitches.",
+      tools: ["Midjourney", "Krea", "Runway", "Kling"],
+      result: "Fast, coherent product packaging without losing quality or meaning.",
+    },
+    {
+      icon: "pi-bolt",
+      title: "Automation",
+      text: "I connect AI to real workflows: classification, routing, draft generation, knowledge processing, and human review.",
+      tools: ["n8n", "Make", "API", "Human-in-the-loop"],
+      result: "Less repetitive work and a transparent process the team can measure and improve.",
+    },
+  ],
 };
 
 const cases = {
@@ -349,16 +485,16 @@ const cases = {
 
 const services = {
   ru: [
-    ["01", "Complex Interface Design", "Проектирование сложных B2B-интерфейсов, сценариев, состояний, ролей и навигации."],
-    ["02", "AI UX и AI-first продукты", "Промпт-сценарии, RAG, уточняющие окна, AI-помощники, контроль доверия и ошибок."],
-    ["03", "Design Systems и handoff", "Компоненты, паттерны, состояния, спецификации для разработки и дизайн-ревью."],
-    ["04", "Product Discovery", "Гипотезы, CJM, user flow, прототипы, демо-сценарии и быстрая проверка ценности."],
+    ["01", "Complex Interface Design", "Проектирование сложных B2B-интерфейсов, сценариев, состояний, ролей и навигации.", ["UX-аудит", "Архитектура", "Кликабельный прототип"]],
+    ["02", "AI UX и AI-first продукты", "Промпт-сценарии, RAG, уточняющие окна, AI-помощники, контроль доверия и ошибок.", ["AI-flow", "Prompt UX", "Trust & safety"]],
+    ["03", "Design Systems и handoff", "Компоненты, паттерны, состояния, спецификации для разработки и дизайн-ревью.", ["Компоненты", "Токены", "Handoff"]],
+    ["04", "Product Discovery", "Гипотезы, CJM, user flow, прототипы, демо-сценарии и быстрая проверка ценности.", ["Интервью", "CJM", "Проверка гипотез"]],
   ],
   en: [
-    ["01", "Complex Interface Design", "Complex B2B interfaces, scenarios, states, roles, and navigation architecture."],
-    ["02", "AI UX and AI-first products", "Prompt scenarios, RAG, clarification windows, AI assistants, trust and error control."],
-    ["03", "Design Systems and handoff", "Components, patterns, states, engineering specs, and design review."],
-    ["04", "Product Discovery", "Hypotheses, CJM, user flows, prototypes, demo scenarios, and fast value validation."],
+    ["01", "Complex Interface Design", "Complex B2B interfaces, scenarios, states, roles, and navigation architecture.", ["UX audit", "Architecture", "Clickable prototype"]],
+    ["02", "AI UX and AI-first products", "Prompt scenarios, RAG, clarification windows, AI assistants, trust and error control.", ["AI flow", "Prompt UX", "Trust and safety"]],
+    ["03", "Design Systems and handoff", "Components, patterns, states, engineering specs, and design review.", ["Components", "Tokens", "Handoff"]],
+    ["04", "Product Discovery", "Hypotheses, CJM, user flows, prototypes, demo scenarios, and fast value validation.", ["Interviews", "CJM", "Hypothesis testing"]],
   ],
 };
 
@@ -1246,7 +1382,8 @@ const resumeContent = {
 function App() {
   const [lang, setLang] = useState("ru");
   const [path, setPath] = useState(() => window.location.pathname);
-  const t = copy[lang];
+  const [isResumeOpen, setIsResumeOpen] = useState(false);
+  const t = { ...copy[lang], ...conversionCopy[lang] };
   const currentCases = useMemo(() => cases[lang], [lang]);
   const isResumePage = path.replace(/\/$/, "") === "/resume";
   const isIgmsCasePage = path.replace(/\/$/, "") === "/case/igms";
@@ -1254,18 +1391,44 @@ function App() {
   const isDiagnosticsCasePage = path.replace(/\/$/, "") === "/case/diagnostics";
   const isRagCasePage = path.replace(/\/$/, "") === "/case/rag";
   const isSocialCasePage = path.replace(/\/$/, "") === "/case/social";
+  const isCasePage = isIgmsCasePage || isEnterpriseCasePage || isDiagnosticsCasePage || isRagCasePage || isSocialCasePage;
+  const isHomePage = !isResumePage && !isCasePage;
 
   useEffect(() => {
     document.documentElement.lang = lang;
   }, [lang]);
 
   useEffect(() => {
-    const timers = Array.from(document.querySelectorAll("[data-reveal]")).map((node, index) =>
-      window.setTimeout(() => node.setAttribute("data-visible", "true"), Math.min(index * 70, 360)),
+    const nodes = Array.from(document.querySelectorAll("[data-reveal]"));
+    const reduceMotion = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+
+    if (reduceMotion || !("IntersectionObserver" in window)) {
+      nodes.forEach((node) => node.setAttribute("data-visible", "true"));
+      return undefined;
+    }
+
+    const observer = new IntersectionObserver(
+      (entries) => {
+        entries.forEach((entry) => {
+          if (!entry.isIntersecting) return;
+          entry.target.setAttribute("data-visible", "true");
+          observer.unobserve(entry.target);
+        });
+      },
+      { threshold: 0.08, rootMargin: "0px 0px -8% 0px" },
     );
 
-    return () => timers.forEach((timer) => window.clearTimeout(timer));
-  }, [lang, path]);
+    nodes.forEach((node, index) => {
+      node.style.setProperty("--reveal-delay", `${Math.min(index % 4, 3) * 45}ms`);
+      if (node.getBoundingClientRect().top < window.innerHeight * 0.96) {
+        node.setAttribute("data-visible", "true");
+      } else {
+        observer.observe(node);
+      }
+    });
+
+    return () => observer.disconnect();
+  }, [lang, path, isResumeOpen]);
 
   useEffect(() => {
     const handleNavigation = () => setPath(window.location.pathname);
@@ -1273,9 +1436,71 @@ function App() {
     return () => window.removeEventListener("popstate", handleNavigation);
   }, []);
 
+  useEffect(() => {
+    if (!window.location.hash) return undefined;
+    const frame = window.requestAnimationFrame(() => {
+      document.querySelector(window.location.hash)?.scrollIntoView({ block: "start" });
+    });
+    return () => window.cancelAnimationFrame(frame);
+  }, [path]);
+
+  useEffect(() => {
+    const handleInternalNavigation = (event) => {
+      const anchor = event.target.closest("a[href]");
+      if (!anchor || event.defaultPrevented || anchor.target === "_blank" || event.button !== 0) return;
+
+      const url = new URL(anchor.href, window.location.href);
+      if (url.origin !== window.location.origin) return;
+
+      event.preventDefault();
+      window.history.pushState({}, "", `${url.pathname}${url.search}${url.hash}`);
+      setPath(url.pathname);
+      setIsResumeOpen(false);
+
+      window.requestAnimationFrame(() => {
+        if (url.hash) {
+          document.querySelector(url.hash)?.scrollIntoView({ behavior: "smooth", block: "start" });
+        } else {
+          window.scrollTo({ top: 0, behavior: "auto" });
+        }
+      });
+    };
+
+    document.addEventListener("click", handleInternalNavigation);
+    return () => document.removeEventListener("click", handleInternalNavigation);
+  }, []);
+
+  useEffect(() => {
+    if (!isResumeOpen) return undefined;
+
+    const handleKeyDown = (event) => {
+      if (event.key !== "Escape") return;
+      document.documentElement.classList.add("instant-modal-close");
+      setIsResumeOpen(false);
+      window.requestAnimationFrame(() => {
+        window.requestAnimationFrame(() => document.documentElement.classList.remove("instant-modal-close"));
+      });
+    };
+
+    document.addEventListener("keydown", handleKeyDown);
+    document.body.classList.add("modal-open");
+    return () => {
+      document.removeEventListener("keydown", handleKeyDown);
+      document.body.classList.remove("modal-open");
+    };
+  }, [isResumeOpen]);
+
   return (
     <>
-      <Header lang={lang} setLang={setLang} t={t} isResumePage={isResumePage} />
+      <ReadingProgress active={isCasePage || isResumePage} />
+      <Header
+        lang={lang}
+        setLang={setLang}
+        t={t}
+        isResumePage={isResumePage}
+        isHomePage={isHomePage}
+        onResumeOpen={() => setIsResumeOpen(true)}
+      />
       {isResumePage ? (
         <ResumePage data={resumeContent[lang]} />
       ) : isIgmsCasePage ? (
@@ -1295,25 +1520,107 @@ function App() {
           <About t={t} />
           <Cases t={t} items={currentCases} />
           <Services t={t} items={services[lang]} />
+          <AiToolkit t={t} items={aiToolkit[lang]} />
           <Process t={t} items={processSteps[lang]} />
           <Manifesto t={t} />
           <Contact t={t} />
         </main>
       )}
+      {isCasePage && <CaseFooterCta t={t} />}
       <footer className="footer">
         <span>© 2026 Sergey Ostaev</span>
         <span>{t.footer}</span>
       </footer>
+      <MobileDock t={t} isHomePage={isHomePage} />
+      <ResumeModal
+        data={resumeContent[lang]}
+        t={t}
+        isOpen={isResumeOpen}
+        onClose={() => setIsResumeOpen(false)}
+      />
     </>
   );
 }
 
-function Header({ lang, setLang, t, isResumePage }) {
-  const homePrefix = isResumePage ? "/" : "";
+function ReadingProgress({ active }) {
+  const [progress, setProgress] = useState(0);
+
+  useEffect(() => {
+    if (!active) return undefined;
+
+    let frame = 0;
+    const updateProgress = () => {
+      window.cancelAnimationFrame(frame);
+      frame = window.requestAnimationFrame(() => {
+        const scrollable = document.documentElement.scrollHeight - window.innerHeight;
+        setProgress(scrollable > 0 ? Math.min(window.scrollY / scrollable, 1) : 0);
+      });
+    };
+
+    updateProgress();
+    window.addEventListener("scroll", updateProgress, { passive: true });
+    window.addEventListener("resize", updateProgress);
+    return () => {
+      window.cancelAnimationFrame(frame);
+      window.removeEventListener("scroll", updateProgress);
+      window.removeEventListener("resize", updateProgress);
+    };
+  }, [active]);
+
+  if (!active) return null;
+
+  return (
+    <div className="reading-progress" aria-hidden="true">
+      <span style={{ transform: `scaleX(${progress})` }} />
+    </div>
+  );
+}
+
+function ResumeModal({ data, t, isOpen, onClose }) {
+  return (
+    <div className="resume-modal" data-open={isOpen ? "true" : "false"} aria-hidden={!isOpen}>
+      <button className="resume-modal-backdrop" type="button" aria-label={t.modalClose} onClick={onClose} />
+      <div className="resume-modal-panel" role="dialog" aria-modal="true" aria-label={data.title}>
+        <button className="resume-modal-close" type="button" onClick={onClose}>
+          <PrimeIcon name="pi-times" />
+          {t.modalClose}
+        </button>
+        <ResumePage data={data} isModal />
+      </div>
+    </div>
+  );
+}
+
+function MobileDock({ t, isHomePage }) {
+  const prefix = isHomePage ? "" : "/";
+  const items = [
+    ["about", "pi-user", t.dockLabels[0]],
+    ["cases", "pi-briefcase", t.dockLabels[1]],
+    ["ai-stack", "pi-microchip-ai", t.dockLabels[2]],
+  ];
+
+  return (
+    <nav className="mobile-dock" aria-label="Mobile navigation">
+      {items.map(([id, icon, label]) => (
+        <a href={`${prefix}#${id}`} key={id}>
+          <PrimeIcon name={icon} />
+          <span>{label}</span>
+        </a>
+      ))}
+      <a className="mobile-dock-primary" href={telegramUrl} target="_blank" rel="noreferrer">
+        <PrimeIcon name="pi-send" />
+        <span>{t.dockLabels[3]}</span>
+      </a>
+    </nav>
+  );
+}
+
+function Header({ lang, setLang, t, isResumePage, isHomePage, onResumeOpen }) {
+  const homePrefix = isHomePage ? "" : "/";
 
   return (
     <header className="header">
-      <a className="logo" href={isResumePage ? "/#top" : "#top"} aria-label="Sergey Ostaev">
+      <a className="logo" href={isHomePage ? "#top" : "/#top"} aria-label="Sergey Ostaev">
         <img className="logo-mark" src={logoMark} alt="" aria-hidden="true" />
       </a>
       <nav className="nav" aria-label="Navigation">
@@ -1335,10 +1642,14 @@ function Header({ lang, setLang, t, isResumePage }) {
           <span className={lang === "ru" ? "lang-current" : ""}>RU</span>
           <span className={lang === "en" ? "lang-current" : ""}>ENG</span>
         </button>
-        <a className={`pill-link resume-link${isResumePage ? " pill-link-active" : ""}`} href="/resume">
+        <button
+          className={`pill-link resume-link${isResumePage ? " pill-link-active" : ""}`}
+          type="button"
+          onClick={onResumeOpen}
+        >
           <PrimeIcon name="pi-file-pdf" />
           {t.resumeButton}
-        </a>
+        </button>
         <a className="pill-link" href={telegramUrl} target="_blank" rel="noreferrer">
           <PrimeIcon name="pi-send" />
           {t.write}
@@ -1354,7 +1665,10 @@ function Hero({ t }) {
       <div className="hero-inner">
         <div className="hero-content">
           <div className="hero-main">
-            <p className="kicker">{t.heroKicker}</p>
+            <div className="hero-meta">
+              <p className="kicker">{t.heroKicker}</p>
+              <span className="availability"><i aria-hidden="true" />{t.availability}</span>
+            </div>
             <h1 className="hero-title">
               {t.heroLines.map((line) => (
                 <span key={line}>{line}</span>
@@ -1363,16 +1677,8 @@ function Hero({ t }) {
             <div className="hero-bottom">
               <div className="hero-copy">
                 <p>{t.heroText}</p>
+                <span className="hero-proof">{t.proofLine}</span>
               </div>
-          </div>
-          <div className="metric-strip metric-strip-wide" aria-label="Portfolio metrics">
-              {t.metrics.map(([value, label], index) => (
-                <div key={label}>
-                  <PrimeIcon name={heroMetricIcons[index]} />
-                  <strong>{value}</strong>
-                  <span>{label}</span>
-                </div>
-              ))}
             </div>
           </div>
           <div className="hero-side">
@@ -1394,6 +1700,15 @@ function Hero({ t }) {
                 {t.heroCases}
               </a>
             </div>
+          </div>
+          <div className="metric-strip metric-strip-wide" aria-label="Portfolio metrics">
+            {t.metrics.map(([value, label], index) => (
+              <div key={label}>
+                <PrimeIcon name={heroMetricIcons[index]} />
+                <strong>{value}</strong>
+                <span>{label}</span>
+              </div>
+            ))}
           </div>
         </div>
       </div>
@@ -1472,13 +1787,15 @@ function Cases({ t, items }) {
   );
 }
 
-function ResumePage({ data }) {
+function ResumePage({ data, isModal = false }) {
   return (
-    <main className="resume-page" id="top">
+    <main className={`resume-page${isModal ? " resume-page-modal" : ""}`} id={isModal ? undefined : "top"}>
       <section className="resume-hero" data-reveal>
-        <a className="resume-back" href="/#top">
-          {data.back}
-        </a>
+        {!isModal && (
+          <a className="resume-back" href="/#top">
+            {data.back}
+          </a>
+        )}
         <div className="resume-hero-grid">
           <div>
             <p className="section-label">{data.eyebrow}</p>
@@ -2365,16 +2682,78 @@ function Services({ t, items }) {
     <section className="section services" id="services" data-reveal>
       <p className="section-label">{t.servicesLabel}</p>
       <div className="service-list">
-        {items.map(([number, title, text], index) => (
+        {items.map(([number, title, text, tags], index) => (
           <div className="service-row" key={title}>
             <span>
               <PrimeIcon name={serviceIcons[index] || "pi-sparkles"} />
               {number}
             </span>
             <h3>{title}</h3>
-            <p>{text}</p>
+            <div className="service-copy">
+              <p>{text}</p>
+              <div className="service-tags" aria-label={title}>
+                {tags.map((tag) => <span key={tag}>{tag}</span>)}
+              </div>
+              <a
+                className="service-cta"
+                href={buildTelegramUrl(`${t.serviceCta}: ${title}`)}
+                target="_blank"
+                rel="noreferrer"
+              >
+                {t.serviceCta}
+                <PrimeIcon name="pi-arrow-up-right" />
+              </a>
+            </div>
           </div>
         ))}
+      </div>
+    </section>
+  );
+}
+
+function AiToolkit({ t, items }) {
+  const [activeIndex, setActiveIndex] = useState(0);
+  const active = items[activeIndex];
+
+  return (
+    <section className="section ai-toolkit" id="ai-stack" data-reveal>
+      <div className="ai-toolkit-heading">
+        <div>
+          <p className="section-label">{t.aiLabel}</p>
+          <h2>{t.aiTitle}</h2>
+        </div>
+        <p>{t.aiText}</p>
+      </div>
+      <div className="ai-toolkit-shell">
+        <div className="ai-toolkit-tabs" role="tablist" aria-label={t.aiTabsLabel}>
+          {items.map((item, index) => (
+            <button
+              className={activeIndex === index ? "is-active" : ""}
+              type="button"
+              role="tab"
+              aria-selected={activeIndex === index}
+              onClick={() => setActiveIndex(index)}
+              key={item.title}
+            >
+              <PrimeIcon name={item.icon} />
+              <span>{item.title}</span>
+              <PrimeIcon name="pi-arrow-right" className="ai-tab-arrow" />
+            </button>
+          ))}
+        </div>
+        <article className="ai-toolkit-panel" role="tabpanel" key={active.title}>
+          <span className="ai-panel-index">0{activeIndex + 1}</span>
+          <PrimeIcon name={active.icon} className="ai-panel-icon" />
+          <h3>{active.title}</h3>
+          <p>{active.text}</p>
+          <div className="ai-tool-chips">
+            {active.tools.map((tool) => <span key={tool}>{tool}</span>)}
+          </div>
+          <div className="ai-result">
+            <span>{t.aiResultLabel}</span>
+            <strong>{active.result}</strong>
+          </div>
+        </article>
       </div>
     </section>
   );
@@ -2410,6 +2789,8 @@ function Manifesto({ t }) {
 }
 
 function Contact({ t }) {
+  const [briefIndex, setBriefIndex] = useState(0);
+
   return (
     <section className="section contact" id="contact" data-reveal>
       <div>
@@ -2418,7 +2799,24 @@ function Contact({ t }) {
       </div>
       <div className="contact-card">
         <p>{t.contactText}</p>
-        <a className="button button-light" href={telegramUrl} target="_blank" rel="noreferrer">
+        <div className="contact-brief">
+          <span>{t.briefLabel}</span>
+          <strong>{t.briefTitle}</strong>
+          <div className="contact-options" aria-label={t.briefLabel}>
+            {t.briefOptions.map((option, index) => (
+              <button
+                className={briefIndex === index ? "is-active" : ""}
+                type="button"
+                aria-pressed={briefIndex === index}
+                onClick={() => setBriefIndex(index)}
+                key={option}
+              >
+                {option}
+              </button>
+            ))}
+          </div>
+        </div>
+        <a className="button button-light" href={buildTelegramUrl(t.briefMessages[briefIndex])} target="_blank" rel="noreferrer">
           <PrimeIcon name="pi-send" />
           {t.contactCta}
         </a>
@@ -2437,6 +2835,27 @@ function Contact({ t }) {
           </a>
         </div>
       </div>
+    </section>
+  );
+}
+
+function CaseFooterCta({ t }) {
+  return (
+    <section className="case-footer-cta" data-reveal>
+      <div>
+        <p className="section-label">{t.caseFooterEyebrow}</p>
+        <h2>{t.caseFooterTitle}</h2>
+        <p>{t.caseFooterText}</p>
+      </div>
+      <a
+        className="button button-light"
+        href={buildTelegramUrl(t.caseFooterTitle)}
+        target="_blank"
+        rel="noreferrer"
+      >
+        <PrimeIcon name="pi-send" />
+        {t.caseFooterCta}
+      </a>
     </section>
   );
 }
