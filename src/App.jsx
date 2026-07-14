@@ -22,6 +22,25 @@ import engineeringClub03 from "./assets/engineering-club-03.jpg";
 
 const telegramUrl = "https://t.me/Sergey_Designer";
 
+const navIcons = ["pi-user", "pi-briefcase", "pi-sparkles", "pi-sitemap", "pi-send"];
+const heroMetricIcons = ["pi-briefcase", "pi-search-plus", "pi-wave-pulse", "pi-trophy"];
+const aboutIcons = ["pi-search", "pi-sitemap", "pi-desktop"];
+const caseHighlightIcons = ["pi-compass", "pi-lightbulb", "pi-chart-line"];
+const serviceIcons = ["pi-palette", "pi-desktop", "pi-images", "pi-microchip-ai"];
+const processIcons = ["pi-search", "pi-sitemap", "pi-pencil", "pi-check-circle"];
+const caseIcons = {
+  igms: "pi-comments",
+  monitoring: "pi-chart-bar",
+  diagnostics: "pi-wave-pulse",
+  rag: "pi-microchip-ai",
+  talk: "pi-microphone",
+};
+const contactIcons = ["pi-envelope", "pi-globe", "pi-pinterest"];
+
+function PrimeIcon({ name, className = "" }) {
+  return <i className={`pi ${name} ${className}`.trim()} aria-hidden="true" />;
+}
+
 const copy = {
   ru: {
     nav: ["Профиль", "Кейсы", "Экспертиза", "Процесс", "Контакты"],
@@ -1300,7 +1319,8 @@ function Header({ lang, setLang, t, isResumePage }) {
       <nav className="nav" aria-label="Navigation">
         {t.nav.map((label, index) => (
           <a href={`${homePrefix}#${t.navIds[index]}`} key={label}>
-            {label}
+            <PrimeIcon name={navIcons[index]} />
+            <span>{label}</span>
           </a>
         ))}
       </nav>
@@ -1311,13 +1331,16 @@ function Header({ lang, setLang, t, isResumePage }) {
           aria-label="Switch language"
           onClick={() => setLang(lang === "ru" ? "en" : "ru")}
         >
+          <PrimeIcon name="pi-language" className="lang-icon" />
           <span className={lang === "ru" ? "lang-current" : ""}>RU</span>
           <span className={lang === "en" ? "lang-current" : ""}>ENG</span>
         </button>
         <a className={`pill-link resume-link${isResumePage ? " pill-link-active" : ""}`} href="/resume">
+          <PrimeIcon name="pi-file-pdf" />
           {t.resumeButton}
         </a>
         <a className="pill-link" href={telegramUrl} target="_blank" rel="noreferrer">
+          <PrimeIcon name="pi-send" />
           {t.write}
         </a>
       </div>
@@ -1341,10 +1364,11 @@ function Hero({ t }) {
               <div className="hero-copy">
                 <p>{t.heroText}</p>
               </div>
-            </div>
-            <div className="metric-strip metric-strip-wide" aria-label="Portfolio metrics">
-              {t.metrics.map(([value, label]) => (
+          </div>
+          <div className="metric-strip metric-strip-wide" aria-label="Portfolio metrics">
+              {t.metrics.map(([value, label], index) => (
                 <div key={label}>
+                  <PrimeIcon name={heroMetricIcons[index]} />
                   <strong>{value}</strong>
                   <span>{label}</span>
                 </div>
@@ -1362,9 +1386,11 @@ function Hero({ t }) {
             </div>
             <div className="hero-cta">
               <a className="button button-light" href={telegramUrl} target="_blank" rel="noreferrer">
+                <PrimeIcon name="pi-send" />
                 {t.heroCta}
               </a>
               <a className="button button-dark" href="#cases">
+                <PrimeIcon name="pi-briefcase" />
                 {t.heroCases}
               </a>
             </div>
@@ -1402,9 +1428,12 @@ function About({ t }) {
           </div>
         </div>
         <div className="about-stack" aria-label={t.aboutLabel}>
-          {t.aboutCards.map(([number, title, text]) => (
+          {t.aboutCards.map(([number, title, text], index) => (
             <article className="about-card" key={title}>
-              <span>{number}</span>
+              <span>
+                <PrimeIcon name={aboutIcons[index]} />
+                {number}
+              </span>
               <div>
                 <h3>{title}</h3>
                 <p>{text}</p>
@@ -1427,8 +1456,8 @@ function Cases({ t, items }) {
         <div className="case-intro-icons" aria-label={t.casesLabel}>
           {t.casesHighlights.map(([title, text], index) => (
             <article className="case-intro-item" key={title}>
-              <span className={`case-intro-icon case-intro-icon-${index + 1}`} aria-hidden="true">
-                <i />
+              <span className="case-intro-icon" aria-hidden="true">
+                <PrimeIcon name={caseHighlightIcons[index]} />
               </span>
               <strong>{title}</strong>
               <small>{text}</small>
@@ -1737,6 +1766,7 @@ function DiagnosticsCasePage({ data }) {
         <div className="case-page-cover diagnostics-cover">
           <img src={diagnosticsCover} alt="IT Camp project materials and presentation" />
           <button className="diagnostics-video-link" type="button" onClick={() => setIsVideoOpen(true)}>
+            <PrimeIcon name="pi-play" />
             {data.videoCta}
           </button>
         </div>
@@ -1818,6 +1848,7 @@ function DiagnosticsCasePage({ data }) {
           <button className="video-modal-backdrop" type="button" aria-label="Close video" onClick={() => setIsVideoOpen(false)} />
           <div className="video-modal-panel">
             <button className="video-modal-close" type="button" onClick={() => setIsVideoOpen(false)}>
+              <PrimeIcon name="pi-times" />
               Close
             </button>
             <iframe
@@ -2071,6 +2102,7 @@ function SocialCasePage({ data }) {
                   onClick={() => setActiveVideo(video)}
                   aria-label={`Open video: ${video.title}`}
                 >
+                  <PrimeIcon name="pi-expand" />
                   Раскрыть
                 </button>
               </div>
@@ -2112,6 +2144,7 @@ function SocialCasePage({ data }) {
                   onClick={() => setActiveVideo({ src: event.video, title: event.title, type: "vertical" })}
                   aria-label={`Open video: ${event.title}`}
                 >
+                  <PrimeIcon name="pi-expand" />
                   Раскрыть
                 </button>
               </div>
@@ -2130,6 +2163,7 @@ function SocialCasePage({ data }) {
           <button className="video-modal-backdrop" type="button" aria-label="Close video" onClick={() => setActiveVideo(null)} />
           <div className={`video-modal-panel social-video-modal-panel social-video-modal-${activeVideo.type}`}>
             <button className="video-modal-close" type="button" onClick={() => setActiveVideo(null)}>
+              <PrimeIcon name="pi-times" />
               Close
             </button>
             <iframe
@@ -2192,17 +2226,22 @@ function CaseStudy({ item, reverse }) {
       <div className={`case-card ${reverse ? "reverse" : ""} ${item.id ? `case-card-${item.id}` : ""}`}>
         {!reverse && <CaseVisual type={item.visual} cover={item.cover} />}
         <div className="case-info">
-          <p className="case-role">{item.role}</p>
+          <p className="case-role">
+            <PrimeIcon name={caseIcons[item.id] || "pi-briefcase"} />
+            {item.role}
+          </p>
           <p className="case-desc">{item.description}</p>
           <div className="stats">
-            {item.stats.map(([label, value]) => (
+            {item.stats.map(([label, value], index) => (
               <div key={label}>
+                <PrimeIcon name={index === 0 ? "pi-bolt" : index === 1 ? "pi-clock" : "pi-chart-line"} />
                 <span>{label}</span>
                 <strong>{value}</strong>
               </div>
             ))}
           </div>
           <a className="case-cta" href={item.href || telegramUrl} target={item.href ? undefined : "_blank"} rel="noreferrer">
+            <PrimeIcon name="pi-arrow-up-right" />
             {item.cta}
           </a>
         </div>
@@ -2210,7 +2249,10 @@ function CaseStudy({ item, reverse }) {
       </div>
       <div className="case-detail">
         <div className="detail-stat">
-          <span>Inside</span>
+          <span>
+            <PrimeIcon name="pi-box" />
+            Inside
+          </span>
           <strong>{item.inside}</strong>
         </div>
         <p>{item.detail}</p>
@@ -2233,18 +2275,18 @@ function MessagesVisual() {
     <div className="client-visual product-visual" aria-label="AI inbox mockup">
       <div className="product-shell three-column">
         <div className="side-list">
-          <span className="active">Airbnb · Anna</span>
-          <span>Booking · Leo</span>
-          <span>Vrbo · Maria</span>
-          <span>Direct · Team</span>
+          <span className="active"><PrimeIcon name="pi-inbox" /> Airbnb · Anna</span>
+          <span><PrimeIcon name="pi-calendar" /> Booking · Leo</span>
+          <span><PrimeIcon name="pi-home" /> Vrbo · Maria</span>
+          <span><PrimeIcon name="pi-users" /> Direct · Team</span>
         </div>
         <div className="chat-panel">
-          <span className="mini-label">Guest thread</span>
+          <span className="mini-label"><PrimeIcon name="pi-comments" /> Guest thread</span>
           <strong>Check-in question</strong>
           <p>AI suggests a response using booking context and house rules.</p>
         </div>
         <div className="ai-panel">
-          <span>AI reply</span>
+          <span><PrimeIcon name="pi-microchip-ai" /> AI reply</span>
           <strong>15 min</strong>
           <p>Template matched · tone adjusted</p>
         </div>
@@ -2257,9 +2299,9 @@ function MonitoringVisual() {
   return (
     <div className="client-visual product-visual warm" aria-label="Enterprise monitoring mockup">
       <div className="product-shell dashboard">
-        <div className="status-row ok"><span /> Workday complete</div>
-        <div className="status-row warn"><span /> Missing confirmation</div>
-        <div className="status-row danger"><span /> Requires action</div>
+        <div className="status-row ok"><span /><PrimeIcon name="pi-check-circle" /> Workday complete</div>
+        <div className="status-row warn"><span /><PrimeIcon name="pi-clock" /> Missing confirmation</div>
+        <div className="status-row danger"><span /><PrimeIcon name="pi-exclamation-triangle" /> Requires action</div>
         <div className="timeline">
           <i style={{ height: "44%" }} />
           <i style={{ height: "70%" }} />
@@ -2278,7 +2320,7 @@ function DiagnosticsVisual() {
       <div className="product-shell diagnostics">
         <div className="signal-ring">72h</div>
         <div className="signal-copy">
-          <span>Motor current diagnostics</span>
+          <span><PrimeIcon name="pi-wave-pulse" /> Motor current diagnostics</span>
           <strong>Expert review</strong>
           <p>Hypothesis · pattern · risk level · pitch demo</p>
         </div>
@@ -2291,15 +2333,15 @@ function RagVisual() {
   return (
     <div className="client-visual product-visual green" aria-label="RAG platform mockup">
       <div className="product-shell rag">
-        <div className="search-line">Ask knowledge base...</div>
+        <div className="search-line"><PrimeIcon name="pi-search" /> Ask knowledge base...</div>
         <div className="rag-answer">
-          <strong>Role-aware answer</strong>
+          <strong><PrimeIcon name="pi-microchip-ai" /> Role-aware answer</strong>
           <p>Context from semantic search + prompt template + secure routing.</p>
         </div>
         <div className="source-grid">
-          <span>HR</span>
-          <span>IT</span>
-          <span>Legal</span>
+          <span><PrimeIcon name="pi-id-card" /> HR</span>
+          <span><PrimeIcon name="pi-server" /> IT</span>
+          <span><PrimeIcon name="pi-shield" /> Legal</span>
         </div>
       </div>
     </div>
@@ -2310,7 +2352,7 @@ function TalkVisual() {
   return (
     <div className="client-visual product-visual violet" aria-label="AI talk mockup">
       <div className="product-shell talk">
-        <span className="stage-pill">Meetup · Samara</span>
+        <span className="stage-pill"><PrimeIcon name="pi-microphone" /> Meetup · Samara</span>
         <strong>How AI changes user behavior</strong>
         <p>Hypotheses, examples, demo logic, and practical adoption.</p>
       </div>
@@ -2323,9 +2365,12 @@ function Services({ t, items }) {
     <section className="section services" id="services" data-reveal>
       <p className="section-label">{t.servicesLabel}</p>
       <div className="service-list">
-        {items.map(([number, title, text]) => (
+        {items.map(([number, title, text], index) => (
           <div className="service-row" key={title}>
-            <span>{number}</span>
+            <span>
+              <PrimeIcon name={serviceIcons[index] || "pi-sparkles"} />
+              {number}
+            </span>
             <h3>{title}</h3>
             <p>{text}</p>
           </div>
@@ -2341,9 +2386,12 @@ function Process({ t, items }) {
       <p className="section-label">{t.processLabel}</p>
       <h2>{t.processTitle}</h2>
       <div className="process-grid">
-        {items.map(([number, title, text]) => (
+        {items.map(([number, title, text], index) => (
           <div key={title}>
-            <span>{number}</span>
+            <span>
+              <PrimeIcon name={processIcons[index] || "pi-check-circle"} />
+              {number}
+            </span>
             <strong>{title}</strong>
             <p>{text}</p>
           </div>
@@ -2371,14 +2419,20 @@ function Contact({ t }) {
       <div className="contact-card">
         <p>{t.contactText}</p>
         <a className="button button-light" href={telegramUrl} target="_blank" rel="noreferrer">
+          <PrimeIcon name="pi-send" />
           {t.contactCta}
         </a>
         <div className="contact-links">
-          <a href="mailto:sergiys1997@gmail.com">sergiys1997@gmail.com</a>
+          <a href="mailto:sergiys1997@gmail.com">
+            <PrimeIcon name={contactIcons[0]} />
+            sergiys1997@gmail.com
+          </a>
           <a href="https://socreative.tilda.ws/" target="_blank" rel="noreferrer">
+            <PrimeIcon name={contactIcons[1]} />
             socreative.tilda.ws
           </a>
           <a href="https://ru.pinterest.com/sergey_des1gner/" target="_blank" rel="noreferrer">
+            <PrimeIcon name={contactIcons[2]} />
             Pinterest
           </a>
         </div>
