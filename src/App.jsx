@@ -65,7 +65,7 @@ const copy = {
     ],
     aboutLabel: "Профиль",
     aboutTitle:
-      "Помогаю командам превращать сложную логику в интерфейсы, которыми реально пользуются.",
+      "Превращаю сложную продуктовую логику в понятные рабочие интерфейсы.",
     aboutText: [
       "Беру запутанные B2B, enterprise и AI-сценарии, раскладываю их в понятную архитектуру и довожу до прототипа, который можно показать бизнесу, разработке и пользователям.",
       "Мой сильный фокус — интерфейсы, где важны скорость решения, контроль ошибок, доверие к AI и аккуратный handoff без потери смысла между дизайном и разработкой.",
@@ -86,7 +86,7 @@ const copy = {
     ],
     servicesLabel: "Экспертиза",
     processLabel: "Процесс",
-    processTitle: "От сложной предметной области к интерфейсу, который можно защищать перед бизнесом и командой.",
+    processTitle: "От сложной предметной области к решению, понятному бизнесу и разработке.",
     manifesto:
       "Сильный интерфейс в enterprise не спорит с пользователем. Он убирает лишнее, подсвечивает главное и делает сложное действие очевидным.",
     contactLabel: "Контакты",
@@ -115,7 +115,7 @@ const copy = {
     ],
     aboutLabel: "Profile",
     aboutTitle:
-      "I help teams turn complex logic into interfaces people actually use.",
+      "I turn complex product logic into clear, usable interfaces.",
     aboutText: [
       "I take tangled B2B, enterprise, and AI workflows, structure them into clear product architecture, and turn them into prototypes that business, engineering, and users can evaluate.",
       "My strongest focus is on interfaces where speed, error control, AI trust, and clean handoff matter more than decorative screens.",
@@ -136,7 +136,7 @@ const copy = {
     ],
     servicesLabel: "Expertise",
     processLabel: "Process",
-    processTitle: "From complex domain logic to an interface that can be defended to business and engineering.",
+    processTitle: "From complex domain logic to a solution business and engineering understand.",
     manifesto:
       "A strong enterprise interface does not fight the user. It removes noise, highlights what matters, and makes the complex action obvious.",
     contactLabel: "Contact",
@@ -153,7 +153,7 @@ const conversionCopy = {
     availability: "Открыт к фриланс-проектам и сильным продуктовым командам",
     proofLine: "7+ лет в автоматизации / 9 запущенных продуктов / B2B, Enterprise, AI",
     aiLabel: "Нейросети в работе",
-    aiTitle: "Использую AI не ради эффекта, а чтобы быстрее исследовать, проектировать и доводить решения до запуска.",
+    aiTitle: "AI ускоряет мой путь от исследования до запуска.",
     aiText:
       "Собираю AI-сценарии для продуктов и использую нейросети как рабочий инструмент: от исследования и прототипа до кода, визуалов и автоматизации повторяющихся задач.",
     aiTabsLabel: "Выберите направление AI-работы",
@@ -169,7 +169,7 @@ const conversionCopy = {
       "Сергей, хочу обсудить возможную роль в продуктовой команде.",
     ],
     caseFooterEyebrow: "Есть похожая задача?",
-    caseFooterTitle: "Разберу продукт, найду точки ускорения и предложу понятный следующий шаг.",
+    caseFooterTitle: "Обсудим, как улучшить ваш продукт.",
     caseFooterText: "Можно прийти с идеей, сырым процессом, сложной B2B-логикой или уже работающим продуктом.",
     caseFooterCta: "Обсудить проект в Telegram",
     modalClose: "Закрыть",
@@ -179,7 +179,7 @@ const conversionCopy = {
     availability: "Open to freelance projects and strong product teams",
     proofLine: "7+ years in automation / 9 shipped products / B2B, Enterprise, AI",
     aiLabel: "AI in my workflow",
-    aiTitle: "I use AI to research, design, and ship faster — not as decoration.",
+    aiTitle: "AI speeds up my path from research to launch.",
     aiText:
       "I design AI product scenarios and use neural tools throughout the workflow: research, prototyping, code, visuals, and automation of repetitive work.",
     aiTabsLabel: "Choose an AI capability",
@@ -195,7 +195,7 @@ const conversionCopy = {
       "Sergey, I would like to discuss a possible role on the product team.",
     ],
     caseFooterEyebrow: "Working on something similar?",
-    caseFooterTitle: "I will unpack the product, find leverage points, and propose a clear next step.",
+    caseFooterTitle: "Let us improve your product.",
     caseFooterText: "Bring an idea, a rough workflow, complex B2B logic, or an existing product that needs improvement.",
     caseFooterCta: "Discuss the project on Telegram",
     modalClose: "Close",
@@ -305,7 +305,7 @@ const cases = {
     {
       id: "monitoring",
       index: "CASE 02 / ENTERPRISE",
-      title: "Мониторинг пользователя и управление рабочим временем",
+      title: "Enterprise-система управления рабочим временем",
       role: "2025 - 2026 / NDA, enterprise ecosystem",
       description:
         "Спроектировал интерфейс, который делает сложный учет времени интуитивным: один экран, цветовые индикаторы, умная валидация и быстрые сценарии оформления отсутствий.",
@@ -325,7 +325,7 @@ const cases = {
     {
       id: "diagnostics",
       index: "CASE 03 / INDUSTRIAL AI",
-      title: "Интеллектуальная система токовой диагностики электродвигателей",
+      title: "AI-диагностика электродвигателей",
       role: "IT Camp Sirius / Газпром нефть / 2025",
       description:
         "За 72 рабочих часа команда спроектировала рабочую среду для экспертов нефтегазовой отрасли: валидация гипотез, демонстрационный сценарий и презентация решения перед жюри.",
@@ -399,12 +399,14 @@ const cases = {
       detail:
         "Scattered conversations became one workspace. The operator sees the guest, reservation, history, and suggested response without jumping between services.",
       cta: "Review similar product",
+      href: "/case/igms",
       visual: "messages",
+      cover: igmsCover,
     },
     {
       id: "monitoring",
       index: "CASE 02 / ENTERPRISE",
-      title: "User monitoring and working-time management",
+      title: "Enterprise workforce management system",
       role: "2025 - 2026 / NDA, enterprise ecosystem",
       description:
         "Designed an interface that makes complex time tracking intuitive: one screen, color indicators, smart validation, and fast absence-request flows.",
@@ -424,7 +426,7 @@ const cases = {
     {
       id: "diagnostics",
       index: "CASE 03 / INDUSTRIAL AI",
-      title: "Intelligent current diagnostics for electric motors",
+      title: "AI motor diagnostics",
       role: "IT Camp Sirius / Gazprom Neft / 2025",
       description:
         "In 72 working hours, the team designed a workspace for oil and gas experts: hypothesis validation, demo scenario, and solution presentation for the jury.",
@@ -544,7 +546,7 @@ const igmsCase = {
       "Команда уже использует шаблоны сообщений, но им не хватает контекста, гибкости и единого процесса.",
       "Нужно рассмотреть разные исходы диалогов: уточнение, подтверждение, вопросы перед заездом, инциденты и завершение проживания.",
     ],
-    solutionTitle: "Решение: рабочее место, где вся переписка живет вокруг бронирования",
+    solutionTitle: "Единое рабочее место вокруг бронирования",
     solution:
       "Я спроектировал 3-колоночный интерфейс: список диалогов и фильтры, активный чат с подсказками, правая панель с деталями бронирования, AI-аналитикой и историей действий. Такой layout убирает хаос между платформами и делает решение по каждому диалогу быстрее: оператор видит проблему, контекст, риск, сумму, статус и рекомендованный ответ в одном экране.",
     pillars: [
@@ -600,7 +602,7 @@ const igmsCase = {
       "The team already uses message templates, but they lack context, flexibility, and a unified process.",
       "The design needed to cover multiple conversation outcomes: clarification, booking confirmation, pre-check-in questions, incidents, and post-stay communication.",
     ],
-    solutionTitle: "Solution: a workspace where every conversation is built around the booking",
+    solutionTitle: "One workspace built around each booking",
     solution:
       "I designed a three-column interface: conversation list and filters, active chat with smart suggestions, and a right-side panel with booking details, AI analytics, and action history. This layout removes platform chaos and speeds up every decision: the operator sees the issue, context, risk, amount, status, and recommended reply in one screen.",
     pillars: [
@@ -637,7 +639,7 @@ const enterpriseCase = {
     cjmLabel: "Operating system",
     galleryLabel: "Как я вел проект",
     eyebrow: "CASE 02 / ENTERPRISE / NDA",
-    title: "Мониторинг пользователя и управление рабочим временем",
+    title: "Enterprise-система управления рабочим временем",
     subtitle:
       "Enterprise-интерфейс, который превращает сложный учет статусов, смен и отсутствий в понятный рабочий процесс для сотрудников, руководителей и поддержки.",
     period: "2025 - 2026 / Руководитель направления автоматизации / Product Design",
@@ -659,7 +661,7 @@ const enterpriseCase = {
       "Нельзя раскрывать реальные экраны, данные, названия и архитектурные детали.",
       "Проект требовал синхронизации дизайна, аналитики, разработки, поддержки и бизнес-заказчиков.",
     ],
-    solutionTitle: "Моя роль: не просто нарисовать интерфейс, а довести продукт до рабочего процесса",
+    solutionTitle: "Моя роль: провести продукт от исследования до внедрения",
     solution:
       "Я вел направление как дизайн-лид и продуктовый связующий: собирал контекст через интервью, переводил обратную связь в задачи, координировал команду из 5 специалистов, проводил дизайн-ревью и контролировал передачу решений в разработку. На уровне UX фокус был на мгновенном считывании статуса: цветовые индикаторы, понятные состояния, умная валидация и сценарии без лишних переходов.",
     pillars: [
@@ -692,7 +694,7 @@ const enterpriseCase = {
     cjmLabel: "Operating system",
     galleryLabel: "How I led the project",
     eyebrow: "CASE 02 / ENTERPRISE / NDA",
-    title: "User monitoring and working-time management",
+    title: "Enterprise workforce management system",
     subtitle:
       "An enterprise interface that turns complex statuses, shifts, and absence workflows into a clear operating process for employees, managers, and support teams.",
     period: "2025 - 2026 / Automation Lead / Product Design",
@@ -714,7 +716,7 @@ const enterpriseCase = {
       "Real screens, data, names, and architectural details cannot be disclosed.",
       "The project required synchronization between design, analytics, engineering, support, and business stakeholders.",
     ],
-    solutionTitle: "My role: not just drawing screens, but bringing the product into a working process",
+    solutionTitle: "My role: lead the product from discovery to adoption",
     solution:
       "I led the direction as a design lead and product connector: gathered context through interviews, translated feedback into tasks, coordinated a 5-person team, ran design reviews, and controlled handoff to engineering. On the UX side, the focus was instant status recognition: color indicators, clear states, smart validation, and flows without unnecessary navigation.",
     pillars: [
@@ -750,7 +752,7 @@ const diagnosticsCase = {
     cjmLabel: "Процесс",
     galleryLabel: "Доказательства проекта",
     eyebrow: "CASE 03 / INDUSTRIAL AI / IT CAMP",
-    title: "Интеллектуальная система токовой диагностики электродвигателей",
+    title: "AI-диагностика электродвигателей",
     subtitle:
       "MVP для нефтегазовой промышленности: от сложной инженерной задачи до понятного интерфейса, демо-сценария и защиты решения перед экспертами.",
     period: "IT Camp Sirius / Газпром нефть / 2025",
@@ -775,7 +777,7 @@ const diagnosticsCase = {
       "Сложная промышленная тема: токовая диагностика, дефекты, уровни критичности и понятная интерпретация графиков.",
       "Аудитория разная: технические эксперты, жюри, бизнес и люди, которым нужно быстро увидеть ценность решения.",
     ],
-    solutionTitle: "Сделал техническое решение читаемым: от данных и графиков к понятному продукту",
+    solutionTitle: "От сырых данных к понятному диагностическому продукту",
     solution:
       "Я сфокусировался на упаковке сложной логики в простой рабочий сценарий: загрузить данные, запустить обработку, увидеть дефект, оценить степень и перейти к графику. Визуально система получила темную industrial-подачу, четкие кнопки действий, таблицу результатов и график, который сразу показывает пики риска. Для защиты я помог собрать историю решения: проблема, процесс, интерфейс, демо и эффект для отрасли.",
     pillars: [
@@ -817,7 +819,7 @@ const diagnosticsCase = {
     cjmLabel: "Process",
     galleryLabel: "Project proof",
     eyebrow: "CASE 03 / INDUSTRIAL AI / IT CAMP",
-    title: "Intelligent current diagnostics for electric motors",
+    title: "AI motor diagnostics",
     subtitle:
       "An MVP for the oil and gas industry: from a complex engineering problem to a clear interface, demo flow, and expert-facing solution story.",
     period: "IT Camp Sirius / Gazprom Neft / 2025",
@@ -842,7 +844,7 @@ const diagnosticsCase = {
       "Complex industrial domain: current diagnostics, defects, severity levels, and chart interpretation.",
       "Mixed audience: technical experts, jury, business stakeholders, and people who needed to understand the value quickly.",
     ],
-    solutionTitle: "I made a technical system readable: from raw data and charts to a product workflow",
+    solutionTitle: "From raw data to a clear diagnostic product",
     solution:
       "I focused on packaging complex logic into a simple working scenario: upload data, run processing, see the defect, assess severity, and open the chart. Visually, the product received a dark industrial feel, clear action buttons, a results table, and a chart that immediately highlights risk peaks. For the pitch, I helped shape the story: problem, process, interface, demo, and industry impact.",
     pillars: [
@@ -909,7 +911,7 @@ const ragCase = {
       "Сложный trust layer: пользователю нужно понимать, откуда взят ответ и можно ли на него опираться.",
       "Разные роли и сценарии: сотрудник, поддержка, эксперт отдела, администратор знаний и владелец процесса.",
     ],
-    solutionTitle: "Спроектировал не чат-бота, а рабочий слой между знаниями, ролями и задачами",
+    solutionTitle: "Рабочий AI-слой между знаниями, ролями и задачами",
     solution:
       "Ключевая идея была в том, чтобы убрать ощущение магии и сделать AI управляемым инструментом. Я собрал интерфейс вокруг понятного цикла: вопрос → уточнение контекста → подбор источников → генерация ответа → проверка → действие. В продуктовой логике появились role-aware ответы, шаблоны промптов, маршрутизация по отделам, состояния доверия и безопасная работа внутри инфраструктуры компании.",
     pillars: [
@@ -972,7 +974,7 @@ const ragCase = {
       "Complex trust layer: users need to understand where the answer came from and whether it can be relied on.",
       "Different roles and scenarios: employee, support, department expert, knowledge admin, and process owner.",
     ],
-    solutionTitle: "I designed not a chatbot, but a working layer between knowledge, roles, and tasks",
+    solutionTitle: "An AI layer between knowledge, roles, and tasks",
     solution:
       "The key idea was to remove the feeling of magic and make AI a controlled tool. I shaped the interface around a clear loop: question, context clarification, source retrieval, answer generation, verification, and action. The product logic included role-aware answers, prompt templates, department routing, trust states, and safe work inside company infrastructure.",
     pillars: [
@@ -1038,7 +1040,7 @@ const socialCase = {
       "Нужно удержать баланс между экспертностью, личным брендом и коммерческой ценностью для клиента.",
       "AI-тема быстро меняется, поэтому важно показывать мышление и подход, а не только набор инструментов.",
     ],
-    solutionTitle: "Я использую публичность как часть продуктовой упаковки",
+    solutionTitle: "Публичность как часть продуктовой упаковки",
     solution:
       "Социальная активность здесь работает как proof of expertise. Видео и выступления показывают, что я могу не только спроектировать интерфейс, но и объяснить логику решения, собрать внимание аудитории, аргументировать ценность AI и перевести сложную технологию в язык задач, сценариев и результата.",
     pillars: [
@@ -1128,7 +1130,7 @@ const socialCase = {
       "The balance matters: expertise, personal brand, and commercial value for the client.",
       "AI changes fast, so the key proof is thinking and approach, not just tools.",
     ],
-    solutionTitle: "I use public activity as part of product packaging",
+    solutionTitle: "Public work as part of product packaging",
     solution:
       "Social activity works here as proof of expertise. Videos and talks show that I can not only design an interface, but also explain solution logic, hold audience attention, argue AI value, and translate complex technology into tasks, scenarios, and outcomes.",
     pillars: [
@@ -2566,11 +2568,15 @@ function CaseStudy({ item, reverse }) {
       </div>
       <div className="case-detail">
         <div className="detail-stat">
-          <span>
+          <span className="detail-label">
             <PrimeIcon name="pi-box" />
             Inside
           </span>
-          <strong>{item.inside}</strong>
+          <div className="detail-tags" aria-label={item.inside}>
+            {item.inside.split("·").map((tag) => (
+              <strong key={tag}>{tag}</strong>
+            ))}
+          </div>
         </div>
         <p>{item.detail}</p>
       </div>
@@ -2767,10 +2773,12 @@ function Process({ t, items }) {
       <div className="process-grid">
         {items.map(([number, title, text], index) => (
           <div key={title}>
-            <span>
-              <PrimeIcon name={processIcons[index] || "pi-check-circle"} />
-              {number}
-            </span>
+            <div className="process-step-meta">
+              <span className="process-step-icon">
+                <PrimeIcon name={processIcons[index] || "pi-check-circle"} />
+              </span>
+              <span className="process-step-number">{number}</span>
+            </div>
             <strong>{title}</strong>
             <p>{text}</p>
           </div>
