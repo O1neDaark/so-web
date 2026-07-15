@@ -1,7 +1,9 @@
 import React, { useEffect, useMemo, useState } from "react";
+import AmbientScene from "./AmbientScene";
 import logoMark from "./assets/co-logo-mark.png";
 import heroPortrait from "./assets/sergey-hero.webp";
 import heroPortraitPrimary from "./assets/sergey-hero-primary.jpeg";
+import resumePortrait from "./assets/sergey-resume.jpg";
 import igmsCover from "./assets/igms-cover.png";
 import igmsImage01 from "./assets/igms-01.png";
 import igmsImage02 from "./assets/igms-02.png";
@@ -39,6 +41,19 @@ const contactIcons = ["pi-envelope", "pi-globe", "pi-pinterest"];
 
 function PrimeIcon({ name, className = "" }) {
   return <i className={`pi ${name} ${className}`.trim()} aria-hidden="true" />;
+}
+
+function AccentText({ text, terms = [] }) {
+  if (!terms.length) return text;
+  const escaped = terms.map((term) => term.replace(/[.*+?^${}()|[\]\\]/g, "\\$&"));
+  const pattern = new RegExp(`(${escaped.join("|")})`, "gi");
+  const accentSet = new Set(terms.map((term) => term.toLocaleLowerCase()));
+
+  return text.split(pattern).map((part, index) =>
+    accentSet.has(part.toLocaleLowerCase()) ? (
+      <mark className="text-accent" key={`${part}-${index}`}>{part}</mark>
+    ) : part,
+  );
 }
 
 function buildTelegramUrl(message) {
@@ -95,6 +110,7 @@ const copy = {
       "Напишите 3-5 строк: продукт, аудитория, ограничения, сроки и что уже есть. Я быстро пойму, где могу усилить проект: UX, AI-сценарии, дизайн-система, прототип или презентация решения.",
     contactCta: "Написать в Telegram",
     footer: "AI Product Design / B2B / Enterprise",
+    accentTerms: ["AI-интерфейсы", "продуктовую логику", "результата", "решению", "систему", "главное"],
   },
   en: {
     nav: ["Profile", "Cases", "Expertise", "Process", "Contact"],
@@ -145,6 +161,7 @@ const copy = {
       "Send 3-5 lines: product, audience, constraints, timeline, and what already exists. I will quickly see where I can help: UX, AI workflows, design system, prototype, or solution presentation.",
     contactCta: "Message on Telegram",
     footer: "AI Product Design / B2B / Enterprise",
+    accentTerms: ["AI interfaces", "product logic", "outcomes", "solution", "system", "what matters"],
   },
 };
 
@@ -1199,6 +1216,10 @@ const resumeContent = {
     summary:
       "7+ лет в продуктовой логике, B2B-интерфейсах и автоматизации. Проектирую AI-driven и enterprise-продукты полного цикла: от исследования сценариев и CJM до high-fidelity прототипов, handoff и внедрения в реальные процессы.",
     location: "Готов работать из любой точки мира / удаленно / гибрид / релокация",
+    photoAlt: "Сергей Остаев на IT Camp 2025",
+    downloadLabel: "Скачать резюме в PDF",
+    downloadHint: "RU / 2 страницы / готово для HR",
+    pdfHref: "/resume/Sergey-Ostaev-Resume-RU.pdf",
     contacts: [
       ["Telegram", "@Sergey_Designer", "https://t.me/Sergey_Designer"],
       ["Email", "sergiys1997@gmail.com", "mailto:sergiys1997@gmail.com"],
@@ -1292,6 +1313,10 @@ const resumeContent = {
     summary:
       "7+ years across product logic, B2B interfaces, and automation. I design full-cycle AI-driven and enterprise products: from scenario research and CJM to high-fidelity prototypes, handoff, and adoption inside real workflows.",
     location: "Ready to work from anywhere / remote / hybrid / relocation",
+    photoAlt: "Sergey Ostaev at IT Camp 2025",
+    downloadLabel: "Download resume PDF",
+    downloadHint: "EN / 2 pages / HR-ready",
+    pdfHref: "/resume/Sergey-Ostaev-Resume-EN.pdf",
     contacts: [
       ["Telegram", "@Sergey_Designer", "https://t.me/Sergey_Designer"],
       ["Email", "sergiys1997@gmail.com", "mailto:sergiys1997@gmail.com"],
@@ -1447,7 +1472,7 @@ function App() {
   useEffect(() => {
     const handleInternalNavigation = (event) => {
       const anchor = event.target.closest("a[href]");
-      if (!anchor || event.defaultPrevented || anchor.target === "_blank" || event.button !== 0) return;
+      if (!anchor || event.defaultPrevented || anchor.target === "_blank" || anchor.hasAttribute("download") || event.button !== 0) return;
 
       const url = new URL(anchor.href, window.location.href);
       if (url.origin !== window.location.origin) return;
@@ -1492,6 +1517,7 @@ function App() {
 
   return (
     <>
+      <AmbientScene />
       <ReadingProgress active={isCasePage || isResumePage} />
       <Header
         lang={lang}
@@ -1670,7 +1696,7 @@ function Hero({ t }) {
             </div>
             <h1 className="hero-title">
               {t.heroLines.map((line) => (
-                <span key={line}>{line}</span>
+                <span key={line}><AccentText text={line} terms={t.accentTerms} /></span>
               ))}
             </h1>
             <div className="hero-bottom">
@@ -1734,7 +1760,7 @@ function About({ t }) {
       <p className="section-label">{t.aboutLabel}</p>
       <div className="about-grid">
         <div className="about-lead">
-          <h2>{t.aboutTitle}</h2>
+          <h2><AccentText text={t.aboutTitle} terms={t.accentTerms} /></h2>
           <div className="about-copy">
             {t.aboutText.map((text) => (
               <p key={text}>{text}</p>
@@ -1767,7 +1793,7 @@ function Cases({ t, items }) {
     <section className="section cases" id="cases">
       <div className="section-intro" data-reveal>
         <p className="section-label">{t.casesLabel}</p>
-        <h2>{t.casesTitle}</h2>
+        <h2><AccentText text={t.casesTitle} terms={t.accentTerms} /></h2>
         <p>{t.casesText}</p>
         <div className="case-intro-icons" aria-label={t.casesLabel}>
           {t.casesHighlights.map(([title, text], index) => (
@@ -1805,13 +1831,26 @@ function ResumePage({ data, isModal = false }) {
             <p className="resume-summary">{data.summary}</p>
             <p className="resume-location">{data.location}</p>
           </div>
-          <aside className="resume-contact-card" aria-label="Resume contacts">
-            {data.contacts.map(([label, value, href]) => (
-              <a href={href} target={href.startsWith("http") ? "_blank" : undefined} rel="noreferrer" key={label}>
-                <span>{label}</span>
-                <strong>{value}</strong>
-              </a>
-            ))}
+          <aside className="resume-sidebar" aria-label="Resume contacts">
+            <figure className="resume-photo">
+              <img src={resumePortrait} alt={data.photoAlt} />
+            </figure>
+            <a className="resume-download" href={data.pdfHref} download>
+              <span className="resume-download-icon"><PrimeIcon name="pi-download" /></span>
+              <span>
+                <strong>{data.downloadLabel}</strong>
+                <small>{data.downloadHint}</small>
+              </span>
+              <PrimeIcon name="pi-arrow-down-right" />
+            </a>
+            <div className="resume-contact-card">
+              {data.contacts.map(([label, value, href]) => (
+                <a href={href} target={href.startsWith("http") ? "_blank" : undefined} rel="noreferrer" key={label}>
+                  <span>{label}</span>
+                  <strong>{value}</strong>
+                </a>
+              ))}
+            </div>
           </aside>
         </div>
         <div className="resume-metrics" aria-label="Resume metrics">
@@ -2725,7 +2764,7 @@ function AiToolkit({ t, items }) {
       <div className="ai-toolkit-heading">
         <div>
           <p className="section-label">{t.aiLabel}</p>
-          <h2>{t.aiTitle}</h2>
+          <h2><AccentText text={t.aiTitle} terms={t.accentTerms} /></h2>
         </div>
         <p>{t.aiText}</p>
       </div>
@@ -2768,7 +2807,7 @@ function Process({ t, items }) {
   return (
     <section className="section process" id="process" data-reveal>
       <p className="section-label">{t.processLabel}</p>
-      <h2>{t.processTitle}</h2>
+      <h2><AccentText text={t.processTitle} terms={t.accentTerms} /></h2>
       <div className="process-grid">
         {items.map(([number, title, text], index) => (
           <div key={title}>
@@ -2790,7 +2829,7 @@ function Process({ t, items }) {
 function Manifesto({ t }) {
   return (
     <section className="section manifesto" data-reveal>
-      <p>{t.manifesto}</p>
+      <p><AccentText text={t.manifesto} terms={t.accentTerms} /></p>
     </section>
   );
 }
@@ -2802,7 +2841,7 @@ function Contact({ t }) {
     <section className="section contact" id="contact" data-reveal>
       <div>
         <p className="section-label">{t.contactLabel}</p>
-        <h2>{t.contactTitle}</h2>
+        <h2><AccentText text={t.contactTitle} terms={t.accentTerms} /></h2>
       </div>
       <div className="contact-card">
         <p>{t.contactText}</p>
