@@ -546,8 +546,8 @@ h3 {
 
 .about-card {
   display: grid;
-  grid-template-columns: 44px 1fr;
-  gap: 18px;
+  grid-template-columns: 82px minmax(0, 1fr);
+  gap: 22px;
   padding: 22px 0;
   border-top: 1px solid var(--line);
 }
@@ -556,10 +556,37 @@ h3 {
   border-bottom: 1px solid var(--line);
 }
 
-.about-card span {
+.about-card-meta {
+  display: flex;
+  align-items: center;
+  align-self: start;
+  gap: 12px;
+  min-width: 0;
+}
+
+.about-card-icon {
+  display: inline-grid;
+  flex: 0 0 auto;
+  place-items: center;
+  width: 38px;
+  height: 38px;
+  border: 1px solid var(--line);
+  border-radius: 12px;
+  color: rgba(255, 255, 255, 0.8);
+  background: rgba(255, 255, 255, 0.055);
+}
+
+.about-card-icon .pi {
+  font-size: 15px;
+}
+
+.about-card-number {
+  flex: 0 0 auto;
   color: rgba(255, 255, 255, 0.36);
   font-size: 13px;
   font-weight: 900;
+  font-variant-numeric: tabular-nums;
+  letter-spacing: 0.04em;
 }
 
 .about-card h3 {
@@ -3594,7 +3621,7 @@ body.modal-open {
 .hero-meta {
   display: flex;
   align-items: center;
-  justify-content: space-between;
+  justify-content: flex-start;
   gap: 18px;
   margin-bottom: 24px;
 }

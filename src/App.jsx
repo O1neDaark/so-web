@@ -150,7 +150,6 @@ const copy = {
 
 const conversionCopy = {
   ru: {
-    availability: "Открыт к фриланс-проектам и сильным продуктовым командам",
     proofLine: "7+ лет в автоматизации / 9 запущенных продуктов / B2B, Enterprise, AI",
     aiLabel: "Нейросети в работе",
     aiTitle: "AI ускоряет мой путь от исследования до запуска.",
@@ -176,7 +175,6 @@ const conversionCopy = {
     dockLabels: ["Профиль", "Кейсы", "AI", "Связаться"],
   },
   en: {
-    availability: "Open to freelance projects and strong product teams",
     proofLine: "7+ years in automation / 9 shipped products / B2B, Enterprise, AI",
     aiLabel: "AI in my workflow",
     aiTitle: "AI speeds up my path from research to launch.",
@@ -1669,7 +1667,6 @@ function Hero({ t }) {
           <div className="hero-main">
             <div className="hero-meta">
               <p className="kicker">{t.heroKicker}</p>
-              <span className="availability"><i aria-hidden="true" />{t.availability}</span>
             </div>
             <h1 className="hero-title">
               {t.heroLines.map((line) => (
@@ -1747,10 +1744,12 @@ function About({ t }) {
         <div className="about-stack" aria-label={t.aboutLabel}>
           {t.aboutCards.map(([number, title, text], index) => (
             <article className="about-card" key={title}>
-              <span>
-                <PrimeIcon name={aboutIcons[index]} />
-                {number}
-              </span>
+              <div className="about-card-meta" aria-label={`Шаг ${number}`}>
+                <span className="about-card-icon">
+                  <PrimeIcon name={aboutIcons[index]} />
+                </span>
+                <span className="about-card-number">{number}</span>
+              </div>
               <div>
                 <h3>{title}</h3>
                 <p>{text}</p>
