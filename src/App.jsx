@@ -1,5 +1,6 @@
 import React, { useEffect, useMemo, useState } from "react";
 import AmbientScene from "./AmbientScene";
+import ThemeIntro from "./ThemeIntro";
 import logoMark from "./assets/co-logo-mark.png";
 import heroPortrait from "./assets/sergey-hero.webp";
 import heroPortraitPrimary from "./assets/sergey-hero-primary.jpeg";
@@ -23,6 +24,20 @@ import engineeringClub02 from "./assets/engineering-club-02.jpg";
 import engineeringClub03 from "./assets/engineering-club-03.jpg";
 
 const telegramUrl = "https://t.me/Sergey_Designer";
+const themeStorageKey = "so-creative-theme";
+
+function readStoredTheme() {
+  try {
+    const value = window.localStorage.getItem(themeStorageKey);
+    return value === "light" || value === "dark" ? value : null;
+  } catch {
+    return null;
+  }
+}
+
+function getPreferredTheme() {
+  return readStoredTheme() ?? (window.matchMedia("(prefers-color-scheme: light)").matches ? "light" : "dark");
+}
 
 const navIcons = ["pi-user", "pi-briefcase", "pi-sparkles", "pi-sitemap", "pi-send"];
 const heroMetricIcons = ["pi-briefcase", "pi-search-plus", "pi-wave-pulse", "pi-trophy"];
@@ -188,6 +203,7 @@ const conversionCopy = {
     caseFooterTitle: "Обсудим, как улучшить ваш продукт.",
     caseFooterText: "Можно прийти с идеей, сырым процессом, сложной B2B-логикой или уже работающим продуктом.",
     caseFooterCta: "Обсудить проект в Telegram",
+    caseBack: "Вернуться к кейсам",
     modalClose: "Закрыть",
     dockLabels: ["Профиль", "Кейсы", "AI", "Связаться"],
   },
@@ -213,6 +229,7 @@ const conversionCopy = {
     caseFooterTitle: "Let us improve your product.",
     caseFooterText: "Bring an idea, a rough workflow, complex B2B logic, or an existing product that needs improvement.",
     caseFooterCta: "Discuss the project on Telegram",
+    caseBack: "Back to cases",
     modalClose: "Close",
     dockLabels: ["Profile", "Cases", "AI", "Contact"],
   },
@@ -319,7 +336,7 @@ const cases = {
     },
     {
       id: "monitoring",
-      index: "CASE 02 / ENTERPRISE",
+      index: "CASE 03 / ENTERPRISE",
       title: "Enterprise-система управления рабочим временем",
       role: "2025 - 2026 / NDA, enterprise ecosystem",
       description:
@@ -339,7 +356,7 @@ const cases = {
     },
     {
       id: "diagnostics",
-      index: "CASE 03 / INDUSTRIAL AI",
+      index: "CASE 02 / INDUSTRIAL AI",
       title: "AI-диагностика электродвигателей",
       role: "IT Camp Sirius / Газпром нефть / 2025",
       description:
@@ -395,6 +412,7 @@ const cases = {
       cta: "Смотреть полный раздел",
       href: "/case/social",
       visual: "talk",
+      cover: engineeringClub02,
     },
   ],
   en: [
@@ -420,7 +438,7 @@ const cases = {
     },
     {
       id: "monitoring",
-      index: "CASE 02 / ENTERPRISE",
+      index: "CASE 03 / ENTERPRISE",
       title: "Enterprise workforce management system",
       role: "2025 - 2026 / NDA, enterprise ecosystem",
       description:
@@ -440,7 +458,7 @@ const cases = {
     },
     {
       id: "diagnostics",
-      index: "CASE 03 / INDUSTRIAL AI",
+      index: "CASE 02 / INDUSTRIAL AI",
       title: "AI motor diagnostics",
       role: "IT Camp Sirius / Gazprom Neft / 2025",
       description:
@@ -496,9 +514,12 @@ const cases = {
       cta: "View full section",
       href: "/case/social",
       visual: "talk",
+      cover: engineeringClub02,
     },
   ],
 };
+
+const caseOrder = ["igms", "diagnostics", "monitoring", "rag", "talk"];
 
 const services = {
   ru: [
@@ -1408,8 +1429,14 @@ function App() {
   const [lang, setLang] = useState("ru");
   const [path, setPath] = useState(() => window.location.pathname);
   const [isResumeOpen, setIsResumeOpen] = useState(false);
+  const [theme, setTheme] = useState(getPreferredTheme);
+  const [needsThemeChoice] = useState(() => readStoredTheme() === null);
+  const [introPhase, setIntroPhase] = useState("loading");
   const t = { ...copy[lang], ...conversionCopy[lang] };
-  const currentCases = useMemo(() => cases[lang], [lang]);
+  const currentCases = useMemo(
+    () => [...cases[lang]].sort((a, b) => caseOrder.indexOf(a.id) - caseOrder.indexOf(b.id)),
+    [lang],
+  );
   const isResumePage = path.replace(/\/$/, "") === "/resume";
   const isIgmsCasePage = path.replace(/\/$/, "") === "/case/igms";
   const isEnterpriseCasePage = path.replace(/\/$/, "") === "/case/enterprise";
@@ -1418,6 +1445,35 @@ function App() {
   const isSocialCasePage = path.replace(/\/$/, "") === "/case/social";
   const isCasePage = isIgmsCasePage || isEnterpriseCasePage || isDiagnosticsCasePage || isRagCasePage || isSocialCasePage;
   const isHomePage = !isResumePage && !isCasePage;
+
+  const selectTheme = (nextTheme) => {
+    setTheme(nextTheme);
+    try {
+      window.localStorage.setItem(themeStorageKey, nextTheme);
+    } catch {
+      // The selected theme still applies for this session when storage is unavailable.
+    }
+    if (introPhase === "choice") setIntroPhase("leaving");
+  };
+
+  useEffect(() => {
+    document.documentElement.dataset.theme = theme;
+    document.documentElement.style.colorScheme = theme;
+  }, [theme]);
+
+  useEffect(() => {
+    document.documentElement.dataset.intro = introPhase;
+    const reduceMotion = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+    let timer;
+
+    if (introPhase === "loading") {
+      timer = window.setTimeout(() => setIntroPhase(needsThemeChoice ? "choice" : "leaving"), reduceMotion ? 240 : 1250);
+    } else if (introPhase === "leaving") {
+      timer = window.setTimeout(() => setIntroPhase("done"), reduceMotion ? 80 : 420);
+    }
+
+    return () => window.clearTimeout(timer);
+  }, [introPhase, needsThemeChoice]);
 
   useEffect(() => {
     document.documentElement.lang = lang;
@@ -1517,7 +1573,8 @@ function App() {
 
   return (
     <>
-      <AmbientScene />
+      <ThemeIntro phase={introPhase} lang={lang} onSelect={selectTheme} />
+      <AmbientScene theme={theme} path={path} />
       <ReadingProgress active={isCasePage || isResumePage} />
       <Header
         lang={lang}
@@ -1526,6 +1583,8 @@ function App() {
         isResumePage={isResumePage}
         isHomePage={isHomePage}
         onResumeOpen={() => setIsResumeOpen(true)}
+        theme={theme}
+        onThemeToggle={() => selectTheme(theme === "dark" ? "light" : "dark")}
       />
       {isResumePage ? (
         <ResumePage data={resumeContent[lang]} />
@@ -1641,7 +1700,7 @@ function MobileDock({ t, isHomePage }) {
   );
 }
 
-function Header({ lang, setLang, t, isResumePage, isHomePage, onResumeOpen }) {
+function Header({ lang, setLang, t, isResumePage, isHomePage, onResumeOpen, theme, onThemeToggle }) {
   const homePrefix = isHomePage ? "" : "/";
 
   return (
@@ -1658,6 +1717,19 @@ function Header({ lang, setLang, t, isResumePage, isHomePage, onResumeOpen }) {
         ))}
       </nav>
       <div className="header-actions">
+        <button
+          className="theme-switch"
+          type="button"
+          aria-label={theme === "dark"
+            ? (lang === "ru" ? "Включить светлую тему" : "Switch to light theme")
+            : (lang === "ru" ? "Включить тёмную тему" : "Switch to dark theme")}
+          title={theme === "dark"
+            ? (lang === "ru" ? "Светлая тема" : "Light theme")
+            : (lang === "ru" ? "Тёмная тема" : "Dark theme")}
+          onClick={onThemeToggle}
+        >
+          <PrimeIcon name={theme === "dark" ? "pi-sun" : "pi-moon"} />
+        </button>
         <button
           className="lang-switch"
           type="button"
@@ -1947,9 +2019,18 @@ function IgmsCasePage({ data }) {
         <p>{data.intro}</p>
       </section>
 
-      <section className="case-page-section case-page-two" data-reveal>
-        <CaseTextBlock title={data.taskLabel} items={data.challenge} />
-        <CaseTextBlock title={data.constraintsLabel} items={data.constraints} />
+      <section className="case-page-section case-gallery" data-reveal>
+        <p className="section-label">{data.galleryLabel}</p>
+        {data.gallery.map(([image, title, text], index) => (
+          <article className="case-gallery-item" key={title}>
+            <div>
+              <span>{String(index + 1).padStart(2, "0")}</span>
+              <h2>{title}</h2>
+              <p>{text}</p>
+            </div>
+            <img src={image} alt={title} />
+          </article>
+        ))}
       </section>
 
       <section className="case-page-section case-page-solution" data-reveal>
@@ -1971,7 +2052,7 @@ function IgmsCasePage({ data }) {
         </div>
       </section>
 
-      <section className="case-page-section case-page-scenarios" data-reveal>
+      <section className="case-page-section case-page-scenarios case-page-scenarios-final" data-reveal>
         <div>
           <p className="section-label">{data.cjmLabel}</p>
           <h2>{data.scenarioTitle}</h2>
@@ -1984,20 +2065,6 @@ function IgmsCasePage({ data }) {
             </article>
           ))}
         </div>
-      </section>
-
-      <section className="case-page-section case-gallery" data-reveal>
-        <p className="section-label">{data.galleryLabel}</p>
-        {data.gallery.map(([image, title, text], index) => (
-          <article className="case-gallery-item" key={title}>
-            <div>
-              <span>{String(index + 1).padStart(2, "0")}</span>
-              <h2>{title}</h2>
-              <p>{text}</p>
-            </div>
-            <img src={image} alt={title} />
-          </article>
-        ))}
       </section>
     </main>
   );
@@ -2561,21 +2628,40 @@ function SocialCasePage({ data }) {
 }
 
 function CaseTextBlock({ title, items }) {
+  const visibleItems = items.slice(0, 2);
+  const extraItems = items.slice(2);
+  const moreLabel = document.documentElement.lang === "en" ? "More context" : "Больше контекста";
+
   return (
     <article className="case-text-block">
       <h2>{title}</h2>
       <ul>
-        {items.map((item) => (
+        {visibleItems.map((item) => (
           <li key={item}>{item}</li>
         ))}
       </ul>
+      {extraItems.length > 0 && (
+        <details className="case-text-more">
+          <summary>{moreLabel}</summary>
+          <ul>
+            {extraItems.map((item) => (
+              <li key={item}>{item}</li>
+            ))}
+          </ul>
+        </details>
+      )}
     </article>
   );
 }
 
 function CaseStudy({ item, reverse }) {
   return (
-    <article className="case-block" data-reveal>
+    <article
+      className="case-block"
+      id={`case-${item.id}`}
+      data-logo-side={reverse ? "left" : "right"}
+      data-reveal
+    >
       <div className="case-heading">
         <p className="case-index">{item.index}</p>
         <h3>{item.title}</h3>
@@ -2597,7 +2683,7 @@ function CaseStudy({ item, reverse }) {
               </div>
             ))}
           </div>
-          <a className="case-cta" href={item.href || telegramUrl} target={item.href ? undefined : "_blank"} rel="noreferrer">
+          <a className="case-cta" href={item.href || telegramUrl} target="_blank" rel="noreferrer">
             <PrimeIcon name="pi-arrow-up-right" />
             {item.cta}
           </a>
@@ -2888,6 +2974,10 @@ function Contact({ t }) {
 function CaseFooterCta({ t }) {
   return (
     <section className="case-footer-cta" data-reveal>
+      <a className="case-footer-back" href="/#cases">
+        <PrimeIcon name="pi-arrow-left" />
+        {t.caseBack}
+      </a>
       <div>
         <p className="section-label">{t.caseFooterEyebrow}</p>
         <h2>{t.caseFooterTitle}</h2>
