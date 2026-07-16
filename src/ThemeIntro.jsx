@@ -28,7 +28,7 @@ const introCopy = {
   },
 };
 
-export default function ThemeIntro({ phase, lang, onSelect }) {
+export default function ThemeIntro({ phase, lang, onSelect, onLangChange }) {
   if (phase === "done") return null;
 
   const t = introCopy[lang] ?? introCopy.ru;
@@ -51,7 +51,13 @@ export default function ThemeIntro({ phase, lang, onSelect }) {
         </div>
       ) : (
         <section className="theme-choice" role="dialog" aria-modal="true" aria-labelledby="theme-choice-title">
-          <p className="theme-choice-eyebrow">{t.eyebrow}</p>
+          <div className="theme-choice-topbar">
+            <p className="theme-choice-eyebrow">{t.eyebrow}</p>
+            <div className="theme-choice-language" role="group" aria-label={lang === "ru" ? "Выбор языка" : "Language selection"}>
+              <button type="button" className={lang === "ru" ? "is-active" : ""} aria-pressed={lang === "ru"} onClick={() => onLangChange("ru")}>RU</button>
+              <button type="button" className={lang === "en" ? "is-active" : ""} aria-pressed={lang === "en"} onClick={() => onLangChange("en")}>EN</button>
+            </div>
+          </div>
           <h1 id="theme-choice-title">{t.title}</h1>
           <p className="theme-choice-copy">{t.text}</p>
           <div className="theme-choice-grid">

@@ -1,5 +1,7 @@
 import React, { useEffect, useMemo, useState } from "react";
 import AmbientScene from "./AmbientScene";
+import ArchivePage from "./ArchivePage";
+import { getArchivePage } from "./archiveData";
 import ThemeIntro from "./ThemeIntro";
 import logoMark from "./assets/co-logo-mark.png";
 import heroPortrait from "./assets/sergey-hero.webp";
@@ -43,7 +45,7 @@ const navIcons = ["pi-user", "pi-briefcase", "pi-sparkles", "pi-sitemap", "pi-se
 const heroMetricIcons = ["pi-briefcase", "pi-search-plus", "pi-wave-pulse", "pi-trophy"];
 const aboutIcons = ["pi-search", "pi-sitemap", "pi-desktop"];
 const caseHighlightIcons = ["pi-compass", "pi-lightbulb", "pi-chart-line"];
-const serviceIcons = ["pi-desktop", "pi-microchip-ai", "pi-palette", "pi-search"];
+const serviceIcons = ["pi-desktop", "pi-microchip-ai", "pi-palette", "pi-search", "pi-images", "pi-globe"];
 const processIcons = ["pi-search", "pi-sitemap", "pi-pencil", "pi-check-circle"];
 const caseIcons = {
   igms: "pi-comments",
@@ -52,7 +54,16 @@ const caseIcons = {
   rag: "pi-microchip-ai",
   talk: "pi-microphone",
 };
-const contactIcons = ["pi-envelope", "pi-globe", "pi-pinterest"];
+const socialLinks = [
+  ["Telegram", "@Sergey_Designer", "https://t.me/Sergey_Designer", "pi-send"],
+  ["Telegram-канал", "@soc_blog", "https://t.me/soc_blog", "pi-megaphone"],
+  ["LinkedIn", "sergey-ostaev", "https://www.linkedin.com/in/sergey-ostaev/", "pi-linkedin"],
+  ["Behance", "OSTAEVARTS", "https://www.behance.net/OSTAEVARTS", "pi-images"],
+  ["Pinterest", "sergey_des1gner", "https://pinterest.com/sergey_des1gner/", "pi-pinterest"],
+  ["VK", "SO Creative", "https://vk.com/soc_blog", "pi-comments"],
+  ["Instagram", "@ostaev_arts", "https://www.instagram.com/ostaev_arts", "pi-instagram"],
+  ["WhatsApp", "SO Creative", "https://wa.me/79277146456", "pi-whatsapp"],
+];
 
 function PrimeIcon({ name, className = "" }) {
   return <i className={`pi ${name} ${className}`.trim()} aria-hidden="true" />;
@@ -79,23 +90,23 @@ const copy = {
   ru: {
     nav: ["Профиль", "Кейсы", "Экспертиза", "Процесс", "Контакты"],
     navIds: ["about", "cases", "services", "process", "contact"],
-    write: "Написать",
+    write: "Связаться",
     resumeButton: "Резюме",
     heroKicker: "Сергей Остаев / AI Product Designer",
-    heroLines: ["Проектирую B2B и AI-интерфейсы", "которые ускоряют работу команд"],
+    heroLines: ["Проектирую B2B и AI-интерфейсы", "которые сокращают ручную работу"],
     heroText:
-      "7+ лет превращаю сложные процессы в работающие продукты. Соединяю UX/UI, системную аналитику и AI-first подход — от исследования до внедрения вместе с командой.",
+      "Помогаю продуктовым и операционным командам превращать сложные регламенты и ручные процессы в понятные цифровые продукты — от исследования и AI-сценариев до прототипа, дизайн-системы и handoff.",
     heroCta: "Обсудить проект",
     heroCases: "Смотреть кейсы",
     metrics: [
       ["9+", "запущенных продуктов автоматизации"],
       ["×2", "ускорение поиска в базе знаний"],
       ["↓1.5x", "снижение нагрузки на поддержку"],
-      ["2025", "лучшее решение внутри компании"],
+      ["IT Camp", "специальный приз в 2025 году"],
     ],
     aboutLabel: "Профиль",
     aboutTitle:
-      "Превращаю сложную продуктовую логику в понятные рабочие интерфейсы.",
+      "Превращаю сложную логику в понятные рабочие интерфейсы.",
     aboutText: [
       "Беру запутанные B2B, enterprise и AI-сценарии, раскладываю их в понятную архитектуру и довожу до прототипа, который можно показать бизнесу, разработке и пользователям.",
       "Мой сильный фокус — интерфейсы, где важны скорость решения, контроль ошибок, доверие к AI и аккуратный handoff без потери смысла между дизайном и разработкой.",
@@ -115,6 +126,11 @@ const copy = {
       ["Эффект", "что изменилось для бизнеса"],
     ],
     servicesLabel: "Экспертиза",
+    archiveLabel: "Архив направлений",
+    archiveTitle: "Продуктовый дизайн — ядро. Остальное усиливает результат.",
+    archiveText:
+      "Работаю не только с интерфейсом: умею собрать сайт, айдентику, контент и презентацию в одну систему. Поэтому продукт выглядит цельно для пользователя, команды и бизнеса.",
+    archiveCta: "Открыть направление",
     processLabel: "Процесс",
     processTitle: "От сложной предметной области к решению, понятному бизнесу и разработке.",
     manifesto:
@@ -122,27 +138,28 @@ const copy = {
     contactLabel: "Контакты",
     contactTitle: "Расскажите, какую систему нужно спроектировать.",
     contactText:
-      "Напишите 3-5 строк: продукт, аудитория, ограничения, сроки и что уже есть. Я быстро пойму, где могу усилить проект: UX, AI-сценарии, дизайн-система, прототип или презентация решения.",
+      "Можно без готового ТЗ. Напишите 3–5 строк о продукте, аудитории, ограничениях и текущем состоянии — я предложу, с чего лучше начать: UX, AI-сценарии, прототип, дизайн-система или презентация решения.",
     contactCta: "Написать в Telegram",
+    socialLabel: "Каналы и профессиональные профили",
     footer: "AI Product Design / B2B / Enterprise",
     accentTerms: ["AI-интерфейсы", "продуктовую логику", "результата", "решению", "систему", "главное"],
   },
   en: {
     nav: ["Profile", "Cases", "Expertise", "Process", "Contact"],
     navIds: ["about", "cases", "services", "process", "contact"],
-    write: "Write",
+    write: "Contact",
     resumeButton: "Resume",
     heroKicker: "Sergey Ostaev / AI Product Designer",
-    heroLines: ["I design B2B and AI interfaces", "that make teams faster"],
+    heroLines: ["I design B2B and AI interfaces", "that reduce manual work"],
     heroText:
-      "For 7+ years I have turned complex workflows into shipped products. I combine UX/UI, systems thinking, and an AI-first approach — from discovery to implementation with the team.",
+      "I help product and operations teams turn complex rules and manual workflows into clear digital products — from research and AI scenarios to prototypes, design systems, and engineering handoff.",
     heroCta: "Discuss project",
     heroCases: "View cases",
     metrics: [
       ["9+", "automation products launched"],
       ["×2", "faster knowledge-base search"],
       ["↓1.5x", "lower support workload"],
-      ["2025", "best internal solution award"],
+      ["IT Camp", "special award in 2025"],
     ],
     aboutLabel: "Profile",
     aboutTitle:
@@ -166,6 +183,11 @@ const copy = {
       ["Impact", "what changed for the business"],
     ],
     servicesLabel: "Expertise",
+    archiveLabel: "Design archive",
+    archiveTitle: "Product design is the core. Everything else strengthens the outcome.",
+    archiveText:
+      "I work beyond the interface: websites, identity, content, and presentations can become one coherent system. This helps the product feel complete to users, teams, and business stakeholders.",
+    archiveCta: "Open direction",
     processLabel: "Process",
     processTitle: "From complex domain logic to a solution business and engineering understand.",
     manifesto:
@@ -173,8 +195,9 @@ const copy = {
     contactLabel: "Contact",
     contactTitle: "Tell me what system we need to design.",
     contactText:
-      "Send 3-5 lines: product, audience, constraints, timeline, and what already exists. I will quickly see where I can help: UX, AI workflows, design system, prototype, or solution presentation.",
+      "No finished brief is required. Send 3–5 lines about the product, audience, constraints, and current state — I will suggest the strongest starting point: UX, AI workflows, prototype, design system, or solution deck.",
     contactCta: "Message on Telegram",
+    socialLabel: "Channels and professional profiles",
     footer: "AI Product Design / B2B / Enterprise",
     accentTerms: ["AI interfaces", "product logic", "outcomes", "solution", "system", "what matters"],
   },
@@ -182,7 +205,7 @@ const copy = {
 
 const conversionCopy = {
   ru: {
-    proofLine: "7+ лет в автоматизации / 9 запущенных продуктов / B2B, Enterprise, AI",
+    proofLine: "7+ лет в автоматизации / 9+ продуктов / B2B, Enterprise, AI",
     aiLabel: "Нейросети в работе",
     aiTitle: "AI ускоряет мой путь от исследования до запуска.",
     aiText:
@@ -208,7 +231,7 @@ const conversionCopy = {
     dockLabels: ["Профиль", "Кейсы", "AI", "Связаться"],
   },
   en: {
-    proofLine: "7+ years in automation / 9 shipped products / B2B, Enterprise, AI",
+    proofLine: "7+ years in automation / 9+ products / B2B, Enterprise, AI",
     aiLabel: "AI in my workflow",
     aiTitle: "AI speeds up my path from research to launch.",
     aiText:
@@ -519,20 +542,47 @@ const cases = {
   ],
 };
 
-const caseOrder = ["igms", "diagnostics", "monitoring", "rag", "talk"];
+const caseOrder = ["igms", "diagnostics", "rag", "monitoring", "talk"];
 
 const services = {
   ru: [
-    ["01", "Complex Interface Design", "Проектирование сложных B2B-интерфейсов, сценариев, состояний, ролей и навигации.", ["UX-аудит", "Архитектура", "Кликабельный прототип"]],
-    ["02", "AI UX и AI-first продукты", "Промпт-сценарии, RAG, уточняющие окна, AI-помощники, контроль доверия и ошибок.", ["AI-flow", "Prompt UX", "Trust & safety"]],
-    ["03", "Design Systems и handoff", "Компоненты, паттерны, состояния, спецификации для разработки и дизайн-ревью.", ["Компоненты", "Токены", "Handoff"]],
-    ["04", "Product Discovery", "Гипотезы, CJM, user flow, прототипы, демо-сценарии и быстрая проверка ценности.", ["Интервью", "CJM", "Проверка гипотез"]],
+    ["01", "Проектирование сложных интерфейсов", "B2B-интерфейсы, роли, состояния, навигация и сценарии, в которых цена ошибки особенно высока.", ["UX-аудит", "Архитектура", "Кликабельный прототип"]],
+    ["02", "AI UX и AI-first продукты", "Промпт-сценарии, RAG, уточняющие окна, AI-помощники, контроль доверия и ошибок.", ["AI-сценарии", "Prompt UX", "Контроль доверия"]],
+    ["03", "Дизайн-системы и handoff", "Компоненты, паттерны, состояния и спецификации, с которыми разработке проще собрать продукт без потери логики.", ["Компоненты", "Токены", "Handoff"]],
+    ["04", "Продуктовые исследования", "Интервью, гипотезы, CJM, user flow и прототипы для быстрой проверки ценности до дорогой разработки.", ["Интервью", "CJM", "Проверка гипотез"]],
+    ["05", "Бренд-системы и визуальная упаковка", "Айдентика, презентации, оформление соцсетей и маркетплейсов в единой системе бренда.", ["Айдентика", "Презентации", "Контент-система"]],
+    ["06", "Сайты и лендинги под ключ", "Структура, UX-логика, адаптивный интерфейс и подготовка сайта к публикации и целевому действию.", ["React", "Лендинги", "Веб-дизайн"]],
   ],
   en: [
     ["01", "Complex Interface Design", "Complex B2B interfaces, scenarios, states, roles, and navigation architecture.", ["UX audit", "Architecture", "Clickable prototype"]],
     ["02", "AI UX and AI-first products", "Prompt scenarios, RAG, clarification windows, AI assistants, trust and error control.", ["AI flow", "Prompt UX", "Trust and safety"]],
     ["03", "Design Systems and handoff", "Components, patterns, states, engineering specs, and design review.", ["Components", "Tokens", "Handoff"]],
     ["04", "Product Discovery", "Hypotheses, CJM, user flows, prototypes, demo scenarios, and fast value validation.", ["Interviews", "CJM", "Hypothesis testing"]],
+    ["05", "Brand systems and visual packaging", "Identity, decks, social media, and marketplace design assembled into one coherent brand system.", ["Identity", "Presentations", "Content system"]],
+    ["06", "Websites and landing pages", "Structure, UX logic, responsive UI, and a publication-ready experience designed around the target action.", ["React", "Landing pages", "Web design"]],
+  ],
+};
+
+const archiveItems = {
+  ru: [
+    ["01", "Обзор архива SO Creative", "Коммерческие и авторские работы: семь направлений в единой системе портфолио.", "/archive/studio", "pi-briefcase"],
+    ["02", "Flexi: агрегатор такси", "Продуктовая концепция, исследование, UX-архитектура, интерфейс и бренд-система.", "/archive/flexi", "pi-car"],
+    ["03", "Сайты и лендинги", "Lang.expert, SUPSURF, Lunara и Geely: от структуры до финального интерфейса.", "/archive/web", "pi-globe"],
+    ["04", "Логотипы и айдентика", "Системы для DOSKI, ЗАгоры, QuantumFlow, PRAGMATICA и других брендов.", "/archive/logos", "pi-palette"],
+    ["05", "Карточки товаров", "50+ карточек для Ozon, Wildberries, Яндекс Маркета, Авито и сервисных компаний.", "/archive/cards", "pi-shopping-bag"],
+    ["06", "Оформление соцсетей", "Позиционирование, навигация, рубрики и шаблоны для цельного образа сообщества.", "/archive/cases", "pi-hashtag"],
+    ["07", "Посты и контент", "Серии для событий, экспертных блогов и коммерческих аккаунтов.", "/archive/posts", "pi-megaphone"],
+    ["08", "Полиграфия и презентации", "Буклет IT Camp, афиши, журнальные макеты и материалы для защиты решений.", "/archive/print", "pi-file-edit"],
+  ],
+  en: [
+    ["01", "SO Creative archive overview", "Commercial and self-initiated work across seven disciplines in one portfolio system.", "/archive/studio", "pi-briefcase"],
+    ["02", "Flexi taxi aggregator", "Product concept, research, UX architecture, interface, and brand system.", "/archive/flexi", "pi-car"],
+    ["03", "Websites and landing pages", "Lang.expert, SUPSURF, Lunara, and Geely: from structure to final interface.", "/archive/web", "pi-globe"],
+    ["04", "Logos and identity", "Systems for DOSKI, Zagory, QuantumFlow, PRAGMATICA, and other brands.", "/archive/logos", "pi-palette"],
+    ["05", "Marketplace product cards", "50+ cards for Ozon, Wildberries, Yandex Market, Avito, and service businesses.", "/archive/cards", "pi-shopping-bag"],
+    ["06", "Social media packaging", "Positioning, navigation, recurring formats, and templates for coherent communities.", "/archive/cases", "pi-hashtag"],
+    ["07", "Posts and content", "Content series for events, expert blogs, and commercial accounts.", "/archive/posts", "pi-megaphone"],
+    ["08", "Print and presentations", "IT Camp brochure, posters, editorial layouts, and materials for solution pitches.", "/archive/print", "pi-file-edit"],
   ],
 };
 
@@ -591,7 +641,7 @@ const igmsCase = {
       ["Контекст брони", "Справа всегда видны объект, даты, сумма, статус оплаты, код брони и история действий."],
       ["Шаблоны без робота", "Быстрые ответы ускоряют переписку, но сохраняют возможность адаптировать сообщение под ситуацию."],
     ],
-    scenarioTitle: "Основные сценарии, которые закрывает интерфейс",
+    scenarioTitle: "Сценарии, которые закрывает интерфейс",
     scenarios: [
       ["Поступает запрос", "AI автоответ < 1 минуты, меньше клиентов уходит."],
       ["Уточнение и бронь", "Шаблоны и подсказки сокращают до 40% времени ответа."],
@@ -647,7 +697,7 @@ const igmsCase = {
       ["Booking context", "Property, dates, payment status, booking code, amount, and action history stay visible on the right."],
       ["Human templates", "Quick replies speed up communication while keeping the answer flexible and situation-aware."],
     ],
-    scenarioTitle: "Core scenarios covered by the interface",
+    scenarioTitle: "Core scenarios covered by the product",
     scenarios: [
       ["Incoming request", "AI auto-reply in under 1 minute, reducing guest drop-off."],
       ["Clarification and booking", "Templates and hints cut up to 40% of response time."],
@@ -697,7 +747,7 @@ const enterpriseCase = {
       "Нельзя раскрывать реальные экраны, данные, названия и архитектурные детали.",
       "Проект требовал синхронизации дизайна, аналитики, разработки, поддержки и бизнес-заказчиков.",
     ],
-    solutionTitle: "Моя роль: провести продукт от исследования до внедрения",
+    solutionTitle: "От исследования до внедрения",
     solution:
       "Я вел направление как дизайн-лид и продуктовый связующий: собирал контекст через интервью, переводил обратную связь в задачи, координировал команду из 5 специалистов, проводил дизайн-ревью и контролировал передачу решений в разработку. На уровне UX фокус был на мгновенном считывании статуса: цветовые индикаторы, понятные состояния, умная валидация и сценарии без лишних переходов.",
     pillars: [
@@ -752,7 +802,7 @@ const enterpriseCase = {
       "Real screens, data, names, and architectural details cannot be disclosed.",
       "The project required synchronization between design, analytics, engineering, support, and business stakeholders.",
     ],
-    solutionTitle: "My role: lead the product from discovery to adoption",
+    solutionTitle: "From discovery to adoption",
     solution:
       "I led the direction as a design lead and product connector: gathered context through interviews, translated feedback into tasks, coordinated a 5-person team, ran design reviews, and controlled handoff to engineering. On the UX side, the focus was instant status recognition: color indicators, clear states, smart validation, and flows without unnecessary navigation.",
     pillars: [
@@ -813,7 +863,7 @@ const diagnosticsCase = {
       "Сложная промышленная тема: токовая диагностика, дефекты, уровни критичности и понятная интерпретация графиков.",
       "Аудитория разная: технические эксперты, жюри, бизнес и люди, которым нужно быстро увидеть ценность решения.",
     ],
-    solutionTitle: "От сырых данных к понятному диагностическому продукту",
+    solutionTitle: "Диагностический продукт из сырых данных",
     solution:
       "Я сфокусировался на упаковке сложной логики в простой рабочий сценарий: загрузить данные, запустить обработку, увидеть дефект, оценить степень и перейти к графику. Визуально система получила темную industrial-подачу, четкие кнопки действий, таблицу результатов и график, который сразу показывает пики риска. Для защиты я помог собрать историю решения: проблема, процесс, интерфейс, демо и эффект для отрасли.",
     pillars: [
@@ -880,7 +930,7 @@ const diagnosticsCase = {
       "Complex industrial domain: current diagnostics, defects, severity levels, and chart interpretation.",
       "Mixed audience: technical experts, jury, business stakeholders, and people who needed to understand the value quickly.",
     ],
-    solutionTitle: "From raw data to a clear diagnostic product",
+    solutionTitle: "A diagnostic product built from raw data",
     solution:
       "I focused on packaging complex logic into a simple working scenario: upload data, run processing, see the defect, assess severity, and open the chart. Visually, the product received a dark industrial feel, clear action buttons, a results table, and a chart that immediately highlights risk peaks. For the pitch, I helped shape the story: problem, process, interface, demo, and industry impact.",
     pillars: [
@@ -947,7 +997,7 @@ const ragCase = {
       "Сложный trust layer: пользователю нужно понимать, откуда взят ответ и можно ли на него опираться.",
       "Разные роли и сценарии: сотрудник, поддержка, эксперт отдела, администратор знаний и владелец процесса.",
     ],
-    solutionTitle: "Рабочий AI-слой между знаниями, ролями и задачами",
+    solutionTitle: "AI-слой для знаний, ролей и задач",
     solution:
       "Ключевая идея была в том, чтобы убрать ощущение магии и сделать AI управляемым инструментом. Я собрал интерфейс вокруг понятного цикла: вопрос → уточнение контекста → подбор источников → генерация ответа → проверка → действие. В продуктовой логике появились role-aware ответы, шаблоны промптов, маршрутизация по отделам, состояния доверия и безопасная работа внутри инфраструктуры компании.",
     pillars: [
@@ -1010,7 +1060,7 @@ const ragCase = {
       "Complex trust layer: users need to understand where the answer came from and whether it can be relied on.",
       "Different roles and scenarios: employee, support, department expert, knowledge admin, and process owner.",
     ],
-    solutionTitle: "An AI layer between knowledge, roles, and tasks",
+    solutionTitle: "An AI layer for knowledge, roles, and tasks",
     solution:
       "The key idea was to remove the feeling of magic and make AI a controlled tool. I shaped the interface around a clear loop: question, context clarification, source retrieval, answer generation, verification, and action. The product logic included role-aware answers, prompt templates, department routing, trust states, and safe work inside company infrastructure.",
     pillars: [
@@ -1110,7 +1160,7 @@ const socialCase = {
     eventsLabel: "Новые встречи",
     events: [
       {
-        title: "Первая официальная встреча Engineering Club",
+        title: "Первая встреча Engineering Club",
         meta: "Engineering Club / IT-сообщество / офлайн и онлайн",
         text: [
           "Провели первую официальную встречу Engineering Club. Это только начало: мы хотим собрать сильное IT-сообщество, где можно делиться опытом, находить единомышленников и запускать новые проекты.",
@@ -1200,7 +1250,7 @@ const socialCase = {
     eventsLabel: "New meetups",
     events: [
       {
-        title: "First official Engineering Club meetup",
+        title: "First Engineering Club meetup",
         meta: "Engineering Club / IT community / offline and online",
         text: [
           "We held the first official Engineering Club meetup. This is only the beginning: the goal is to build a strong IT community where people can share experience, find like-minded collaborators, and launch new projects.",
@@ -1244,7 +1294,7 @@ const resumeContent = {
     contacts: [
       ["Telegram", "@Sergey_Designer", "https://t.me/Sergey_Designer"],
       ["Email", "sergiys1997@gmail.com", "mailto:sergiys1997@gmail.com"],
-      ["Portfolio", "socreative.tilda.ws", "https://socreative.tilda.ws/"],
+      ["Портфолио", "Текущий сайт", "/"],
     ],
     metrics: [
       ["7+ лет", "опыта в продуктовой логике и автоматизации"],
@@ -1341,7 +1391,7 @@ const resumeContent = {
     contacts: [
       ["Telegram", "@Sergey_Designer", "https://t.me/Sergey_Designer"],
       ["Email", "sergiys1997@gmail.com", "mailto:sergiys1997@gmail.com"],
-      ["Portfolio", "socreative.tilda.ws", "https://socreative.tilda.ws/"],
+      ["Portfolio", "Current website", "/"],
     ],
     metrics: [
       ["7+ years", "in product logic and automation"],
@@ -1443,8 +1493,26 @@ function App() {
   const isDiagnosticsCasePage = path.replace(/\/$/, "") === "/case/diagnostics";
   const isRagCasePage = path.replace(/\/$/, "") === "/case/rag";
   const isSocialCasePage = path.replace(/\/$/, "") === "/case/social";
+  const archiveMatch = path.replace(/\/$/, "").match(/^\/archive\/([^/]+)$/);
+  const archiveSlug = archiveMatch?.[1] ?? "studio";
+  const isArchivePage = Boolean(archiveMatch);
   const isCasePage = isIgmsCasePage || isEnterpriseCasePage || isDiagnosticsCasePage || isRagCasePage || isSocialCasePage;
-  const isHomePage = !isResumePage && !isCasePage;
+  const isHomePage = !isResumePage && !isCasePage && !isArchivePage;
+  const pageMeta = (() => {
+    const homeTitle = lang === "ru" ? "Сергей Остаев — AI Product Designer" : "Sergey Ostaev — AI Product Designer";
+    if (isHomePage) return { title: homeTitle, description: t.heroText };
+    if (isResumePage) return { title: `${resumeContent[lang].title} — ${t.resumeButton}`, description: resumeContent[lang].summary };
+    if (isIgmsCasePage) return { title: igmsCase[lang].title, description: igmsCase[lang].subtitle };
+    if (isEnterpriseCasePage) return { title: enterpriseCase[lang].title, description: enterpriseCase[lang].subtitle };
+    if (isDiagnosticsCasePage) return { title: diagnosticsCase[lang].title, description: diagnosticsCase[lang].subtitle };
+    if (isRagCasePage) return { title: ragCase[lang].title, description: ragCase[lang].subtitle };
+    if (isSocialCasePage) return { title: socialCase[lang].title, description: socialCase[lang].subtitle };
+    if (isArchivePage) {
+      const archive = getArchivePage(archiveSlug)[lang];
+      return { title: archive.title, description: archive.lead };
+    }
+    return { title: homeTitle, description: t.heroText };
+  })();
 
   const selectTheme = (nextTheme) => {
     setTheme(nextTheme);
@@ -1478,6 +1546,18 @@ function App() {
   useEffect(() => {
     document.documentElement.lang = lang;
   }, [lang]);
+
+  useEffect(() => {
+    const fullTitle = isHomePage ? pageMeta.title : `${pageMeta.title} — Sergey Ostaev`;
+    document.title = fullTitle;
+    const setMeta = (selector, value) => document.querySelector(selector)?.setAttribute("content", value);
+    setMeta('meta[name="description"]', pageMeta.description);
+    setMeta('meta[property="og:title"]', fullTitle);
+    setMeta('meta[property="og:description"]', pageMeta.description);
+    setMeta('meta[property="og:locale"]', lang === "ru" ? "ru_RU" : "en_US");
+    setMeta('meta[name="twitter:title"]', fullTitle);
+    setMeta('meta[name="twitter:description"]', pageMeta.description);
+  }, [isHomePage, lang, pageMeta.description, pageMeta.title]);
 
   useEffect(() => {
     const nodes = Array.from(document.querySelectorAll("[data-reveal]"));
@@ -1573,9 +1653,9 @@ function App() {
 
   return (
     <>
-      <ThemeIntro phase={introPhase} lang={lang} onSelect={selectTheme} />
+      <ThemeIntro phase={introPhase} lang={lang} onSelect={selectTheme} onLangChange={setLang} />
       <AmbientScene theme={theme} path={path} />
-      <ReadingProgress active={isCasePage || isResumePage} />
+      <ReadingProgress active={isCasePage || isResumePage || isArchivePage} />
       <Header
         lang={lang}
         setLang={setLang}
@@ -1598,6 +1678,8 @@ function App() {
         <RagCasePage data={ragCase[lang]} />
       ) : isSocialCasePage ? (
         <SocialCasePage data={socialCase[lang]} />
+      ) : isArchivePage ? (
+        <ArchivePage slug={archiveSlug} lang={lang} />
       ) : (
         <main id="top">
           <Hero t={t} />
@@ -1605,6 +1687,7 @@ function App() {
           <About t={t} />
           <Cases t={t} items={currentCases} />
           <Services t={t} items={services[lang]} />
+          <Archive t={t} items={archiveItems[lang]} />
           <AiToolkit t={t} items={aiToolkit[lang]} />
           <Process t={t} items={processSteps[lang]} />
           <Manifesto t={t} />
@@ -1615,6 +1698,7 @@ function App() {
       <footer className="footer">
         <span>© 2026 Sergey Ostaev</span>
         <span>{t.footer}</span>
+        <a href="https://t.me/soc_blog" target="_blank" rel="noreferrer">Telegram / @soc_blog</a>
       </footer>
       <MobileDock t={t} isHomePage={isHomePage} />
       <ResumeModal
@@ -1718,29 +1802,6 @@ function Header({ lang, setLang, t, isResumePage, isHomePage, onResumeOpen, them
       </nav>
       <div className="header-actions">
         <button
-          className="theme-switch"
-          type="button"
-          aria-label={theme === "dark"
-            ? (lang === "ru" ? "Включить светлую тему" : "Switch to light theme")
-            : (lang === "ru" ? "Включить тёмную тему" : "Switch to dark theme")}
-          title={theme === "dark"
-            ? (lang === "ru" ? "Светлая тема" : "Light theme")
-            : (lang === "ru" ? "Тёмная тема" : "Dark theme")}
-          onClick={onThemeToggle}
-        >
-          <PrimeIcon name={theme === "dark" ? "pi-sun" : "pi-moon"} />
-        </button>
-        <button
-          className="lang-switch"
-          type="button"
-          aria-label="Switch language"
-          onClick={() => setLang(lang === "ru" ? "en" : "ru")}
-        >
-          <PrimeIcon name="pi-language" className="lang-icon" />
-          <span className={lang === "ru" ? "lang-current" : ""}>RU</span>
-          <span className={lang === "en" ? "lang-current" : ""}>ENG</span>
-        </button>
-        <button
           className={`pill-link resume-link${isResumePage ? " pill-link-active" : ""}`}
           type="button"
           onClick={onResumeOpen}
@@ -1752,6 +1813,31 @@ function Header({ lang, setLang, t, isResumePage, isHomePage, onResumeOpen, them
           <PrimeIcon name="pi-send" />
           {t.write}
         </a>
+        <div className="header-utilities" aria-label={lang === "ru" ? "Настройки отображения" : "Display settings"}>
+          <button
+            className="theme-switch"
+            type="button"
+            aria-label={theme === "dark"
+              ? (lang === "ru" ? "Включить светлую тему" : "Switch to light theme")
+              : (lang === "ru" ? "Включить тёмную тему" : "Switch to dark theme")}
+            title={theme === "dark"
+              ? (lang === "ru" ? "Светлая тема" : "Light theme")
+              : (lang === "ru" ? "Тёмная тема" : "Dark theme")}
+            onClick={onThemeToggle}
+          >
+            <PrimeIcon name={theme === "dark" ? "pi-sun" : "pi-moon"} />
+          </button>
+          <button
+            className="lang-switch"
+            type="button"
+            aria-label={lang === "ru" ? "Переключить на английский" : "Switch to Russian"}
+            onClick={() => setLang(lang === "ru" ? "en" : "ru")}
+          >
+            <PrimeIcon name="pi-language" className="lang-icon" />
+            <span className={lang === "ru" ? "lang-current" : ""}>RU</span>
+            <span className={lang === "en" ? "lang-current" : ""}>ENG</span>
+          </button>
+        </div>
       </div>
     </header>
   );
@@ -2841,6 +2927,30 @@ function Services({ t, items }) {
   );
 }
 
+function Archive({ t, items }) {
+  return (
+    <section className="section archive" id="archive" data-reveal>
+      <div className="archive-heading">
+        <div>
+          <p className="section-label">{t.archiveLabel}</p>
+          <h2>{t.archiveTitle}</h2>
+        </div>
+        <p>{t.archiveText}</p>
+      </div>
+      <div className="archive-grid">
+        {items.map(([number, title, text, href, icon]) => (
+          <a className="archive-card" href={href} target="_blank" rel="noreferrer" key={href}>
+            <span className="archive-card-meta"><PrimeIcon name={icon} />{number}</span>
+            <h3>{title}</h3>
+            <p>{text}</p>
+            <strong>{t.archiveCta}<PrimeIcon name="pi-arrow-up-right" /></strong>
+          </a>
+        ))}
+      </div>
+    </section>
+  );
+}
+
 function AiToolkit({ t, items }) {
   const [activeIndex, setActiveIndex] = useState(0);
   const active = items[activeIndex];
@@ -2953,18 +3063,14 @@ function Contact({ t }) {
           {t.contactCta}
         </a>
         <div className="contact-links">
-          <a href="mailto:sergiys1997@gmail.com">
-            <PrimeIcon name={contactIcons[0]} />
-            sergiys1997@gmail.com
-          </a>
-          <a href="https://socreative.tilda.ws/" target="_blank" rel="noreferrer">
-            <PrimeIcon name={contactIcons[1]} />
-            socreative.tilda.ws
-          </a>
-          <a href="https://ru.pinterest.com/sergey_des1gner/" target="_blank" rel="noreferrer">
-            <PrimeIcon name={contactIcons[2]} />
-            Pinterest
-          </a>
+          <p>{t.socialLabel}</p>
+          <a href="mailto:sergiys1997@gmail.com"><PrimeIcon name="pi-envelope" /><span><strong>Email</strong><small>sergiys1997@gmail.com</small></span></a>
+          {socialLinks.map(([label, handle, href, icon]) => (
+            <a href={href} target="_blank" rel="noreferrer" key={href}>
+              <PrimeIcon name={icon} />
+              <span><strong>{label}</strong><small>{handle}</small></span>
+            </a>
+          ))}
         </div>
       </div>
     </section>
