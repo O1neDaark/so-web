@@ -109,6 +109,7 @@ export default function AmbientScene({ theme = "dark", path = "/" }) {
     let isWide = window.innerWidth / Math.max(window.innerHeight, 1) > 1.25;
     let targetSide = -1;
     let targetY = 0;
+    let isEndingPosition = false;
     const xSpring = createSpring(-1.7);
     const ySpring = createSpring(0);
     const homeCaseBlocks = Array.from(document.querySelectorAll(".case-block[data-logo-side]"));
@@ -134,20 +135,22 @@ export default function AmbientScene({ theme = "dark", path = "/" }) {
     };
 
     const handleScroll = () => {
-      if (!isWide || motionAnchors.length === 0) {
+      const remainingScroll = document.documentElement.scrollHeight - window.innerHeight - window.scrollY;
+      const contactTop = contactSection?.getBoundingClientRect().top ?? Number.POSITIVE_INFINITY;
+      const isContactInView = contactTop < window.innerHeight * 0.72;
+      isEndingPosition = isContactInView || remainingScroll < window.innerHeight * 0.85;
+
+      if (isEndingPosition) {
+        targetSide = 1;
+        targetY = isWide ? -1.02 : -1.16;
+      } else if (!isWide || motionAnchors.length === 0) {
         targetSide = -1;
         targetY = 0;
       } else {
         const viewportCenter = window.innerHeight * 0.5;
-        const remainingScroll = document.documentElement.scrollHeight - window.innerHeight - window.scrollY;
         const casesTop = motionAnchors[0].getBoundingClientRect().top;
-        const contactTop = contactSection?.getBoundingClientRect().top ?? Number.POSITIVE_INFINITY;
-        const isContactInView = contactTop < window.innerHeight * 0.72;
 
-        if (isContactInView || remainingScroll < window.innerHeight * 0.85) {
-          targetSide = -1;
-          targetY = -1.02;
-        } else if (casesTop > window.innerHeight * 0.72) {
+        if (casesTop > window.innerHeight * 0.72) {
           targetSide = -1;
           targetY = -0.08;
         } else {
@@ -181,7 +184,8 @@ export default function AmbientScene({ theme = "dark", path = "/" }) {
       }
 
       if (reduceMotion) {
-        group.position.set(isWide ? targetSide * 1.72 : 0, targetY, 0);
+        const reducedMotionX = isWide ? targetSide * 1.72 : isEndingPosition ? 0.7 : 0;
+        group.position.set(reducedMotionX, targetY, 0);
         renderer.render(scene, camera);
       }
     };
@@ -191,7 +195,7 @@ export default function AmbientScene({ theme = "dark", path = "/" }) {
       elapsed += delta;
       logoSpin += delta * 0.24;
 
-      const destinationX = isWide ? targetSide * 1.72 : 0;
+      const destinationX = isWide ? targetSide * 1.72 : isEndingPosition ? 0.7 : 0;
       advanceSpring(xSpring, destinationX, delta);
       advanceSpring(ySpring, targetY, delta);
 

@@ -1,8 +1,92 @@
-import React, { useEffect, useMemo, useState } from "react";
+import React, { useEffect, useMemo, useRef, useState } from "react";
 import { archiveNavigation, getArchivePage } from "./archiveData";
 
 function Icon({ name }) {
   return <i className={`pi ${name}`} aria-hidden="true" />;
+}
+
+function parseCounterValue(value) {
+  const raw = String(value);
+  const match = raw.match(/-?\d+(?:[.,]\d+)?/);
+  if (!match) return null;
+
+  const numericPart = match[0];
+  const decimals = numericPart.includes(".") || numericPart.includes(",")
+    ? numericPart.split(/[.,]/)[1].length
+    : 0;
+
+  return {
+    target: Number(numericPart.replace(",", ".")),
+    decimals,
+    prefix: raw.slice(0, match.index),
+    suffix: raw.slice(match.index + numericPart.length),
+  };
+}
+
+function formatCounterValue(parsed, amount) {
+  const number = parsed.decimals > 0 ? amount.toFixed(parsed.decimals) : Math.round(amount).toString();
+  return `${parsed.prefix}${number}${parsed.suffix}`;
+}
+
+function AnimatedNumber({ value, delay = 0 }) {
+  const parsed = useMemo(() => parseCounterValue(value), [value]);
+  const valueLength = String(value).length;
+  const sizeClass = valueLength > 5 ? "is-long" : valueLength > 3 ? "is-medium" : "";
+  const [displayValue, setDisplayValue] = useState(() => (parsed ? formatCounterValue(parsed, 0) : value));
+  const ref = useRef(null);
+
+  useEffect(() => {
+    setDisplayValue(parsed ? formatCounterValue(parsed, 0) : value);
+    if (!parsed) return undefined;
+
+    const node = ref.current;
+    const reduceMotion = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+    if (!node || reduceMotion || !("IntersectionObserver" in window)) return undefined;
+
+    let frame = 0;
+    let timeout = 0;
+
+    const start = () => {
+      const startedAt = performance.now();
+      const duration = 980;
+
+      const tick = (now) => {
+        const progress = Math.min((now - startedAt) / duration, 1);
+        const eased = 1 - Math.pow(1 - progress, 3);
+        setDisplayValue(formatCounterValue(parsed, parsed.target * eased));
+        if (progress < 1) {
+          frame = window.requestAnimationFrame(tick);
+        } else {
+          setDisplayValue(value);
+        }
+      };
+
+      frame = window.requestAnimationFrame(tick);
+    };
+
+    const observer = new IntersectionObserver(
+      ([entry]) => {
+        if (!entry.isIntersecting) return;
+        timeout = window.setTimeout(start, delay);
+        observer.disconnect();
+      },
+      { threshold: 0.45 },
+    );
+
+    observer.observe(node);
+
+    return () => {
+      observer.disconnect();
+      window.clearTimeout(timeout);
+      window.cancelAnimationFrame(frame);
+    };
+  }, [delay, parsed, value]);
+
+  return (
+    <span className={`count-number ${sizeClass}`.trim()} ref={ref}>
+      {displayValue}
+    </span>
+  );
 }
 
 export default function ArchivePage({ slug, lang }) {
@@ -22,6 +106,8 @@ export default function ArchivePage({ slug, lang }) {
     next: "Следующее направление",
     discuss: "Обсудить похожую задачу",
     independent: "Материалы сохранены внутри сайта и не зависят от Tilda.",
+    realCases: "Реальные кейсы",
+    openCase: "Смотреть работу",
   } : {
     back: "Back to portfolio",
     navigation: "Archive disciplines",
@@ -33,6 +119,8 @@ export default function ArchivePage({ slug, lang }) {
     next: "Next discipline",
     discuss: "Discuss a similar project",
     independent: "These materials are stored inside the website and no longer depend on Tilda.",
+    realCases: "Real client cases",
+    openCase: "View work",
   }, [lang]);
 
   useEffect(() => {
@@ -61,10 +149,10 @@ export default function ArchivePage({ slug, lang }) {
         </div>
         <h1>{content.title}</h1>
         <p className="archive-page-lead">{content.lead}</p>
-        <div className="archive-page-metrics" aria-label={content.meta}>
-          {content.metrics.map(([value, label]) => (
-            <div key={`${value}-${label}`}>
-              <strong>{value}</strong>
+        <div className="archive-page-metrics" aria-label={content.meta} data-counter-group>
+          {content.metrics.map(([value, label], index) => (
+            <div key={`${value}-${label}`} data-counter-item style={{ "--counter-delay": `${index * 90}ms` }}>
+              <strong><AnimatedNumber value={value} delay={index * 150} /></strong>
               <span>{label}</span>
             </div>
           ))}
@@ -119,6 +207,36 @@ export default function ArchivePage({ slug, lang }) {
           ))}
         </ol>
       </section>
+
+      {content.realCases?.length > 0 && (
+        <section className="archive-real-cases" data-reveal>
+          <div className="archive-gallery-heading">
+            <div>
+              <p className="section-label">{labels.realCases}</p>
+              <h2>{content.realCasesTitle}</h2>
+            </div>
+            <p>{content.realCasesText}</p>
+          </div>
+          <div className="archive-real-grid">
+            {content.realCases.map((item) => (
+              <a className="archive-real-card" href={item.href} target="_blank" rel="noreferrer" key={item.href}>
+                <span className="archive-real-image">
+                  <img src={item.image} alt={item.title} loading="lazy" />
+                </span>
+                <span className="archive-real-body">
+                  <span className="archive-real-meta">
+                    <Icon name={item.icon} />
+                    {item.type}
+                  </span>
+                  <strong>{item.title}</strong>
+                  <span>{item.text}</span>
+                </span>
+                <span className="archive-real-cta">{labels.openCase}<Icon name="pi-arrow-up-right" /></span>
+              </a>
+            ))}
+          </div>
+        </section>
+      )}
 
       <section className="archive-gallery-section" data-reveal>
         <div className="archive-gallery-heading">

@@ -1,4 +1,4 @@
-import React, { useEffect, useMemo, useState } from "react";
+import React, { useEffect, useMemo, useRef, useState } from "react";
 import AmbientScene from "./AmbientScene";
 import ArchivePage from "./ArchivePage";
 import { getArchivePage } from "./archiveData";
@@ -82,6 +82,90 @@ function AccentText({ text, terms = [] }) {
   );
 }
 
+function parseCounterValue(value) {
+  const raw = String(value);
+  const match = raw.match(/-?\d+(?:[.,]\d+)?/);
+  if (!match) return null;
+
+  const numericPart = match[0];
+  const decimals = numericPart.includes(".") || numericPart.includes(",")
+    ? numericPart.split(/[.,]/)[1].length
+    : 0;
+
+  return {
+    target: Number(numericPart.replace(",", ".")),
+    decimals,
+    prefix: raw.slice(0, match.index),
+    suffix: raw.slice(match.index + numericPart.length),
+  };
+}
+
+function formatCounterValue(parsed, amount) {
+  const number = parsed.decimals > 0 ? amount.toFixed(parsed.decimals) : Math.round(amount).toString();
+  return `${parsed.prefix}${number}${parsed.suffix}`;
+}
+
+function AnimatedNumber({ value, delay = 0 }) {
+  const parsed = useMemo(() => parseCounterValue(value), [value]);
+  const valueLength = String(value).length;
+  const sizeClass = valueLength > 5 ? "is-long" : valueLength > 3 ? "is-medium" : "";
+  const [displayValue, setDisplayValue] = useState(() => (parsed ? formatCounterValue(parsed, 0) : value));
+  const ref = useRef(null);
+
+  useEffect(() => {
+    setDisplayValue(parsed ? formatCounterValue(parsed, 0) : value);
+    if (!parsed) return undefined;
+
+    const node = ref.current;
+    const reduceMotion = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+    if (!node || reduceMotion || !("IntersectionObserver" in window)) return undefined;
+
+    let frame = 0;
+    let timeout = 0;
+
+    const start = () => {
+      const startedAt = performance.now();
+      const duration = 980;
+
+      const tick = (now) => {
+        const progress = Math.min((now - startedAt) / duration, 1);
+        const eased = 1 - Math.pow(1 - progress, 3);
+        setDisplayValue(formatCounterValue(parsed, parsed.target * eased));
+        if (progress < 1) {
+          frame = window.requestAnimationFrame(tick);
+        } else {
+          setDisplayValue(value);
+        }
+      };
+
+      frame = window.requestAnimationFrame(tick);
+    };
+
+    const observer = new IntersectionObserver(
+      ([entry]) => {
+        if (!entry.isIntersecting) return;
+        timeout = window.setTimeout(start, delay);
+        observer.disconnect();
+      },
+      { threshold: 0.45 },
+    );
+
+    observer.observe(node);
+
+    return () => {
+      observer.disconnect();
+      window.clearTimeout(timeout);
+      window.cancelAnimationFrame(frame);
+    };
+  }, [delay, parsed, value]);
+
+  return (
+    <span className={`count-number ${sizeClass}`.trim()} ref={ref}>
+      {displayValue}
+    </span>
+  );
+}
+
 function buildTelegramUrl(message) {
   return `${telegramUrl}?text=${encodeURIComponent(message)}`;
 }
@@ -126,10 +210,10 @@ const copy = {
       ["Эффект", "что изменилось для бизнеса"],
     ],
     servicesLabel: "Экспертиза",
-    archiveLabel: "Архив направлений",
-    archiveTitle: "Продуктовый дизайн — ядро. Остальное усиливает результат.",
+    archiveLabel: "Так же, я делаю",
+    archiveTitle: "Продуктовый дизайн — ядро. Остальные направления усиливают мои результаты.",
     archiveText:
-      "Работаю не только с интерфейсом: умею собрать сайт, айдентику, контент и презентацию в одну систему. Поэтому продукт выглядит цельно для пользователя, команды и бизнеса.",
+      "Работаю не только с интерфейсом: собираю сайты, айдентику, соцсети, карточки, контент и презентации в одну понятную систему. Это помогает продукту выглядеть цельно для пользователя, команды и бизнеса.",
     archiveCta: "Открыть направление",
     processLabel: "Процесс",
     processTitle: "От сложной предметной области к решению, понятному бизнесу и разработке.",
@@ -183,10 +267,10 @@ const copy = {
       ["Impact", "what changed for the business"],
     ],
     servicesLabel: "Expertise",
-    archiveLabel: "Design archive",
-    archiveTitle: "Product design is the core. Everything else strengthens the outcome.",
+    archiveLabel: "I also design",
+    archiveTitle: "Product design is the core. The other disciplines strengthen my results.",
     archiveText:
-      "I work beyond the interface: websites, identity, content, and presentations can become one coherent system. This helps the product feel complete to users, teams, and business stakeholders.",
+      "I work beyond the interface: websites, identity, social media, product cards, content, and presentations can become one coherent system. This helps the product feel complete to users, teams, and business stakeholders.",
     archiveCta: "Open direction",
     processLabel: "Process",
     processTitle: "From complex domain logic to a solution business and engineering understand.",
@@ -216,6 +300,12 @@ const conversionCopy = {
     briefLabel: "С чего начнем",
     briefTitle: "Выберите задачу — я подготовлю сообщение, с которого удобно начать разговор.",
     briefOptions: ["Спроектировать продукт", "Добавить AI-сценарии", "Собрать дизайн-систему", "Нанять в команду"],
+    briefDescriptions: [
+      "Разберу задачу, аудиторию и ограничения, соберу продуктовую логику и предложу путь от исследования до проверяемого прототипа.",
+      "Найду процессы, где AI действительно сокращает ручную работу: помощники, RAG, генерация ответов, маршрутизация и контроль качества.",
+      "Соберу компоненты, состояния, правила и документацию, чтобы команда выпускала интерфейсы быстрее и без визуального расхождения.",
+      "Подключусь как AI Product Designer: помогу с исследованиями, архитектурой сценариев, прототипами, дизайн-системой и handoff.",
+    ],
     briefMessages: [
       "Сергей, хочу обсудить проектирование продукта. Расскажу о задаче и текущем состоянии проекта.",
       "Сергей, хочу обсудить AI-сценарии для продукта: помощник, RAG, автоматизация или доверие к ответам.",
@@ -242,6 +332,12 @@ const conversionCopy = {
     briefLabel: "Start here",
     briefTitle: "Choose a task and I will prepare a useful first Telegram message.",
     briefOptions: ["Design a product", "Add AI workflows", "Build a design system", "Hire for the team"],
+    briefDescriptions: [
+      "I will clarify the problem, audience, and constraints, shape the product logic, and propose a path from research to a testable prototype.",
+      "I will identify where AI can remove manual work through assistants, RAG, answer generation, routing, and quality controls.",
+      "I will define components, states, rules, and documentation so the team can ship interfaces faster and more consistently.",
+      "I can join as an AI Product Designer across research, scenario architecture, prototypes, design systems, and engineering handoff.",
+    ],
     briefMessages: [
       "Sergey, I would like to discuss product design. I can share the task and current product state.",
       "Sergey, I would like to discuss AI workflows: an assistant, RAG, automation, or trust in AI answers.",
@@ -1580,7 +1676,12 @@ function App() {
     );
 
     nodes.forEach((node, index) => {
-      node.style.setProperty("--reveal-delay", `${Math.min(index % 4, 3) * 45}ms`);
+      node.style.setProperty("--reveal-delay", `${Math.min(index % 6, 5) * 55}ms`);
+      Array.from(node.querySelectorAll("[data-reveal-item], [data-counter-item]")).forEach((child, childIndex) => {
+        if (!child.style.getPropertyValue("--item-delay")) {
+          child.style.setProperty("--item-delay", `${Math.min(childIndex, 7) * 55}ms`);
+        }
+      });
       if (node.getBoundingClientRect().top < window.innerHeight * 0.96) {
         node.setAttribute("data-visible", "true");
       } else {
@@ -1792,6 +1893,20 @@ function Header({ lang, setLang, t, isResumePage, isHomePage, onResumeOpen, them
       <a className="logo" href={isHomePage ? "#top" : "/#top"} aria-label="Sergey Ostaev">
         <img className="logo-mark" src={logoMark} alt="" aria-hidden="true" />
       </a>
+      <div className="header-quick-actions">
+        <button
+          className={`pill-link resume-link${isResumePage ? " pill-link-active" : ""}`}
+          type="button"
+          onClick={onResumeOpen}
+        >
+          <PrimeIcon name="pi-file-pdf" />
+          {t.resumeButton}
+        </button>
+        <a className="pill-link header-contact-link" href={telegramUrl} target="_blank" rel="noreferrer">
+          <PrimeIcon name="pi-send" />
+          {t.write}
+        </a>
+      </div>
       <nav className="nav" aria-label="Navigation">
         {t.nav.map((label, index) => (
           <a href={`${homePrefix}#${t.navIds[index]}`} key={label}>
@@ -1801,18 +1916,6 @@ function Header({ lang, setLang, t, isResumePage, isHomePage, onResumeOpen, them
         ))}
       </nav>
       <div className="header-actions">
-        <button
-          className={`pill-link resume-link${isResumePage ? " pill-link-active" : ""}`}
-          type="button"
-          onClick={onResumeOpen}
-        >
-          <PrimeIcon name="pi-file-pdf" />
-          {t.resumeButton}
-        </button>
-        <a className="pill-link" href={telegramUrl} target="_blank" rel="noreferrer">
-          <PrimeIcon name="pi-send" />
-          {t.write}
-        </a>
         <div className="header-utilities" aria-label={lang === "ru" ? "Настройки отображения" : "Display settings"}>
           <button
             className="theme-switch"
@@ -1884,11 +1987,11 @@ function Hero({ t }) {
               </a>
             </div>
           </div>
-          <div className="metric-strip metric-strip-wide" aria-label="Portfolio metrics">
+          <div className="metric-strip metric-strip-wide" aria-label="Portfolio metrics" data-counter-group>
             {t.metrics.map(([value, label], index) => (
-              <div key={label}>
+              <div key={label} data-counter-item style={{ "--counter-delay": `${index * 90}ms` }}>
                 <PrimeIcon name={heroMetricIcons[index]} />
-                <strong>{value}</strong>
+                <strong><AnimatedNumber value={value} delay={index * 150} /></strong>
                 <span>{label}</span>
               </div>
             ))}
@@ -2011,10 +2114,10 @@ function ResumePage({ data, isModal = false }) {
             </div>
           </aside>
         </div>
-        <div className="resume-metrics" aria-label="Resume metrics">
-          {data.metrics.map(([value, label]) => (
-            <div key={label}>
-              <strong>{value}</strong>
+        <div className="resume-metrics" aria-label="Resume metrics" data-counter-group>
+          {data.metrics.map(([value, label], index) => (
+            <div key={label} data-counter-item style={{ "--counter-delay": `${index * 90}ms` }}>
+              <strong><AnimatedNumber value={value} delay={index * 150} /></strong>
               <span>{label}</span>
             </div>
           ))}
@@ -2091,10 +2194,10 @@ function IgmsCasePage({ data }) {
         <div className="case-page-cover">
           <img src={igmsCover} alt="iGMS interface on laptop" />
         </div>
-        <div className="resume-metrics case-page-metrics">
-          {data.heroStats.map(([value, label]) => (
-            <div key={label}>
-              <strong>{value}</strong>
+        <div className="resume-metrics case-page-metrics" data-counter-group>
+          {data.heroStats.map(([value, label], index) => (
+            <div key={label} data-counter-item style={{ "--counter-delay": `${index * 90}ms` }}>
+              <strong><AnimatedNumber value={value} delay={index * 150} /></strong>
               <span>{label}</span>
             </div>
           ))}
@@ -2172,10 +2275,10 @@ function EnterpriseCasePage({ data }) {
         <div className="case-page-cover enterprise-cover">
           <img src={enterpriseCover} alt="Anonymized enterprise monitoring interface" />
         </div>
-        <div className="resume-metrics case-page-metrics">
-          {data.heroStats.map(([value, label]) => (
-            <div key={label}>
-              <strong>{value}</strong>
+        <div className="resume-metrics case-page-metrics" data-counter-group>
+          {data.heroStats.map(([value, label], index) => (
+            <div key={label} data-counter-item style={{ "--counter-delay": `${index * 90}ms` }}>
+              <strong><AnimatedNumber value={value} delay={index * 150} /></strong>
               <span>{label}</span>
             </div>
           ))}
@@ -2280,10 +2383,10 @@ function DiagnosticsCasePage({ data }) {
             {data.videoCta}
           </button>
         </div>
-        <div className="resume-metrics case-page-metrics">
-          {data.heroStats.map(([value, label]) => (
-            <div key={label}>
-              <strong>{value}</strong>
+        <div className="resume-metrics case-page-metrics" data-counter-group>
+          {data.heroStats.map(([value, label], index) => (
+            <div key={label} data-counter-item style={{ "--counter-delay": `${index * 90}ms` }}>
+              <strong><AnimatedNumber value={value} delay={index * 150} /></strong>
               <span>{label}</span>
             </div>
           ))}
@@ -2407,10 +2510,10 @@ function RagCasePage({ data }) {
         <div className="case-page-cover rag-cover">
           <img src={ragCover} alt="Anonymized RAG platform interface" />
         </div>
-        <div className="resume-metrics case-page-metrics">
-          {data.heroStats.map(([value, label]) => (
-            <div key={label}>
-              <strong>{value}</strong>
+        <div className="resume-metrics case-page-metrics" data-counter-group>
+          {data.heroStats.map(([value, label], index) => (
+            <div key={label} data-counter-item style={{ "--counter-delay": `${index * 90}ms` }}>
+              <strong><AnimatedNumber value={value} delay={index * 150} /></strong>
               <span>{label}</span>
             </div>
           ))}
@@ -2536,10 +2639,10 @@ function SocialCasePage({ data }) {
           <strong>Meetups / talks / videos / feedback</strong>
           <p>{data.solutionTitle}</p>
         </div>
-        <div className="resume-metrics case-page-metrics">
-          {data.heroStats.map(([value, label]) => (
-            <div key={label}>
-              <strong>{value}</strong>
+        <div className="resume-metrics case-page-metrics" data-counter-group>
+          {data.heroStats.map(([value, label], index) => (
+            <div key={label} data-counter-item style={{ "--counter-delay": `${index * 90}ms` }}>
+              <strong><AnimatedNumber value={value} delay={index * 150} /></strong>
               <span>{label}</span>
             </div>
           ))}
@@ -3035,9 +3138,19 @@ function Contact({ t }) {
 
   return (
     <section className="section contact" id="contact" data-reveal>
-      <div>
+      <div className="contact-intro">
         <p className="section-label">{t.contactLabel}</p>
         <h2><AccentText text={t.contactTitle} terms={t.accentTerms} /></h2>
+        <div className="contact-links">
+          <p>{t.socialLabel}</p>
+          <a href="mailto:sergiys1997@gmail.com"><PrimeIcon name="pi-envelope" /><span><strong>Email</strong><small>sergiys1997@gmail.com</small></span></a>
+          {socialLinks.map(([label, handle, href, icon]) => (
+            <a href={href} target="_blank" rel="noreferrer" key={href}>
+              <PrimeIcon name={icon} />
+              <span><strong>{label}</strong><small>{handle}</small></span>
+            </a>
+          ))}
+        </div>
       </div>
       <div className="contact-card">
         <p>{t.contactText}</p>
@@ -3057,21 +3170,14 @@ function Contact({ t }) {
               </button>
             ))}
           </div>
+          <p className="contact-option-description" aria-live="polite" key={briefIndex}>
+            {t.briefDescriptions[briefIndex]}
+          </p>
         </div>
         <a className="button button-light" href={buildTelegramUrl(t.briefMessages[briefIndex])} target="_blank" rel="noreferrer">
           <PrimeIcon name="pi-send" />
           {t.contactCta}
         </a>
-        <div className="contact-links">
-          <p>{t.socialLabel}</p>
-          <a href="mailto:sergiys1997@gmail.com"><PrimeIcon name="pi-envelope" /><span><strong>Email</strong><small>sergiys1997@gmail.com</small></span></a>
-          {socialLinks.map(([label, handle, href, icon]) => (
-            <a href={href} target="_blank" rel="noreferrer" key={href}>
-              <PrimeIcon name={icon} />
-              <span><strong>{label}</strong><small>{handle}</small></span>
-            </a>
-          ))}
-        </div>
       </div>
     </section>
   );
