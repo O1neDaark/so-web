@@ -4,6 +4,7 @@ import App from "./App.jsx";
 import "primeicons/primeicons.css";
 import "./styles.css";
 import "./rebrand/rebrand.css";
+import "./rebrand/polish.css";
 
 createRoot(document.getElementById("root")).render(
   <React.StrictMode>
