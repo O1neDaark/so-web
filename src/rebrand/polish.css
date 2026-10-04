@@ -358,3 +358,20 @@ html[data-theme="light"] .diagnostics-page .diagnostics-process-step::before {
     background: linear-gradient(180deg, transparent, #b9b8b0, transparent);
   }
 }
+
+
+/* iGMS homepage card: remove the last legacy blue underlay */
+.rb-home .rb-work-igms .rb-cover-media {
+  background: #fff;
+  padding: 0;
+}
+
+.rb-home .rb-work-igms .rb-cover-media img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  object-position: center;
+  background: #fff;
+  border: 0;
+  border-radius: 0;
+}
