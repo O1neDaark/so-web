@@ -3,6 +3,7 @@ import { createRoot } from "react-dom/client";
 import App from "./App.jsx";
 import "primeicons/primeicons.css";
 import "./styles.css";
+import "./rebrand/rebrand.css";
 
 createRoot(document.getElementById("root")).render(
   <React.StrictMode>

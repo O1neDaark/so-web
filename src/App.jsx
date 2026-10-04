@@ -1,8 +1,10 @@
 import React, { useEffect, useMemo, useRef, useState } from "react";
-import AmbientScene from "./AmbientScene";
+import RebrandHome, { RebrandHeader, RebrandFooter, LingoSlideCase, RebrandContact } from "./rebrand/Rebrand";
+import { content as rebrandContent } from "./rebrand/content";
 import ArchivePage from "./ArchivePage";
-import { getArchivePage } from "./archiveData";
-import ThemeIntro from "./ThemeIntro";
+import { getArchivePage, archiveNavigation } from "./archiveData";
+import { CaseOverview, CaseConclusion, NextProject, NotFound } from "./rebrand/CaseComponents";
+import { caseStories } from "./rebrand/caseStories";
 import logoMark from "./assets/co-logo-mark.png";
 import heroPortrait from "./assets/sergey-hero.webp";
 import heroPortraitPrimary from "./assets/sergey-hero-primary.jpeg";
@@ -13,13 +15,13 @@ import igmsImage02 from "./assets/igms-02.png";
 import igmsImage03 from "./assets/igms-03.png";
 import igmsImage04 from "./assets/igms-04.png";
 import igmsImage05 from "./assets/igms-05.png";
-import enterpriseCover from "./assets/enterprise-cover.png";
+const enterpriseCover = "/rebrand/enterprise-nda-interface.png";
 import diagnosticsCover from "./assets/diagnostics-cover.png";
 import diagnosticsProduct from "./assets/diagnostics-product.png";
 import diagnosticsStage from "./assets/diagnostics-stage.png";
 import diagnosticsAward from "./assets/diagnostics-award.png";
 import diagnosticsBrochure from "./assets/diagnostics-brochure.png";
-import ragCover from "./assets/rag-cover.png";
+const ragCover = "/rebrand/rag-nda-interface.png";
 import socialFeedback from "./assets/social-feedback.png";
 import engineeringClub01 from "./assets/engineering-club-01.jpg";
 import engineeringClub02 from "./assets/engineering-club-02.jpg";
@@ -118,7 +120,10 @@ function AnimatedNumber({ value, delay = 0 }) {
 
     const node = ref.current;
     const reduceMotion = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
-    if (!node || reduceMotion || !("IntersectionObserver" in window)) return undefined;
+    if (!node || reduceMotion || !("IntersectionObserver" in window)) {
+      setDisplayValue(value);
+      return undefined;
+    }
 
     let frame = 0;
     let timeout = 0;
@@ -241,7 +246,7 @@ const copy = {
     heroCases: "View cases",
     metrics: [
       ["9+", "automation products launched"],
-      ["×2", "faster knowledge-base search"],
+      ["RAG", "source-grounded knowledge search"],
       ["↓1.5x", "lower support workload"],
       ["IT Camp", "special award in 2025"],
     ],
@@ -435,8 +440,8 @@ const cases = {
   ru: [
     {
       id: "igms",
-      index: "CASE 01 / iGMS",
-      title: "Система управления недвижимостью для iGMS",
+      index: "CASE 03 / iGMS",
+      title: "iGMS: концепция единого рабочего места",
       role: "Февраль - март 2026 / Product Design, AI UX, Figma, FigJam",
       description:
         "Спроектировал единый интерфейс для работы с сообщениями из Airbnb, Booking и Vrbo: 3-колоночный layout, контекст бронирования, AI-помощник и библиотека шаблонов.",
@@ -455,7 +460,7 @@ const cases = {
     },
     {
       id: "monitoring",
-      index: "CASE 03 / ENTERPRISE",
+      index: "CASE 01 / ENTERPRISE",
       title: "Enterprise-система управления рабочим временем",
       role: "2025 - 2026 / NDA, enterprise ecosystem",
       description:
@@ -475,7 +480,7 @@ const cases = {
     },
     {
       id: "diagnostics",
-      index: "CASE 02 / INDUSTRIAL AI",
+      index: "CASE 04 / INDUSTRIAL AI",
       title: "AI-диагностика электродвигателей",
       role: "IT Camp Sirius / Газпром нефть / 2025",
       description:
@@ -495,7 +500,7 @@ const cases = {
     },
     {
       id: "rag",
-      index: "CASE 04 / RAG PLATFORM",
+      index: "CASE 02 / RAG PLATFORM",
       title: "RAG-платформа для интеллектуальной поддержки",
       role: "2024 - 2025 / AI product, on-premise, knowledge base",
       description:
@@ -537,8 +542,8 @@ const cases = {
   en: [
     {
       id: "igms",
-      index: "CASE 01 / iGMS",
-      title: "Property management system for iGMS",
+      index: "CASE 03 / iGMS",
+      title: "iGMS: a unified workspace concept",
       role: "February - March 2026 / Product Design, AI UX, Figma, FigJam",
       description:
         "Designed a unified interface for Airbnb, Booking, and Vrbo messages: a 3-column layout, booking context, AI assistant, and template library.",
@@ -557,7 +562,7 @@ const cases = {
     },
     {
       id: "monitoring",
-      index: "CASE 03 / ENTERPRISE",
+      index: "CASE 01 / ENTERPRISE",
       title: "Enterprise workforce management system",
       role: "2025 - 2026 / NDA, enterprise ecosystem",
       description:
@@ -577,7 +582,7 @@ const cases = {
     },
     {
       id: "diagnostics",
-      index: "CASE 02 / INDUSTRIAL AI",
+      index: "CASE 04 / INDUSTRIAL AI",
       title: "AI motor diagnostics",
       role: "IT Camp Sirius / Gazprom Neft / 2025",
       description:
@@ -597,7 +602,7 @@ const cases = {
     },
     {
       id: "rag",
-      index: "CASE 04 / RAG PLATFORM",
+      index: "CASE 02 / RAG PLATFORM",
       title: "RAG platform for intelligent support",
       role: "2024 - 2025 / AI product, on-premise, knowledge base",
       description:
@@ -705,15 +710,15 @@ const igmsCase = {
     strategyLabel: "Product strategy",
     cjmLabel: "CJM / AI impact",
     galleryLabel: "Screens and process",
-    eyebrow: "CASE 01 / iGMS / Property Management System",
-    title: "Система управления недвижимостью для iGMS",
+    eyebrow: "CASE 03 / iGMS / Property Management System",
+    title: "iGMS: концепция единого рабочего места",
     subtitle:
       "Единый inbox для Airbnb, Booking и Vrbo: контекст бронирования, AI-рекомендации и быстрые ответы без переключения между платформами.",
     period: "Февраль - март 2026 / Product Design, AI UX, Figma, FigJam",
     heroStats: [
-      ["×6", "быстрее первый ответ гостю"],
-      ["-60%", "времени на переписку"],
-      ["4.6 → 4.8", "восстановление рейтинга"],
+      ["3", "панели в едином рабочем месте"],
+      ["AI", "подсказки в контексте диалога"],
+      ["Концепт", "сценарии и прототип"],
       ["2 недели", "от задачи до прототипа"],
     ],
     intro:
@@ -739,11 +744,11 @@ const igmsCase = {
     ],
     scenarioTitle: "Сценарии, которые закрывает интерфейс",
     scenarios: [
-      ["Поступает запрос", "AI автоответ < 1 минуты, меньше клиентов уходит."],
-      ["Уточнение и бронь", "Шаблоны и подсказки сокращают до 40% времени ответа."],
+      ["Поступает запрос", "AI готовит черновик первого ответа; оператор проверяет его перед отправкой."],
+      ["Уточнение и бронь", "Шаблоны и подсказки помогают ответить с учётом деталей бронирования."],
       ["Подтверждение", "Автосообщения уменьшают ошибки, разные языки и больше доверия."],
-      ["Перед заездом", "FAQ от AI до заезда снижает входящие вопросы примерно на 30%."],
-      ["Инцидент во время проживания", "Эскалация AI + агент, SLA меньше 5 минут."],
+      ["Перед заездом", "FAQ до заезда отвечает на повторяющиеся вопросы о проживании."],
+      ["Инцидент во время проживания", "AI выделяет риск и передаёт контекст оператору для решения инцидента."],
       ["После проживания", "AI повышает качество пост-коммуникации и шанс хорошего отзыва."],
     ],
     gallery: [
@@ -761,15 +766,15 @@ const igmsCase = {
     strategyLabel: "Product strategy",
     cjmLabel: "CJM / AI impact",
     galleryLabel: "Screens and process",
-    eyebrow: "CASE 01 / iGMS / Property Management System",
-    title: "Property management system for iGMS",
+    eyebrow: "CASE 03 / iGMS / Property Management System",
+    title: "iGMS: a unified workspace concept",
     subtitle:
       "A unified inbox for Airbnb, Booking, and Vrbo: booking context, AI recommendations, and fast replies without switching between platforms.",
     period: "February - March 2026 / Product Design, AI UX, Figma, FigJam",
     heroStats: [
-      ["×6", "faster first guest response"],
-      ["-60%", "less time spent on messaging"],
-      ["4.6 → 4.8", "rating recovery"],
+      ["3", "panels in one workspace"],
+      ["AI", "context-aware response assistance"],
+      ["Concept", "scenarios and prototype"],
       ["2 weeks", "from brief to prototype"],
     ],
     intro:
@@ -795,11 +800,11 @@ const igmsCase = {
     ],
     scenarioTitle: "Core scenarios covered by the product",
     scenarios: [
-      ["Incoming request", "AI auto-reply in under 1 minute, reducing guest drop-off."],
-      ["Clarification and booking", "Templates and hints cut up to 40% of response time."],
+      ["Incoming request", "AI prepares a first-response draft for the operator to review."],
+      ["Clarification and booking", "Templates and hints help the operator respond with booking context."],
       ["Confirmation", "Automated messages reduce errors, support languages, and build trust."],
-      ["Before check-in", "AI FAQ before arrival reduces incoming questions by around 30%."],
-      ["Incident during stay", "AI escalation plus agent support keeps SLA under 5 minutes."],
+      ["Before check-in", "A pre-arrival FAQ answers recurring questions about the stay."],
+      ["Incident during stay", "AI highlights risk and hands the context to an operator."],
       ["After stay", "AI improves post-stay communication and the chance of a positive review."],
     ],
     gallery: [
@@ -820,19 +825,21 @@ const enterpriseCase = {
     strategyLabel: "Leadership and delivery",
     cjmLabel: "Operating system",
     galleryLabel: "Как я вел проект",
-    eyebrow: "CASE 02 / ENTERPRISE / NDA",
+    eyebrow: "CASE 01 / BIG TECH · TELECOM / NDA",
+    coverCaption: "Интерфейс анонимизирован под NDA · Big Tech / Telecom",
+    coverOpen: "Открыть анонимизированный экран Enterprise в полном размере",
     title: "Enterprise-система управления рабочим временем",
     subtitle:
       "Enterprise-интерфейс, который превращает сложный учет статусов, смен и отсутствий в понятный рабочий процесс для сотрудников, руководителей и поддержки.",
     period: "2025 - 2026 / Руководитель направления автоматизации / Product Design",
     heroStats: [
-      ["×3-5", "быстрее оформление отсутствий"],
-      ["-5x", "меньше ошибок в сценариях"],
+      ["Роли", "сотрудник, руководитель, поддержка"],
+      ["Сценарии", "смены, статусы и отсутствия"],
       ["5", "специалистов в команде"],
-      ["NDA", "детали обезличены"],
+      ["NDA", "экраны и данные анонимизированы"],
     ],
     intro:
-      "Этот кейс нельзя показывать как обычную галерею экранов: продукт находится внутри enterprise-инфраструктуры, а детали защищены NDA. Поэтому я показываю главное: как была разобрана сложная предметная область, выстроен процесс с командой, собрана обратная связь через интервью и задачи, а затем спроектирован интерфейс, который снижает операционную нагрузку.",
+      "Проект для Big Tech / Telecom работает внутри enterprise-инфраструктуры. Представленный экран анонимизирован под NDA: названия и данные заменены. В кейсе показываю, как разобрал сложную предметную область, выстроил работу команды и спроектировал интерфейс, который снижает операционную нагрузку.",
     challenge: [
       "Сделать сложный учет рабочего времени понятным без длинных инструкций и ручной поддержки.",
       "Свести разные статусы, смены, отсутствия, роли и исключения в один читаемый интерфейс.",
@@ -840,7 +847,7 @@ const enterpriseCase = {
     ],
     constraints: [
       "Enterprise-среда: ограничения безопасности, внутренние роли, согласования и зависимость от существующей инфраструктуры.",
-      "Нельзя раскрывать реальные экраны, данные, названия и архитектурные детали.",
+      "Публичные экраны анонимизированы под NDA; реальные названия, данные и архитектурные детали не раскрываются.",
       "Проект требовал синхронизации дизайна, аналитики, разработки, поддержки и бизнес-заказчиков.",
     ],
     solutionTitle: "От исследования до внедрения",
@@ -875,19 +882,21 @@ const enterpriseCase = {
     strategyLabel: "Leadership and delivery",
     cjmLabel: "Operating system",
     galleryLabel: "How I led the project",
-    eyebrow: "CASE 02 / ENTERPRISE / NDA",
+    eyebrow: "CASE 01 / BIG TECH · TELECOM / NDA",
+    coverCaption: "Interface anonymized under NDA · Big Tech / Telecom",
+    coverOpen: "Open the anonymized Enterprise screen at full size",
     title: "Enterprise workforce management system",
     subtitle:
       "An enterprise interface that turns complex statuses, shifts, and absence workflows into a clear operating process for employees, managers, and support teams.",
     period: "2025 - 2026 / Automation Lead / Product Design",
     heroStats: [
-      ["×3-5", "faster absence requests"],
-      ["-5x", "fewer workflow errors"],
+      ["Roles", "employee, manager and support"],
+      ["Flows", "shifts, statuses and absences"],
       ["5", "specialists coordinated"],
-      ["NDA", "details anonymized"],
+      ["NDA", "screens and data anonymized"],
     ],
     intro:
-      "This case cannot be shown as a normal screen gallery: the product lives inside enterprise infrastructure and the details are protected by NDA. So the important part is the process: how I unpacked a complex domain, built team delivery, collected feedback through interviews and tasks, and designed an interface that reduced operational load.",
+      "This Big Tech / Telecom product operates inside enterprise infrastructure. The screen shown here is anonymized under NDA: names and data have been replaced. The case explains how I unpacked a complex domain, coordinated delivery, and designed an interface that reduced operational load.",
     challenge: [
       "Make complex working-time tracking understandable without long instructions or constant support.",
       "Bring statuses, shifts, absences, roles, and exceptions into one readable interface.",
@@ -895,7 +904,7 @@ const enterpriseCase = {
     ],
     constraints: [
       "Enterprise environment: security constraints, internal roles, approvals, and dependency on existing infrastructure.",
-      "Real screens, data, names, and architectural details cannot be disclosed.",
+      "Public screens are anonymized under NDA; real names, data, and architectural details are not disclosed.",
       "The project required synchronization between design, analytics, engineering, support, and business stakeholders.",
     ],
     solutionTitle: "From discovery to adoption",
@@ -933,7 +942,7 @@ const diagnosticsCase = {
     strategyLabel: "Как я упаковал решение",
     cjmLabel: "Процесс",
     galleryLabel: "Доказательства проекта",
-    eyebrow: "CASE 03 / INDUSTRIAL AI / IT CAMP",
+    eyebrow: "CASE 04 / INDUSTRIAL AI / IT CAMP",
     title: "AI-диагностика электродвигателей",
     subtitle:
       "MVP для нефтегазовой промышленности: от сложной инженерной задачи до понятного интерфейса, демо-сценария и защиты решения перед экспертами.",
@@ -1000,7 +1009,7 @@ const diagnosticsCase = {
     strategyLabel: "How I framed the solution",
     cjmLabel: "Process",
     galleryLabel: "Project proof",
-    eyebrow: "CASE 03 / INDUSTRIAL AI / IT CAMP",
+    eyebrow: "CASE 04 / INDUSTRIAL AI / IT CAMP",
     title: "AI motor diagnostics",
     subtitle:
       "An MVP for the oil and gas industry: from a complex engineering problem to a clear interface, demo flow, and expert-facing solution story.",
@@ -1070,16 +1079,18 @@ const ragCase = {
     strategyLabel: "Product architecture",
     cjmLabel: "Сценарии платформы",
     galleryLabel: "Как устроено решение",
-    eyebrow: "CASE 04 / RAG PLATFORM / NDA",
+    eyebrow: "CASE 02 / BIG TECH · TELECOM / NDA",
+    coverCaption: "Интерфейс анонимизирован под NDA · Big Tech / Telecom",
+    coverOpen: "Открыть анонимизированный экран RAG в полном размере",
     title: "RAG-платформа для интеллектуальной поддержки",
     subtitle:
       "AI-сервис, который превращает разрозненные базы знаний компании в управляемую систему поиска, уточнения контекста и генерации ответов с учетом роли пользователя.",
     period: "2024 - 2025 / AI Product / On-premise / Knowledge base",
     heroStats: [
-      ["×2", "быстрее поиск по базе знаний"],
-      ["30%", "потенциал автозакрытия типовых задач"],
+      ["RAG", "поиск с привязкой к источникам"],
+      ["Контекст", "роль и права пользователя"],
       ["On-premise", "развертывание внутри контура"],
-      ["NDA", "детали и данные обезличены"],
+      ["NDA", "экран и данные анонимизированы"],
     ],
     intro:
       "В больших компаниях знания живут фрагментами: регламенты, инструкции, документы, FAQ, переписки и локальные базы отделов. Пользователь тратит время не на решение задачи, а на поиск правильного источника и проверку актуальности. RAG-платформа собирает этот хаос в понятный AI-интерфейс: задаешь вопрос, уточняешь контекст, получаешь ответ с учетом роли, источников и безопасных правил доступа.",
@@ -1089,7 +1100,7 @@ const ragCase = {
       "Сохранить безопасность: on-premise контур, роли, права доступа, маршрутизация по отделам и контроль источников.",
     ],
     constraints: [
-      "NDA: нельзя раскрывать реальные документы, интерфейсные детали, архитектуру и названия внутренних систем.",
+      "Публичный экран анонимизирован под NDA; реальные документы, данные, архитектура и названия внутренних систем не раскрываются.",
       "Сложный trust layer: пользователю нужно понимать, откуда взят ответ и можно ли на него опираться.",
       "Разные роли и сценарии: сотрудник, поддержка, эксперт отдела, администратор знаний и владелец процесса.",
     ],
@@ -1133,16 +1144,18 @@ const ragCase = {
     strategyLabel: "Product architecture",
     cjmLabel: "Platform scenarios",
     galleryLabel: "How the solution works",
-    eyebrow: "CASE 04 / RAG PLATFORM / NDA",
+    eyebrow: "CASE 02 / BIG TECH · TELECOM / NDA",
+    coverCaption: "Interface anonymized under NDA · Big Tech / Telecom",
+    coverOpen: "Open the anonymized RAG screen at full size",
     title: "RAG platform for intelligent support",
     subtitle:
       "An AI service that turns fragmented company knowledge bases into a managed system for semantic search, context clarification, and role-aware answers.",
     period: "2024 - 2025 / AI Product / On-premise / Knowledge base",
     heroStats: [
-      ["×2", "faster knowledge-base search"],
-      ["30%", "potential auto-resolution of common tasks"],
+      ["RAG", "source-grounded knowledge search"],
+      ["Context", "user role and access permissions"],
       ["On-premise", "deployment inside company perimeter"],
-      ["NDA", "details and data anonymized"],
+      ["NDA", "screen and data anonymized"],
     ],
     intro:
       "In large companies, knowledge is scattered across regulations, instructions, documents, FAQs, conversations, and local department bases. Users spend time not on solving the task, but on finding the right source and checking relevance. The RAG platform turns this chaos into a clear AI interface: ask a question, clarify context, receive a role-aware answer with sources and safe access rules.",
@@ -1152,7 +1165,7 @@ const ragCase = {
       "Keep the solution secure: on-premise deployment, roles, access rights, department routing, and source control.",
     ],
     constraints: [
-      "NDA: real documents, interface details, architecture, and internal system names cannot be disclosed.",
+      "The public screen is anonymized under NDA; real documents, data, architecture, and internal system names are not disclosed.",
       "Complex trust layer: users need to understand where the answer came from and whether it can be relied on.",
       "Different roles and scenarios: employee, support, department expert, knowledge admin, and process owner.",
     ],
@@ -1386,7 +1399,7 @@ const resumeContent = {
     photoAlt: "Сергей Остаев на IT Camp 2025",
     downloadLabel: "Скачать резюме в PDF",
     downloadHint: "RU / 2 страницы / готово для HR",
-    pdfHref: "/resume/Sergey-Ostaev-Resume-RU.pdf",
+    pdfHref: "/resume/Sergey_Ostaev_CV_RU.pdf",
     contacts: [
       ["Telegram", "@Sergey_Designer", "https://t.me/Sergey_Designer"],
       ["Email", "sergiys1997@gmail.com", "mailto:sergiys1997@gmail.com"],
@@ -1483,7 +1496,7 @@ const resumeContent = {
     photoAlt: "Sergey Ostaev at IT Camp 2025",
     downloadLabel: "Download resume PDF",
     downloadHint: "EN / 2 pages / HR-ready",
-    pdfHref: "/resume/Sergey-Ostaev-Resume-EN.pdf",
+    pdfHref: "/resume/Sergey_Ostaev_CV_EN.pdf",
     contacts: [
       ["Telegram", "@Sergey_Designer", "https://t.me/Sergey_Designer"],
       ["Email", "sergiys1997@gmail.com", "mailto:sergiys1997@gmail.com"],
@@ -1572,17 +1585,16 @@ const resumeContent = {
 };
 
 function App() {
-  const [lang, setLang] = useState("ru");
+  const [lang, setLang] = useState(() => { try { return localStorage.getItem("sergey-language") === "en" ? "en" : "ru"; } catch { return "ru"; } });
   const [path, setPath] = useState(() => window.location.pathname);
   const [isResumeOpen, setIsResumeOpen] = useState(false);
-  const [theme, setTheme] = useState(getPreferredTheme);
-  const [needsThemeChoice] = useState(() => readStoredTheme() === null);
-  const [introPhase, setIntroPhase] = useState("loading");
+
   const t = { ...copy[lang], ...conversionCopy[lang] };
   const currentCases = useMemo(
     () => [...cases[lang]].sort((a, b) => caseOrder.indexOf(a.id) - caseOrder.indexOf(b.id)),
     [lang],
   );
+  const isLingoPage = path.replace(/\/$/, "") === "/case/lingoslide";
   const isResumePage = path.replace(/\/$/, "") === "/resume";
   const isIgmsCasePage = path.replace(/\/$/, "") === "/case/igms";
   const isEnterpriseCasePage = path.replace(/\/$/, "") === "/case/enterprise";
@@ -1591,12 +1603,15 @@ function App() {
   const isSocialCasePage = path.replace(/\/$/, "") === "/case/social";
   const archiveMatch = path.replace(/\/$/, "").match(/^\/archive\/([^/]+)$/);
   const archiveSlug = archiveMatch?.[1] ?? "studio";
-  const isArchivePage = Boolean(archiveMatch);
+  const isArchivePage = Boolean(archiveMatch) && archiveNavigation.some(item => item.slug === archiveSlug);
   const isCasePage = isIgmsCasePage || isEnterpriseCasePage || isDiagnosticsCasePage || isRagCasePage || isSocialCasePage;
-  const isHomePage = !isResumePage && !isCasePage && !isArchivePage;
+  const isHomePage = path === "/";
+  const isNotFound = !isHomePage && !isResumePage && !isCasePage && !isArchivePage && !isLingoPage;
   const pageMeta = (() => {
-    const homeTitle = lang === "ru" ? "Сергей Остаев — AI Product Designer" : "Sergey Ostaev — AI Product Designer";
-    if (isHomePage) return { title: homeTitle, description: t.heroText };
+    const homeTitle = lang === "ru" ? "Серёга — есть идея! | Сергей Остаев, Product Builder" : "Sergey — got an idea! | Product Builder";
+    if (isNotFound) return { title: lang === "ru" ? "Страница не найдена" : "Page not found", description: lang === "ru" ? "Перейдите к актуальным проектам Сергея Остаева." : "Explore Sergey Ostaev’s current projects." };
+    if (isHomePage) return { title: homeTitle, description: rebrandContent[lang].lead + " " + rebrandContent[lang].intro };
+    if (isLingoPage) return { title: "LingoSlide", description: rebrandContent[lang].caseLead };
     if (isResumePage) return { title: `${resumeContent[lang].title} — ${t.resumeButton}`, description: resumeContent[lang].summary };
     if (isIgmsCasePage) return { title: igmsCase[lang].title, description: igmsCase[lang].subtitle };
     if (isEnterpriseCasePage) return { title: enterpriseCase[lang].title, description: enterpriseCase[lang].subtitle };
@@ -1610,50 +1625,29 @@ function App() {
     return { title: homeTitle, description: t.heroText };
   })();
 
-  const selectTheme = (nextTheme) => {
-    setTheme(nextTheme);
-    try {
-      window.localStorage.setItem(themeStorageKey, nextTheme);
-    } catch {
-      // The selected theme still applies for this session when storage is unavailable.
-    }
-    if (introPhase === "choice") setIntroPhase("leaving");
-  };
-
   useEffect(() => {
-    document.documentElement.dataset.theme = theme;
-    document.documentElement.style.colorScheme = theme;
-  }, [theme]);
-
-  useEffect(() => {
-    document.documentElement.dataset.intro = introPhase;
-    const reduceMotion = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
-    let timer;
-
-    if (introPhase === "loading") {
-      timer = window.setTimeout(() => setIntroPhase(needsThemeChoice ? "choice" : "leaving"), reduceMotion ? 240 : 1250);
-    } else if (introPhase === "leaving") {
-      timer = window.setTimeout(() => setIntroPhase("done"), reduceMotion ? 80 : 420);
-    }
-
-    return () => window.clearTimeout(timer);
-  }, [introPhase, needsThemeChoice]);
+    document.documentElement.dataset.theme = "light";
+    document.documentElement.dataset.intro = "done";
+    document.documentElement.style.colorScheme = "light";
+  }, []);
 
   useEffect(() => {
     document.documentElement.lang = lang;
+    try { localStorage.setItem("sergey-language", lang); } catch { /* Session language remains available. */ }
   }, [lang]);
 
   useEffect(() => {
     const fullTitle = isHomePage ? pageMeta.title : `${pageMeta.title} — Sergey Ostaev`;
     document.title = fullTitle;
     const setMeta = (selector, value) => document.querySelector(selector)?.setAttribute("content", value);
+    setMeta('meta[name="robots"]', isNotFound ? "noindex, follow" : "index, follow");
     setMeta('meta[name="description"]', pageMeta.description);
     setMeta('meta[property="og:title"]', fullTitle);
     setMeta('meta[property="og:description"]', pageMeta.description);
     setMeta('meta[property="og:locale"]', lang === "ru" ? "ru_RU" : "en_US");
     setMeta('meta[name="twitter:title"]', fullTitle);
     setMeta('meta[name="twitter:description"]', pageMeta.description);
-  }, [isHomePage, lang, pageMeta.description, pageMeta.title]);
+  }, [isHomePage, isNotFound, lang, pageMeta.description, pageMeta.title]);
 
   useEffect(() => {
     const nodes = Array.from(document.querySelectorAll("[data-reveal]"));
@@ -1701,7 +1695,7 @@ function App() {
   useEffect(() => {
     if (!window.location.hash) return undefined;
     const frame = window.requestAnimationFrame(() => {
-      document.querySelector(window.location.hash)?.scrollIntoView({ block: "start" });
+      document.getElementById(decodeURIComponent(window.location.hash.slice(1)))?.scrollIntoView({ block: "start" });
     });
     return () => window.cancelAnimationFrame(frame);
   }, [path]);
@@ -1709,10 +1703,10 @@ function App() {
   useEffect(() => {
     const handleInternalNavigation = (event) => {
       const anchor = event.target.closest("a[href]");
-      if (!anchor || event.defaultPrevented || anchor.target === "_blank" || anchor.hasAttribute("download") || event.button !== 0) return;
+      if (!anchor || event.defaultPrevented || anchor.target === "_blank" || anchor.hasAttribute("download") || event.button !== 0 || event.metaKey || event.ctrlKey || event.shiftKey || event.altKey) return;
 
       const url = new URL(anchor.href, window.location.href);
-      if (url.origin !== window.location.origin) return;
+      if (url.origin !== window.location.origin || /\.[a-z0-9]+$/i.test(url.pathname)) return;
 
       event.preventDefault();
       window.history.pushState({}, "", `${url.pathname}${url.search}${url.hash}`);
@@ -1721,7 +1715,7 @@ function App() {
 
       window.requestAnimationFrame(() => {
         if (url.hash) {
-          document.querySelector(url.hash)?.scrollIntoView({ behavior: "smooth", block: "start" });
+          document.getElementById(decodeURIComponent(url.hash.slice(1)))?.scrollIntoView({ behavior: window.matchMedia("(prefers-reduced-motion: reduce)").matches ? "auto" : "smooth", block: "start" });
         } else {
           window.scrollTo({ top: 0, behavior: "auto" });
         }
@@ -1754,95 +1748,37 @@ function App() {
 
   return (
     <>
-      <ThemeIntro phase={introPhase} lang={lang} onSelect={selectTheme} onLangChange={setLang} />
-      <AmbientScene theme={theme} path={path} />
-      <ReadingProgress active={isCasePage || isResumePage || isArchivePage} />
-      <Header
-        lang={lang}
-        setLang={setLang}
-        t={t}
-        isResumePage={isResumePage}
-        isHomePage={isHomePage}
-        onResumeOpen={() => setIsResumeOpen(true)}
-        theme={theme}
-        onThemeToggle={() => selectTheme(theme === "dark" ? "light" : "dark")}
-      />
-      {isResumePage ? (
+      <RebrandHeader lang={lang} setLang={setLang} path={path} />
+      {isNotFound ? (
+        <NotFound lang={lang} />
+      ) : isLingoPage ? (
+        <LingoSlideCase lang={lang} />
+      ) : isResumePage ? (
         <ResumePage data={resumeContent[lang]} />
       ) : isIgmsCasePage ? (
-        <IgmsCasePage data={igmsCase[lang]} />
+        <IgmsCasePage data={{ ...igmsCase[lang], lang, rebrand: caseStories.igms[lang] }} />
       ) : isEnterpriseCasePage ? (
-        <EnterpriseCasePage data={enterpriseCase[lang]} />
+        <EnterpriseCasePage data={{ ...enterpriseCase[lang], lang, rebrand: caseStories.enterprise[lang] }} />
       ) : isDiagnosticsCasePage ? (
-        <DiagnosticsCasePage data={diagnosticsCase[lang]} />
+        <DiagnosticsCasePage data={{ ...diagnosticsCase[lang], lang, rebrand: caseStories.diagnostics[lang] }} />
       ) : isRagCasePage ? (
-        <RagCasePage data={ragCase[lang]} />
+        <RagCasePage data={{ ...ragCase[lang], lang, rebrand: caseStories.rag[lang] }} />
       ) : isSocialCasePage ? (
         <SocialCasePage data={socialCase[lang]} />
       ) : isArchivePage ? (
         <ArchivePage slug={archiveSlug} lang={lang} />
       ) : (
-        <main id="top">
-          <Hero t={t} />
-          <Marquee />
-          <About t={t} />
-          <Cases t={t} items={currentCases} />
-          <Services t={t} items={services[lang]} />
-          <Archive t={t} items={archiveItems[lang]} />
-          <AiToolkit t={t} items={aiToolkit[lang]} />
-          <Process t={t} items={processSteps[lang]} />
-          <Manifesto t={t} />
-          <Contact t={t} />
-        </main>
+        <RebrandHome lang={lang} />
       )}
-      {isCasePage && <CaseFooterCta t={t} />}
-      <footer className="footer">
-        <span>© 2026 Sergey Ostaev</span>
-        <span>{t.footer}</span>
-        <a href="https://t.me/soc_blog" target="_blank" rel="noreferrer">Telegram / @soc_blog</a>
-      </footer>
-      <MobileDock t={t} isHomePage={isHomePage} />
-      <ResumeModal
+      {(isCasePage || isLingoPage) && <div className="rb-inner-wrap"><NextProject current={path.split("/")[2]} lang={lang} />{isCasePage && <RebrandContact t={rebrandContent[lang]} />}</div>}
+      <RebrandFooter lang={lang} />
+      {isResumeOpen && <ResumeModal
         data={resumeContent[lang]}
         t={t}
         isOpen={isResumeOpen}
         onClose={() => setIsResumeOpen(false)}
-      />
+      />}
     </>
-  );
-}
-
-function ReadingProgress({ active }) {
-  const [progress, setProgress] = useState(0);
-
-  useEffect(() => {
-    if (!active) return undefined;
-
-    let frame = 0;
-    const updateProgress = () => {
-      window.cancelAnimationFrame(frame);
-      frame = window.requestAnimationFrame(() => {
-        const scrollable = document.documentElement.scrollHeight - window.innerHeight;
-        setProgress(scrollable > 0 ? Math.min(window.scrollY / scrollable, 1) : 0);
-      });
-    };
-
-    updateProgress();
-    window.addEventListener("scroll", updateProgress, { passive: true });
-    window.addEventListener("resize", updateProgress);
-    return () => {
-      window.cancelAnimationFrame(frame);
-      window.removeEventListener("scroll", updateProgress);
-      window.removeEventListener("resize", updateProgress);
-    };
-  }, [active]);
-
-  if (!active) return null;
-
-  return (
-    <div className="reading-progress" aria-hidden="true">
-      <span style={{ transform: `scaleX(${progress})` }} />
-    </div>
   );
 }
 
@@ -2077,7 +2013,7 @@ function Cases({ t, items }) {
 
 function ResumePage({ data, isModal = false }) {
   return (
-    <main className={`resume-page${isModal ? " resume-page-modal" : ""}`} id={isModal ? undefined : "top"}>
+    <main id="main-content" tabIndex={-1} className={`resume-page${isModal ? " resume-page-modal" : ""}`}>
       <section className="resume-hero" data-reveal>
         {!isModal && (
           <a className="resume-back" href="/#top">
@@ -2180,7 +2116,7 @@ function ResumePage({ data, isModal = false }) {
 
 function IgmsCasePage({ data }) {
   return (
-    <main className="case-page igms-page" id="top">
+    <main id="main-content" tabIndex={-1} className="case-page igms-page">
       <section className="case-page-hero" data-reveal>
         <a className="resume-back" href="/#cases">
           {data.back}
@@ -2191,6 +2127,7 @@ function IgmsCasePage({ data }) {
         </div>
         <h1>{data.title}</h1>
         <p className="case-page-subtitle">{data.subtitle}</p>
+        <CaseOverview story={data.rebrand} lang={data.lang} />
         <div className="case-page-cover">
           <img src={igmsCover} alt="iGMS interface on laptop" />
         </div>
@@ -2255,13 +2192,14 @@ function IgmsCasePage({ data }) {
           ))}
         </div>
       </section>
+      <CaseConclusion story={data.rebrand} lang={data.lang} />
     </main>
   );
 }
 
 function EnterpriseCasePage({ data }) {
   return (
-    <main className="case-page enterprise-page" id="top">
+    <main id="main-content" tabIndex={-1} className="case-page enterprise-page">
       <section className="case-page-hero enterprise-hero" data-reveal>
         <a className="resume-back" href="/#cases">
           {data.back}
@@ -2272,9 +2210,13 @@ function EnterpriseCasePage({ data }) {
         </div>
         <h1>{data.title}</h1>
         <p className="case-page-subtitle">{data.subtitle}</p>
-        <div className="case-page-cover enterprise-cover">
-          <img src={enterpriseCover} alt="Anonymized enterprise monitoring interface" />
-        </div>
+        <CaseOverview story={data.rebrand} lang={data.lang} />
+        <figure className="case-page-cover enterprise-cover nda-case-media">
+          <a href={enterpriseCover} target="_blank" rel="noreferrer" aria-label={data.coverOpen}>
+            <img src={enterpriseCover} alt={data.coverCaption} />
+          </a>
+          <figcaption>{data.coverCaption}</figcaption>
+        </figure>
         <div className="resume-metrics case-page-metrics" data-counter-group>
           {data.heroStats.map(([value, label], index) => (
             <div key={label} data-counter-item style={{ "--counter-delay": `${index * 90}ms` }}>
@@ -2340,6 +2282,7 @@ function EnterpriseCasePage({ data }) {
           ))}
         </div>
       </section>
+      <CaseConclusion story={data.rebrand} lang={data.lang} />
     </main>
   );
 }
@@ -2365,7 +2308,7 @@ function DiagnosticsCasePage({ data }) {
   }, [isVideoOpen]);
 
   return (
-    <main className="case-page diagnostics-page" id="top">
+    <main id="main-content" tabIndex={-1} className="case-page diagnostics-page">
       <section className="case-page-hero diagnostics-hero" data-reveal>
         <a className="resume-back" href="/#cases">
           {data.back}
@@ -2376,6 +2319,7 @@ function DiagnosticsCasePage({ data }) {
         </div>
         <h1>{data.title}</h1>
         <p className="case-page-subtitle">{data.subtitle}</p>
+        <CaseOverview story={data.rebrand} lang={data.lang} />
         <div className="case-page-cover diagnostics-cover">
           <img src={diagnosticsCover} alt="IT Camp project materials and presentation" />
           <button className="diagnostics-video-link" type="button" onClick={() => setIsVideoOpen(true)}>
@@ -2473,6 +2417,7 @@ function DiagnosticsCasePage({ data }) {
           </div>
         </div>
       )}
+      <CaseConclusion story={data.rebrand} lang={data.lang} />
     </main>
   );
 }
@@ -2496,7 +2441,7 @@ function DiagnosticsProcess({ steps }) {
 
 function RagCasePage({ data }) {
   return (
-    <main className="case-page rag-page" id="top">
+    <main id="main-content" tabIndex={-1} className="case-page rag-page">
       <section className="case-page-hero rag-hero" data-reveal>
         <a className="resume-back" href="/#cases">
           {data.back}
@@ -2507,9 +2452,13 @@ function RagCasePage({ data }) {
         </div>
         <h1>{data.title}</h1>
         <p className="case-page-subtitle">{data.subtitle}</p>
-        <div className="case-page-cover rag-cover">
-          <img src={ragCover} alt="Anonymized RAG platform interface" />
-        </div>
+        <CaseOverview story={data.rebrand} lang={data.lang} />
+        <figure className="case-page-cover rag-cover nda-case-media">
+          <a href={ragCover} target="_blank" rel="noreferrer" aria-label={data.coverOpen}>
+            <img src={ragCover} alt={data.coverCaption} />
+          </a>
+          <figcaption>{data.coverCaption}</figcaption>
+        </figure>
         <div className="resume-metrics case-page-metrics" data-counter-group>
           {data.heroStats.map(([value, label], index) => (
             <div key={label} data-counter-item style={{ "--counter-delay": `${index * 90}ms` }}>
@@ -2579,6 +2528,7 @@ function RagCasePage({ data }) {
           ))}
         </div>
       </section>
+      <CaseConclusion story={data.rebrand} lang={data.lang} />
     </main>
   );
 }
@@ -2623,7 +2573,7 @@ function SocialCasePage({ data }) {
   };
 
   return (
-    <main className="case-page social-page" id="top">
+    <main id="main-content" tabIndex={-1} className="case-page social-page">
       <section className="case-page-hero social-hero" data-reveal>
         <a className="resume-back" href="/#cases">
           {data.back}

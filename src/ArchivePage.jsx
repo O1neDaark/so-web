@@ -41,7 +41,10 @@ function AnimatedNumber({ value, delay = 0 }) {
 
     const node = ref.current;
     const reduceMotion = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
-    if (!node || reduceMotion || !("IntersectionObserver" in window)) return undefined;
+    if (!node || reduceMotion || !("IntersectionObserver" in window)) {
+      setDisplayValue(value);
+      return undefined;
+    }
 
     let frame = 0;
     let timeout = 0;
@@ -91,6 +94,7 @@ function AnimatedNumber({ value, delay = 0 }) {
 
 export default function ArchivePage({ slug, lang }) {
   const [activeImage, setActiveImage] = useState(null);
+  const closeButton = useRef(null);
   const page = getArchivePage(slug);
   const content = page[lang];
   const currentIndex = Math.max(0, archiveNavigation.findIndex((item) => item.slug === slug));
@@ -105,7 +109,7 @@ export default function ArchivePage({ slug, lang }) {
     close: "Закрыть",
     next: "Следующее направление",
     discuss: "Обсудить похожую задачу",
-    independent: "Материалы сохранены внутри сайта и не зависят от Tilda.",
+    independent: "Откройте работу, чтобы рассмотреть детали.",
     realCases: "Реальные кейсы",
     openCase: "Смотреть работу",
   } : {
@@ -118,28 +122,32 @@ export default function ArchivePage({ slug, lang }) {
     close: "Close",
     next: "Next discipline",
     discuss: "Discuss a similar project",
-    independent: "These materials are stored inside the website and no longer depend on Tilda.",
+    independent: "Open a project to take a closer look.",
     realCases: "Real client cases",
     openCase: "View work",
   }, [lang]);
 
   useEffect(() => {
     if (!activeImage) return undefined;
+    const previousFocus = document.activeElement;
+    closeButton.current?.focus();
     const onKeyDown = (event) => {
       if (event.key === "Escape") setActiveImage(null);
+      if (event.key === "Tab") { event.preventDefault(); closeButton.current?.focus(); }
     };
     document.addEventListener("keydown", onKeyDown);
     document.body.classList.add("modal-open");
     return () => {
       document.removeEventListener("keydown", onKeyDown);
       document.body.classList.remove("modal-open");
+      previousFocus?.focus();
     };
   }, [activeImage]);
 
   return (
-    <main className="archive-page" id="top">
+    <main className="archive-page" id="main-content" tabIndex={-1}>
       <section className="archive-page-hero" data-reveal>
-        <a className="archive-back" href="/#archive">
+        <a className="archive-back" href="/#cases">
           <Icon name="pi-arrow-left" />
           {labels.back}
         </a>
@@ -266,7 +274,7 @@ export default function ArchivePage({ slug, lang }) {
           <Icon name="pi-arrow-right" />
         </a>
         <div className="archive-end-actions">
-          <a className="archive-back" href="/#archive"><Icon name="pi-arrow-left" />{labels.back}</a>
+          <a className="archive-back" href="/#cases"><Icon name="pi-arrow-left" />{labels.back}</a>
           <a className="button button-light" href="https://t.me/Sergey_Designer" target="_blank" rel="noreferrer">
             <Icon name="pi-send" />
             {labels.discuss}
@@ -276,9 +284,9 @@ export default function ArchivePage({ slug, lang }) {
 
       {activeImage && (
         <div className="archive-lightbox" role="dialog" aria-modal="true" aria-label={activeImage[lang]}>
-          <button className="archive-lightbox-backdrop" type="button" onClick={() => setActiveImage(null)} aria-label={labels.close} />
+          <button tabIndex={-1} className="archive-lightbox-backdrop" type="button" onClick={() => setActiveImage(null)} aria-label={labels.close} />
           <div className="archive-lightbox-panel">
-            <button className="archive-lightbox-close" type="button" onClick={() => setActiveImage(null)}>
+            <button ref={closeButton} className="archive-lightbox-close" type="button" onClick={() => setActiveImage(null)}>
               <Icon name="pi-times" />{labels.close}
             </button>
             <img src={activeImage.src} alt={activeImage[lang]} />

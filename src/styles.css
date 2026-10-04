@@ -4720,14 +4720,6 @@ html[data-theme="light"] .case-media-frame {
   box-shadow: 0 24px 74px rgba(20, 38, 63, 0.08);
 }
 
-html[data-theme="light"] .reading-progress {
-  background: rgba(17, 32, 52, 0.05);
-}
-
-html[data-theme="light"] .reading-progress span {
-  background: linear-gradient(90deg, #15243a, var(--blue), var(--violet));
-}
-
 html[data-theme="light"] .resume-modal-backdrop,
 html[data-theme="light"] .video-modal-backdrop {
   background: rgba(28, 38, 52, 0.52);
@@ -4844,27 +4836,6 @@ body.modal-open {
 
 .pill-link:not(.pill-link-active) {
   background: transparent;
-}
-
-.reading-progress {
-  position: fixed;
-  top: 72px;
-  right: 0;
-  left: 0;
-  z-index: 55;
-  height: 2px;
-  pointer-events: none;
-  background: rgba(255, 255, 255, 0.04);
-}
-
-.reading-progress span {
-  display: block;
-  width: 100%;
-  height: 100%;
-  transform: scaleX(0);
-  transform-origin: left center;
-  background: linear-gradient(90deg, #fff, var(--blue), var(--violet));
-  transition: transform 80ms linear;
 }
 
 .hero-meta {
@@ -5715,10 +5686,6 @@ body.modal-open {
     max-width: 100vw;
     padding-inline: 14px;
     overflow: hidden;
-  }
-
-  .reading-progress {
-    top: 66px;
   }
 
   .header-actions {
