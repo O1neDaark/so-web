@@ -375,3 +375,54 @@ html[data-theme="light"] .diagnostics-page .diagnostics-process-step::before {
   border: 0;
   border-radius: 0;
 }
+
+
+/* 2026-10-04 mobile/media polish:
+   1) project/module cards use white media background
+   2) images on mobile are shown more fully and stop hard-cropping */
+.rb-home .rb-work-card .rb-cover-media,
+.rb-home .rb-work-enterprise .rb-cover-media,
+.rb-home .rb-work-rag .rb-cover-media,
+.rb-home .rb-work-igms .rb-cover-media,
+.rb-home .rb-work-diagnostics .rb-cover-media {
+  background: #fff;
+}
+
+.rb-home .rb-work-card .rb-cover-frame {
+  background: #fff;
+}
+
+.rb-home .rb-work-card .rb-cover-media img {
+  background: #fff;
+  object-fit: contain;
+  object-position: center top;
+}
+
+/* diagnostic collage should sit on white too */
+.rb-home .rb-work-diagnostics .rb-cover-media picture,
+.rb-home .rb-work-diagnostics .rb-cover-media img {
+  background: #fff;
+}
+
+/* Mobile/tablet: remove aggressive fixed crop */
+@media (max-width: 767px) {
+  .rb-home .rb-work-card .rb-cover-media {
+    padding: 12px;
+  }
+
+  .rb-home .rb-work-card .rb-cover-frame {
+    aspect-ratio: auto;
+    min-height: 0;
+  }
+
+  .rb-home .rb-work-card .rb-cover-media img,
+  .rb-home .rb-work-card .rb-cover-frame img {
+    width: 100%;
+    height: auto;
+    max-height: none;
+    aspect-ratio: auto;
+    object-fit: contain;
+    object-position: center top;
+    display: block;
+  }
+}
