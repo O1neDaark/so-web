@@ -16,14 +16,14 @@ export const content = {
       {name:'LingoSlide',desc:'Образовательный продукт для Android',status:'SHIPPED',detail:'Я продумал продукт, учебную логику и все взаимодействия, отрисовал интерфейс и довёл версию 1.1.0 до релиза.',href:'/case/lingoslide',icon:'book'},
       {name:'Scooter Game',desc:'Эксперимент с игровой механикой',status:'BUILDING',detail:'Собираю 2D-игру про самокат. Исследую, как превратить простое действие в интересный игровой цикл.',icon:'bolt'},
       {name:'Личные финансы',desc:'Ищу удобный способ понимать свои деньги',status:'EXPLORING',detail:'Проверяю идею помощника для личных финансов. Сейчас — вопросы, сценарии и поиск полезного первого шага.',icon:'wallet'},
-      {name:'ZOO Family',desc:'Вселенная персонажей',status:'PAUSED',detail:'Начал создавать мир персонажей и остановил производство, оценив затраты. Умение вовремя остановиться — тоже часть работы над продуктом.',icon:'pause'}
+      {name:'AiZooFamily',desc:'Вселенная персонажей · 30 000+ показов',status:'PAUSED',detail:'Проект сейчас на паузе, но Pinterest продолжает приносить не менее 30 000 показов. Я создавал персонажей, визуальную вселенную и контент-систему, а затем остановил активное производство, когда оно стало забирать слишком много ресурсов.',href:'https://pinterest.com/AiZooFamily/',external:true,icon:'pause'}
     ],
     processLabel: '02 / ПОДХОД', processTitle: 'От «а что, если»\nдо «уже работает».',
     steps: [ ['Понимаю','Что болит, кому это нужно и как выглядит полезный результат.','comments'], ['Придумываю','Выбираю главный сценарий и превращаю идею в понятное решение.','lightbulb'], ['Собираю','Делаю прототип, проверяю логику и подключаю нужные инструменты.','box'], ['Запускаю','Прохожу проверки, довожу до релиза и смотрю, что улучшить.','send'] ],
     workLabel:'03 / ИЗБРАННОЕ', workTitle:'За каждой работой — задача.', workText:'Собственные продукты, корпоративные системы и решения в сложных предметных областях.', archive:'Дизайн-архив',
     projects:[
-      {id:'enterprise',tag:'ENTERPRISE / LEADERSHIP',title:'Из сложного процесса — в понятную систему.',name:'Enterprise Automation',desc:'Роли, сценарии и автоматизация внутренних процессов. От разбора задачи до работы с командой внедрения.'},
-      {id:'rag',tag:'AI / KNOWLEDGE',title:'Знания компании, с которыми можно говорить.',name:'RAG Platform',desc:'Поиск по корпоративным знаниям: понятный ответ, источник и контроль доверия к AI.'},
+      {id:'enterprise',tag:'BIG TECH / TELECOM · NDA / LEADERSHIP',ndaLabel:'АНОНИМИЗИРОВАНО ПОД NDA',title:'Из сложного процесса — в понятную систему.',name:'Enterprise Automation',desc:'Роли, сценарии и автоматизация внутренних процессов. От разбора задачи до работы с командой внедрения.'},
+      {id:'rag',tag:'BIG TECH / TELECOM · NDA / AI / KNOWLEDGE',ndaLabel:'АНОНИМИЗИРОВАНО ПОД NDA',title:'Знания компании, с которыми можно говорить.',name:'RAG Platform',desc:'Поиск по корпоративным знаниям: понятный ответ, источник и контроль доверия к AI.'},
       {id:'igms',tag:'PRODUCT / CONCEPT',title:'Весь контекст. Один диалог.',name:'iGMS',desc:'Концепция единого inbox для управления недвижимостью. Переписка, бронирования и AI-подсказки.'},
       {id:'diagnostics',tag:'INDUSTRIAL AI / IT CAMP 2025',title:'Разобраться в сложном. Успеть собрать.',name:'AI Diagnostics',desc:'Продуктовое решение для промышленной диагностики на IT Camp в Сириусе.'}
     ],
@@ -55,13 +55,13 @@ export const content = {
       {name:'LingoSlide',desc:'An English learning product for Android',status:'SHIPPED',detail:'I designed the product, learning logic and every interaction, created the interface and shipped version 1.1.0.',href:'/case/lingoslide',icon:'book'},
       {name:'Scooter Game',desc:'An experiment with game mechanics',status:'BUILDING',detail:'Building a 2D scooter game. Exploring how a simple action becomes a compelling gameplay loop.',icon:'bolt'},
       {name:'Personal Finance',desc:'A clearer way to understand money',status:'EXPLORING',detail:'Exploring a personal finance assistant. Right now: questions, scenarios and a useful first step.',icon:'wallet'},
-      {name:'ZOO Family',desc:'A universe of characters',status:'PAUSED',detail:'Started a character universe, then paused production after assessing the resources it required. Knowing when to stop is part of building.',icon:'pause'}
+      {name:'AiZooFamily',desc:'Character universe · 30K+ impressions',status:'PAUSED',detail:'The project is currently paused, but Pinterest still generates at least 30K impressions. I built the characters, visual universe and content system, then paused active production when the resource cost became too high.',href:'https://pinterest.com/AiZooFamily/',external:true,icon:'pause'}
     ],
     processLabel:'02 / APPROACH',processTitle:'From “what if”\nto “it works”.',steps:[['Understand','The problem, the people and what a useful outcome looks like.','comments'],['Imagine','Choose the core scenario and turn the idea into a clear solution.','lightbulb'],['Build','Make a prototype, test the logic and bring in the right tools.','box'],['Launch','Test, ship and find what to improve next.','send']],
     workLabel:'03 / SELECTED WORK',workTitle:'A real problem behind every project.',workText:'Independent products, enterprise systems and solutions in complex domains.',archive:'Design archive',
     projects:[
-      {id:'enterprise',tag:'ENTERPRISE / LEADERSHIP',title:'Complex processes. Clear systems.',name:'Enterprise Automation',desc:'Roles, scenarios and internal automation. From understanding the problem to collaborating with the delivery team.'},
-      {id:'rag',tag:'AI / KNOWLEDGE',title:'Company knowledge you can talk to.',name:'RAG Platform',desc:'Enterprise knowledge search with clear answers, visible sources and trust in AI.'},
+      {id:'enterprise',tag:'BIG TECH / TELECOM · NDA / LEADERSHIP',ndaLabel:'ANONYMIZED UNDER NDA',title:'Complex processes. Clear systems.',name:'Enterprise Automation',desc:'Roles, scenarios and internal automation. From understanding the problem to collaborating with the delivery team.'},
+      {id:'rag',tag:'BIG TECH / TELECOM · NDA / AI / KNOWLEDGE',ndaLabel:'ANONYMIZED UNDER NDA',title:'Company knowledge you can talk to.',name:'RAG Platform',desc:'Enterprise knowledge search with clear answers, visible sources and trust in AI.'},
       {id:'igms',tag:'PRODUCT / CONCEPT',title:'Every detail. One conversation.',name:'iGMS',desc:'A unified inbox concept for property management. Messages, bookings and AI assistance.'},
       {id:'diagnostics',tag:'INDUSTRIAL AI / IT CAMP 2025',title:'Understand complexity. Build quickly.',name:'AI Diagnostics',desc:'An industrial diagnostics product solution developed at IT Camp in Sirius.'}
     ],
