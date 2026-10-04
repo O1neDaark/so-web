@@ -1,0 +1,360 @@
+/* 2026-10-04 portfolio polish
+   Neutral editorial surfaces everywhere except the dedicated LingoSlide case. */
+
+/* Brand mark */
+.rb-brand {
+  display: inline-flex;
+  align-items: center;
+  gap: 11px;
+  width: max-content;
+  padding-right: 0;
+  line-height: 1.02;
+}
+
+.rb-brand-mark {
+  display: block;
+  width: 40px;
+  height: 40px;
+  flex: 0 0 40px;
+  border-radius: 11px;
+  object-fit: contain;
+}
+
+.rb-brand-copy {
+  display: block;
+}
+
+.rb-brand-copy > span {
+  display: block;
+}
+
+/* Homepage: remove blue UI underlays. Product artwork itself may stay colored. */
+.rb-home .rb-product-feature {
+  background: #fbfaf7;
+  border-color: var(--rb-line);
+}
+
+.rb-home .rb-product-feature .rb-small-tag,
+.rb-home .rb-product-feature .rb-small-tag span,
+.rb-home .rb-product-feature .rb-product-copy p,
+.rb-home .rb-product-feature .rb-feature-footer {
+  color: var(--rb-muted);
+}
+
+.rb-home .rb-product-feature .rb-product-tags > span {
+  border-color: var(--rb-line);
+  color: #555750;
+  background: #fff;
+}
+
+.rb-home .rb-story {
+  background: #efeee8;
+}
+
+.rb-home .rb-story-visual img,
+.rb-home .rb-story-visual img:first-child,
+.rb-home .rb-feature-device img {
+  filter: drop-shadow(0 18px 18px rgba(32, 33, 31, 0.12));
+}
+
+.rb-home .rb-cv-card:nth-child(2) {
+  background: #fbfaf7;
+  border-color: #d9dbd8;
+}
+
+.rb-home .rb-status-exploring {
+  color: #625f57;
+  background: #ece9e1;
+}
+
+/* Selected work cards: real NDA screens, neutral framing. */
+.rb-home .rb-work-enterprise .rb-cover-media,
+.rb-home .rb-work-rag .rb-cover-media,
+.rb-home .rb-work-diagnostics .rb-cover-media {
+  background: #f1f0eb;
+}
+
+.rb-home .rb-work-enterprise .rb-cover-media,
+.rb-home .rb-work-rag .rb-cover-media {
+  padding: 10px;
+}
+
+.rb-home .rb-work-enterprise .rb-cover-media img,
+.rb-home .rb-work-rag .rb-cover-media img {
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+  object-position: center;
+  background: #fff;
+  border: 1px solid #e7e7e2;
+  border-radius: 3px;
+}
+
+.rb-nda-badge {
+  position: absolute;
+  left: 16px;
+  bottom: 14px;
+  z-index: 3;
+  max-width: calc(100% - 32px);
+  padding: 7px 10px;
+  border: 1px solid rgba(32, 33, 31, 0.14);
+  border-radius: 999px;
+  background: rgba(247, 246, 242, 0.94);
+  color: #4f504a;
+  font-size: 8px;
+  font-weight: 700;
+  line-height: 1.25;
+  letter-spacing: .08em;
+  text-transform: uppercase;
+  backdrop-filter: blur(8px);
+}
+
+/* Keep supplied NDA screenshots unfiltered on case pages. */
+html[data-theme="light"] :is(.enterprise-page, .rag-page) .nda-case-media {
+  background: #fff;
+  border-color: var(--rb-line);
+  box-shadow: none;
+}
+
+html[data-theme="light"] :is(.enterprise-page, .rag-page) .nda-case-media img {
+  display: block;
+  width: 100%;
+  height: auto;
+  min-height: 0;
+  aspect-ratio: auto;
+  padding: 0;
+  object-fit: contain;
+  opacity: 1;
+  filter: none;
+}
+
+html[data-theme="light"] :is(.enterprise-page, .rag-page) .nda-case-media figcaption {
+  padding: 15px 20px;
+  border-top: 1px solid var(--rb-line);
+  background: #faf9f6;
+  color: var(--rb-muted);
+  font-size: 11px;
+  line-height: 1.5;
+}
+
+/* Enterprise / RAG / Diagnostics: one neutral system. */
+html[data-theme="light"] :is(.enterprise-page, .rag-page, .diagnostics-page) .case-page-solution {
+  grid-template-columns: minmax(0, .82fr) minmax(0, 1.18fr);
+  gap: clamp(42px, 5vw, 72px);
+  padding: clamp(42px, 4vw, 56px);
+  border: 1px solid var(--rb-line);
+  border-radius: 8px;
+  background: #faf9f6;
+  box-shadow: none;
+}
+
+html[data-theme="light"] :is(.enterprise-page, .rag-page, .diagnostics-page) .case-page-solution > div,
+html[data-theme="light"] :is(.enterprise-page, .rag-page, .diagnostics-page) .case-page-solution > p {
+  min-width: 0;
+}
+
+html[data-theme="light"] :is(.enterprise-page, .rag-page, .diagnostics-page) .case-page-solution > p {
+  width: 100%;
+  max-width: 680px;
+  margin: 0;
+  justify-self: start;
+  color: var(--rb-muted);
+}
+
+html[data-theme="light"] :is(.enterprise-page, .rag-page, .diagnostics-page) :is(.case-pillars article, .scenario-grid article, .enterprise-accent-grid article) {
+  border: 1px solid var(--rb-line);
+  background: #faf9f6;
+  box-shadow: none;
+}
+
+html[data-theme="light"] :is(.enterprise-page, .rag-page, .diagnostics-page) :is(.case-pillars span, .scenario-grid strong, .enterprise-accent-grid h2) {
+  color: var(--rb-ink);
+}
+
+html[data-theme="light"] :is(.enterprise-page, .rag-page, .diagnostics-page) :is(.case-pillars p, .scenario-grid p, .enterprise-accent-grid p) {
+  color: var(--rb-muted);
+}
+
+/* Enterprise */
+html[data-theme="light"] .enterprise-page .enterprise-leadership,
+html[data-theme="light"] .enterprise-page .enterprise-pillars article,
+html[data-theme="light"] .enterprise-page .enterprise-scenarios article,
+html[data-theme="light"] .enterprise-page .enterprise-accent-grid article {
+  background: #faf9f6;
+  border-color: var(--rb-line);
+}
+
+/* RAG: remove green/blue glow and dark flow. */
+html[data-theme="light"] .rag-page .rag-solution,
+html[data-theme="light"] .rag-page .rag-pillars article,
+html[data-theme="light"] .rag-page .rag-scenarios article,
+html[data-theme="light"] .rag-page .rag-accent-grid article {
+  background: #faf9f6;
+  border-color: var(--rb-line);
+}
+
+html[data-theme="light"] .rag-page .rag-flow {
+  grid-template-columns: repeat(6, minmax(0, 1fr));
+  gap: 10px;
+  padding: 22px;
+  overflow: visible;
+  border: 1px solid var(--rb-line);
+  border-radius: 8px;
+  background: #efeee8;
+  box-shadow: none;
+}
+
+html[data-theme="light"] .rag-page .rag-flow-step,
+html[data-theme="light"] .rag-page .rag-flow-step:first-child,
+html[data-theme="light"] .rag-page .rag-flow-step:last-child {
+  min-height: 238px;
+  padding: 17px;
+  border: 1px solid var(--rb-line);
+  border-radius: 6px;
+  background: #fff;
+  box-shadow: none;
+}
+
+html[data-theme="light"] .rag-page .rag-flow-step span {
+  width: 38px;
+  height: 38px;
+  border: 1px solid #d7d6cf;
+  color: var(--rb-ink);
+  background: #f7f6f2;
+}
+
+html[data-theme="light"] .rag-page .rag-flow-step strong {
+  color: var(--rb-ink);
+}
+
+html[data-theme="light"] .rag-page .rag-flow-step p {
+  color: var(--rb-muted);
+}
+
+html[data-theme="light"] .rag-page .rag-flow-step i {
+  background: linear-gradient(90deg, var(--rb-accent), transparent);
+}
+
+html[data-theme="light"] .rag-page .rag-flow-step i::after {
+  border-top-color: var(--rb-accent);
+  border-right-color: var(--rb-accent);
+}
+
+/* Diagnostics: content may be blue, UI surfaces stay neutral. */
+html[data-theme="light"] .diagnostics-page .diagnostics-solution,
+html[data-theme="light"] .diagnostics-page .diagnostics-pillars article,
+html[data-theme="light"] .diagnostics-page .diagnostics-scenarios article {
+  background: #faf9f6;
+  border-color: var(--rb-line);
+}
+
+html[data-theme="light"] .diagnostics-page .diagnostics-cover {
+  background: #efeee8;
+}
+
+html[data-theme="light"] .diagnostics-page .diagnostics-process {
+  border: 1px solid var(--rb-line);
+  background: #efeee8;
+  box-shadow: none;
+}
+
+html[data-theme="light"] .diagnostics-page .diagnostics-process-line {
+  background: linear-gradient(90deg, transparent, #b9b8b0, transparent);
+}
+
+html[data-theme="light"] .diagnostics-page .diagnostics-process-step {
+  border: 1px solid var(--rb-line);
+  background: #fff;
+  box-shadow: none;
+}
+
+html[data-theme="light"] .diagnostics-page .diagnostics-process-step span {
+  border: 1px solid #d7d6cf;
+  color: var(--rb-ink);
+  background: #f7f6f2;
+}
+
+html[data-theme="light"] .diagnostics-page .diagnostics-process-step strong {
+  color: var(--rb-ink);
+}
+
+html[data-theme="light"] .diagnostics-page .diagnostics-process-step p {
+  color: var(--rb-muted);
+}
+
+html[data-theme="light"] .diagnostics-page .diagnostics-process-step::before {
+  background: var(--rb-accent);
+  box-shadow: none;
+}
+
+/* Tablet */
+@media (max-width: 1050px) {
+  html[data-theme="light"] .rag-page .rag-flow {
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+  }
+
+  html[data-theme="light"] .rag-page .rag-flow-step {
+    min-height: 205px;
+  }
+
+  html[data-theme="light"] .rag-page .rag-flow-step i {
+    display: none;
+  }
+}
+
+/* Mobile: safe inner paddings and one-column solution blocks. */
+@media (max-width: 600px) {
+  .rb-brand {
+    gap: 8px;
+  }
+
+  .rb-brand-mark {
+    width: 34px;
+    height: 34px;
+    flex-basis: 34px;
+    border-radius: 9px;
+  }
+
+  .rb-brand-copy {
+    font-size: 16px;
+  }
+
+  .rb-nda-badge {
+    left: 10px;
+    right: 10px;
+    bottom: 10px;
+    max-width: none;
+    width: max-content;
+    font-size: 7px;
+    padding: 6px 8px;
+  }
+
+  html[data-theme="light"] :is(.enterprise-page, .rag-page, .diagnostics-page) .case-page-solution {
+    grid-template-columns: 1fr;
+    gap: 20px;
+    padding: 24px 20px;
+    border-radius: 7px;
+  }
+
+  html[data-theme="light"] :is(.enterprise-page, .rag-page, .diagnostics-page) .case-page-solution > p {
+    max-width: none;
+    padding-right: 0;
+  }
+
+  html[data-theme="light"] .rag-page .rag-flow {
+    grid-template-columns: 1fr;
+    gap: 9px;
+    padding: 12px;
+  }
+
+  html[data-theme="light"] .rag-page .rag-flow-step,
+  html[data-theme="light"] .rag-page .rag-flow-step:first-child,
+  html[data-theme="light"] .rag-page .rag-flow-step:last-child {
+    min-height: 0;
+    padding: 16px;
+  }
+
+  html[data-theme="light"] .diagnostics-page .diagnostics-process-line {
+    background: linear-gradient(180deg, transparent, #b9b8b0, transparent);
+  }
+}
