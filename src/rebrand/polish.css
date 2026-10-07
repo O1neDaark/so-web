@@ -426,3 +426,80 @@ html[data-theme="light"] .diagnostics-page .diagnostics-process-step::before {
     display: block;
   }
 }
+
+/* 2026-10-07 desktop feedback pass */
+.rb-nav a {
+  transition: color 180ms ease-out;
+}
+
+.rb-nav a::after {
+  display: none;
+}
+
+.rb-work-image {
+  border: 1px solid var(--rb-line);
+  border-radius: 5px;
+  background: var(--rb-paper);
+}
+
+.rb-cover-heading {
+  min-height: 64px;
+  background: var(--rb-paper);
+  color: var(--rb-ink);
+  border-bottom-color: var(--rb-line);
+}
+
+.rb-cover-heading span,
+.rb-cover-heading span:last-child {
+  color: var(--rb-muted);
+}
+
+.rb-cover-heading strong {
+  color: var(--rb-ink);
+  font-weight: 600;
+}
+
+@media (hover: hover) and (pointer: fine) {
+  .rb-nav a:hover {
+    color: var(--rb-accent);
+  }
+}
+
+@media (min-width: 1101px) {
+  .rb-portrait-wrap {
+    border-radius: 4px;
+  }
+
+  .rb-portrait {
+    inset: 0;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    object-position: center 18%;
+  }
+
+  .rb-proof-caption,
+  .rb-proof strong,
+  .rb-proof-product {
+    font-size: 20px;
+    line-height: 1.2;
+    letter-spacing: -0.55px;
+    font-weight: 600;
+  }
+
+  .rb-row-name small {
+    max-width: 300px;
+    font-size: 12px;
+    line-height: 1.45;
+  }
+
+  .rb-process .rb-multiline {
+    white-space: nowrap;
+  }
+
+  .rb-process-grid p {
+    max-width: none;
+    font-size: 14px;
+    line-height: 1.55;
+  }
+}

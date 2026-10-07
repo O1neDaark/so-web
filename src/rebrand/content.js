@@ -6,9 +6,9 @@ export const content = {
   ru: {
     brand: ['Серёга —', 'есть идея!'], name: 'Сергей Остаев', nav: ['Проекты', 'Подход', 'Обо мне', 'Резюме', 'Вместе'], menu: 'Открыть меню', close: 'Закрыть меню', skip: 'К содержанию',
     idea: 'Есть идея?', see: 'Смотреть проекты', discuss: 'Обсудить идею', back: 'Все проекты', read: 'Открыть кейс',
-    hero: ['Больше,', 'чем идеи.'], lead: 'Придумываю, собираю и запускаю цифровые продукты.',
-    intro: 'Помогаю командам и людям превратить «а что, если…» в работающую вещь. От первого разговора до запуска.',
-    note: 'Давай сделаем\nчто-нибудь настоящее.', portrait: 'Сергей Остаев, автор цифровых продуктов', caption: 'Тот самый человек, которому можно принести идею.',
+    hero: ['Больше,', 'чем идеи.'], lead: 'Придумываю, собираю и запускаю цифровые продукты',
+    intro: 'Помогаю командам и людям превратить «а что, если…» в работающую вещь — от первого разговора до запуска',
+    note: 'Давай сделаем\nчто-нибудь настоящее.', portrait: 'Сергей Остаев, автор цифровых продуктов', caption: 'Тот самый человек, которому можно принести идею',
     proof: [['9+', 'продуктов и сервисов'], ['5', 'специалистов в команде'], ['IT Camp ’25', 'проект для Газпром нефти']],
     nowLabel: '01 / В РАБОТЕ', nowTitle: 'Идеи обретают форму.', nowText: 'Запускаю своё, пробую новое и показываю, на каком этапе каждый проект.',
     lingoDesc: 'Полноценная система изучения английского, которую я спроектировал и довёл до релиза.', own: 'СОБСТВЕННЫЙ ПРОДУКТ', storeLabel: 'Открыть в RuStore',
@@ -18,9 +18,9 @@ export const content = {
       {name:'Личные финансы',desc:'Ищу удобный способ понимать свои деньги',status:'EXPLORING',detail:'Проверяю идею помощника для личных финансов. Сейчас — вопросы, сценарии и поиск полезного первого шага.',icon:'wallet'},
       {name:'AiZooFamily',desc:'Вселенная персонажей · 30 000+ показов',status:'PAUSED',detail:'Проект сейчас на паузе, но Pinterest продолжает приносить не менее 30 000 показов. Я создавал персонажей, визуальную вселенную и контент-систему, а затем остановил активное производство, когда оно стало забирать слишком много ресурсов.',href:'https://pinterest.com/AiZooFamily/',external:true,icon:'pause'}
     ],
-    processLabel: '02 / ПОДХОД', processTitle: 'От «а что, если»\nдо «уже работает».',
-    steps: [ ['Понимаю','Что болит, кому это нужно и как выглядит полезный результат.','comments'], ['Придумываю','Выбираю главный сценарий и превращаю идею в понятное решение.','lightbulb'], ['Собираю','Делаю прототип, проверяю логику и подключаю нужные инструменты.','box'], ['Запускаю','Прохожу проверки, довожу до релиза и смотрю, что улучшить.','send'] ],
-    workLabel:'03 / ИЗБРАННОЕ', workTitle:'За каждой работой — задача.', workText:'Собственные продукты, корпоративные системы и решения в сложных предметных областях.', archive:'Дизайн-архив',
+    processLabel: '02 / ПОДХОД', processTitle: 'От «а что, если» до «уже работает»',
+    steps: [ ['Понимаю','Что болит, кому это нужно и как выглядит полезный результат','comments'], ['Придумываю','Выбираю главный сценарий и превращаю идею в понятное решение','lightbulb'], ['Собираю','Делаю прототип, проверяю логику и подключаю нужные инструменты','box'], ['Запускаю','Прохожу проверки, довожу до релиза и смотрю, что улучшить','send'] ],
+    workLabel:'03 / ИЗБРАННОЕ', workTitle:'За каждой работой — задача', workText:'Собственные продукты, корпоративные системы и решения в сложных предметных областях', archive:'Дизайн-архив',
     projects:[
       {id:'enterprise',tag:'BIG TECH / TELECOM · NDA / LEADERSHIP',ndaLabel:'АНОНИМИЗИРОВАНО ПОД NDA',title:'Из сложного процесса — в понятную систему.',name:'Enterprise Automation',desc:'Роли, сценарии и автоматизация внутренних процессов. От разбора задачи до работы с командой внедрения.'},
       {id:'rag',tag:'BIG TECH / TELECOM · NDA / AI / KNOWLEDGE',ndaLabel:'АНОНИМИЗИРОВАНО ПОД NDA',title:'Знания компании, с которыми можно говорить.',name:'RAG Platform',desc:'Поиск по корпоративным знаниям: понятный ответ, источник и контроль доверия к AI.'},
@@ -48,7 +48,7 @@ export const content = {
   },
   en: {
     brand:['Sergey —','got an idea!'], name:'Sergey Ostaev',nav:['Projects','Approach','About','CV','Work together'],menu:'Open menu',close:'Close menu',skip:'Skip to content',idea:'Got an idea?',see:'Explore projects',discuss:'Let’s talk',back:'All projects',read:'Read the story',
-    hero:['Beyond','ideas.'],lead:'I imagine, build and launch digital products.',intro:'I help people and teams turn “what if…” into something that works. From the first conversation to launch.',note:'Let’s make\nsomething real.',portrait:'Sergey Ostaev, digital product builder',caption:'The person you can bring your idea to.',
+    hero:['Beyond','ideas.'],lead:'I imagine, build and launch digital products',intro:'I help people and teams turn “what if…” into something that works — from the first conversation to launch',note:'Let’s make\nsomething real.',portrait:'Sergey Ostaev, digital product builder',caption:'The person you can bring your idea to',
     proof:[['9+','products and services'],['5','specialists coordinated'],['IT Camp ’25','project for Gazprom Neft']],
     nowLabel:'01 / IN PROGRESS',nowTitle:'Ideas taking shape.',nowText:'Building my own products, trying new things and sharing where each project stands.',lingoDesc:'A complete English learning system I designed and took through release.',own:'OWN PRODUCT',storeLabel:'View on RuStore',
     nowRows:[
@@ -57,8 +57,8 @@ export const content = {
       {name:'Personal Finance',desc:'A clearer way to understand money',status:'EXPLORING',detail:'Exploring a personal finance assistant. Right now: questions, scenarios and a useful first step.',icon:'wallet'},
       {name:'AiZooFamily',desc:'Character universe · 30K+ impressions',status:'PAUSED',detail:'The project is currently paused, but Pinterest still generates at least 30K impressions. I built the characters, visual universe and content system, then paused active production when the resource cost became too high.',href:'https://pinterest.com/AiZooFamily/',external:true,icon:'pause'}
     ],
-    processLabel:'02 / APPROACH',processTitle:'From “what if”\nto “it works”.',steps:[['Understand','The problem, the people and what a useful outcome looks like.','comments'],['Imagine','Choose the core scenario and turn the idea into a clear solution.','lightbulb'],['Build','Make a prototype, test the logic and bring in the right tools.','box'],['Launch','Test, ship and find what to improve next.','send']],
-    workLabel:'03 / SELECTED WORK',workTitle:'A real problem behind every project.',workText:'Independent products, enterprise systems and solutions in complex domains.',archive:'Design archive',
+    processLabel:'02 / APPROACH',processTitle:'From “what if” to “it works”',steps:[['Understand','The problem, the people and what a useful outcome looks like','comments'],['Imagine','Choose the core scenario and turn the idea into a clear solution','lightbulb'],['Build','Make a prototype, test the logic and bring in the right tools','box'],['Launch','Test, ship and find what to improve next','send']],
+    workLabel:'03 / SELECTED WORK',workTitle:'A real problem behind every project',workText:'Independent products, enterprise systems and solutions in complex domains',archive:'Design archive',
     projects:[
       {id:'enterprise',tag:'BIG TECH / TELECOM · NDA / LEADERSHIP',ndaLabel:'ANONYMIZED UNDER NDA',title:'Complex processes. Clear systems.',name:'Enterprise Automation',desc:'Roles, scenarios and internal automation. From understanding the problem to collaborating with the delivery team.'},
       {id:'rag',tag:'BIG TECH / TELECOM · NDA / AI / KNOWLEDGE',ndaLabel:'ANONYMIZED UNDER NDA',title:'Company knowledge you can talk to.',name:'RAG Platform',desc:'Enterprise knowledge search with clear answers, visible sources and trust in AI.'},
